@@ -63,10 +63,6 @@ type Domain struct {
 	TransferLock bool
 }
 
-func (c *Client) Search() {
-
-}
-
 // DomainsFor customer, starting on a specified page.
 // Up to 500 records are returned. Compare Records and MaxRecords to tell
 // if another page exists.
