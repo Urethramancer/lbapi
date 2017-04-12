@@ -25,6 +25,7 @@ func (cmd *DomainListCmd) Execute(args []string) error {
 type DomainForCmd struct {
 	Verbose bool `short:"v" long:"verbose" description:"Show detailed information."`
 	Short   bool `short:"s" long:"short" description:"List only the domain names, one per line. Overrides -v."`
+	Name    bool `short:"n" long:"name" description:"Sort by name instead of ID."`
 	Args    struct {
 		ID string `required:"true" positional-arg-name:"ID" description:"Customer ID."`
 	} `positional-args:"true"`
@@ -35,6 +36,7 @@ func (cmd *DomainForCmd) Execute(args []string) error {
 	var err error
 	var count int64
 	var everything lbapi.Domains
+	var everyname lbapi.DomainsByName
 	page := 1
 	for {
 		dl, err = client.DomainsFor(cmd.Args.ID, page)
@@ -42,7 +44,11 @@ func (cmd *DomainForCmd) Execute(args []string) error {
 			return err
 		}
 
-		everything = append(everything, dl.Domains...)
+		if cmd.Name || cmd.Short {
+			everyname = append(everyname, dl.Domains...)
+		} else {
+			everything = append(everything, dl.Domains...)
+		}
 		page++
 		count += dl.Records
 		if count >= dl.MaxRecords {
@@ -50,23 +56,35 @@ func (cmd *DomainForCmd) Execute(args []string) error {
 		}
 	}
 
+	if cmd.Name || cmd.Short {
+		sort.Sort(everyname)
+	} else {
+		sort.Sort(everything)
+	}
+
 	if cmd.Short {
-		for _, d := range everything {
+		for _, d := range everyname {
 			pr(d.Description)
 		}
 		return nil
 	}
 
-	sort.Sort(everything)
 	cc := columnize.DefaultConfig()
 	cc.Delim = "\t"
 	cc.Glue = "  "
 	var s []string
 	if cmd.Verbose {
 	} else {
-		s = []string{fmt.Sprintln("Order ID\tDomain\tExpires")}
-		for _, d := range everything {
-			s = append(s, fmt.Sprintf("%d\t%s\t%v", d.OrderID, d.Description, d.Endtime))
+		if cmd.Name {
+			s = []string{fmt.Sprintln("Domain\tOrder ID\tExpires")}
+			for _, d := range everyname {
+				s = append(s, fmt.Sprintf("%s\t%d\t%v", d.Description, d.OrderID, d.Endtime))
+			}
+		} else {
+			s = []string{fmt.Sprintln("Order ID\tDomain\tExpires")}
+			for _, d := range everything {
+				s = append(s, fmt.Sprintf("%d\t%s\t%v", d.OrderID, d.Description, d.Endtime))
+			}
 		}
 		res := columnize.Format(s, cc)
 		pr(res)

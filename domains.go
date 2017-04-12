@@ -16,6 +16,7 @@ type DomainList struct {
 }
 
 type Domains []*Domain
+type DomainsByName []*Domain
 
 func (slice Domains) Len() int {
 	return len(slice)
@@ -26,6 +27,18 @@ func (slice Domains) Less(i, j int) bool {
 }
 
 func (slice Domains) Swap(i, j int) {
+	slice[i], slice[j] = slice[j], slice[i]
+}
+
+func (slice DomainsByName) Len() int {
+	return len(slice)
+}
+
+func (slice DomainsByName) Less(i, j int) bool {
+	return slice[i].Description < slice[j].Description
+}
+
+func (slice DomainsByName) Swap(i, j int) {
 	slice[i], slice[j] = slice[j], slice[i]
 }
 
