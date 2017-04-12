@@ -1,5 +1,5 @@
 # LogicBoxes API tools
-SDK and tools for the LogicBoxes API used by ResellerClub and others.
+SDK and tools for the LogicBoxes API used by ResellerClub and other domain registrars.
 
 ## Who is it for?
 This is only useful if you have a reseller account with anyone using the LogicBoxes system and its APIs, and would like to manage customers, domains and DNS from the command line.
