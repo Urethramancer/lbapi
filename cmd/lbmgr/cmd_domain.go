@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-
 	"sort"
 
 	"github.com/Urethramancer/lbapi"
@@ -35,7 +34,7 @@ func (cmd *DomainForCmd) Execute(args []string) error {
 	var dl *lbapi.DomainList
 	var err error
 	var count int64
-	var everything []*lbapi.Domain
+	var everything lbapi.Domains
 	page := 1
 	for {
 		dl, err = client.DomainsFor(cmd.Args.ID, page)
@@ -52,23 +51,23 @@ func (cmd *DomainForCmd) Execute(args []string) error {
 	}
 
 	if cmd.Short {
-		for _, d := range dl.Domains {
+		for _, d := range everything {
 			pr(d.Description)
 		}
 		return nil
 	}
 
+	sort.Sort(everything)
 	cc := columnize.DefaultConfig()
 	cc.Delim = "\t"
 	cc.Glue = "  "
+	var s []string
 	if cmd.Verbose {
 	} else {
-		var s []string
-		for _, d := range dl.Domains {
-			s = append(s, fmt.Sprintf("%s\t%s\t%v", d.OrderID, d.Description, d.Endtime))
+		s = []string{fmt.Sprintln("Order ID\tDomain\tExpires")}
+		for _, d := range everything {
+			s = append(s, fmt.Sprintf("%d\t%s\t%v", d.OrderID, d.Description, d.Endtime))
 		}
-		sort.Strings(s)
-		s = append([]string{fmt.Sprintln("Order ID\tDomain\tExpires")}, s...)
 		res := columnize.Format(s, cc)
 		pr(res)
 	}

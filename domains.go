@@ -12,7 +12,21 @@ type DomainList struct {
 	// MaxRecords can be used to calculate pagination.
 	MaxRecords int64
 	// Domains for the specified search query.
-	Domains []*Domain
+	Domains Domains
+}
+
+type Domains []*Domain
+
+func (slice Domains) Len() int {
+	return len(slice)
+}
+
+func (slice Domains) Less(i, j int) bool {
+	return slice[i].OrderID < slice[j].OrderID
+}
+
+func (slice Domains) Swap(i, j int) {
+	slice[i], slice[j] = slice[j], slice[i]
 }
 
 type Domain struct {
@@ -21,10 +35,10 @@ type Domain struct {
 	CreationDT   time.Time
 	Timestamp    time.Time
 
-	OrderID     string
-	CustomerID  string
-	EntityID    string
-	TypeID      string
+	OrderID     int64
+	CustomerID  int64
+	EntityID    int64
+	TypeID      int64
 	Description string
 	Status      string
 	TypeKey     string
@@ -91,10 +105,10 @@ func parseDomain(in interface{}) *Domain {
 		CreationTime: time.Unix(atoi(data["orders.creationtime"].(string)), 0),
 		CreationDT:   time.Unix(atoi(data["orders.creationdt"].(string)), 0),
 		Timestamp:    parseDate(data["orders.timestamp"].(string)),
-		OrderID:      data["orders.orderid"].(string),
-		CustomerID:   data["entity.customerid"].(string),
-		EntityID:     data["entity.entityid"].(string),
-		TypeID:       data["entity.entitytypeid"].(string),
+		OrderID:      atoi(data["orders.orderid"].(string)),
+		CustomerID:   atoi(data["entity.customerid"].(string)),
+		EntityID:     atoi(data["entity.entityid"].(string)),
+		TypeID:       atoi(data["entity.entitytypeid"].(string)),
 		Description:  data["entity.description"].(string),
 		Status:       data["entity.currentstatus"].(string),
 		TypeKey:      data["entitytype.entitytypekey"].(string),
