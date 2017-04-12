@@ -46,3 +46,24 @@ func (c *Client) getResponse(url string) (*maplist, error) {
 
 	return &list, nil
 }
+
+// postResponse does pretty much the same as getResponse().
+// Some LogicBoxes API calls use POST instead, but there doesn't
+// seem to be any actual logic to why, as they aren't actually
+// posting any body content.
+func (c *Client) postResponse(url string) (*maplist, error) {
+	res, err := c.Client.Post(url, "", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	defer res.Body.Close()
+	decoder := json.NewDecoder(res.Body)
+	var list maplist
+	err = decoder.Decode(&list)
+	if err != nil {
+		return nil, err
+	}
+
+	return &list, nil
+}
