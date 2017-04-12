@@ -8,7 +8,7 @@ import (
 type CustomerList struct {
 	// Records returned in this structure.
 	Records int64
-	// MaxRecords can be used to calculate pagination.
+	// MaxRecords is the total available for this query.
 	MaxRecords int64
 	// Domains for the specified search query.
 	Customers Customers
