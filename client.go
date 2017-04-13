@@ -20,7 +20,7 @@ func NewClient(api, resellerid, apikey string) *Client {
 	}
 
 	return &Client{
-		Client: http.Client{Timeout: time.Second * 10},
+		Client: http.Client{Timeout: time.Second * 30},
 		URL:    api,
 		ID:     resellerid,
 		Key:    apikey,
