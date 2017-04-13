@@ -22,6 +22,7 @@ These planned features are things I will be dogfooding. Likely to be implemented
 ## Possible features
 - Managing other products than just domains
 - Reseller management
+- Interactive mode using a fancy terminal interface.
 
 ## Dependencies
 1. Go, currently tested with v1.8.x+.

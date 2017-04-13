@@ -16,9 +16,6 @@ type DNSGetCmd struct {
 	} `positional-args:"true"`
 }
 
-type DNSGetACmd struct {
-}
-
 func (cmd *DNSGetCmd) Execute(args []string) error {
 	t := ""
 	switch cmd.Args.Type {
