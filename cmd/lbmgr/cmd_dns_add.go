@@ -18,7 +18,9 @@ func (cmd *DNSAddCmd) Execute(args []string) error {
 	var err error
 	switch cmd.Args.Type {
 	case "a", "A":
-		err = client.AddDNSA(cmd.Args.Domain, cmd.Args.Host, cmd.Args.Address, cmd.Args.TTL)
+		err = client.AddDNSA(cmd.Args.Domain, cmd.Args.Host, cmd.Args.Address, cmd.Args.TTL, false)
+	case "aaaa", "AAAA":
+		err = client.AddDNSA(cmd.Args.Domain, cmd.Args.Host, cmd.Args.Address, cmd.Args.TTL, true)
 	default:
 		return errors.New("Unknown record type '" + cmd.Args.Type + "'")
 	}

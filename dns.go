@@ -129,14 +129,18 @@ func parseDNS(in interface{}) *DNSRecord {
 	}
 }
 
-func (c *Client) AddDNSA(domain, host, address string, ttl int64) error {
+func (c *Client) AddDNSA(domain, host, address string, ttl int64, six bool) error {
 	var err error
 	u, err := url.Parse(c.URL)
 	if err != nil {
 		return err
 	}
 
-	u.Path = "api/dns/manage/add-ipv4-record.json"
+	if six {
+		u.Path = "api/dns/manage/add-ipv6-record.json"
+	} else {
+		u.Path = "api/dns/manage/add-ipv4-record.json"
+	}
 	q := u.Query()
 	q.Set("auth-userid", c.ID)
 	q.Set("api-key", c.Key)
@@ -171,14 +175,18 @@ func (c *Client) ChangeDNSRecord(rec *DNSRecord) error {
 	return nil
 }
 
-func (c *Client) DeleteDNSRecord(domain, host, address string) error {
+func (c *Client) DeleteDNSRecord(domain, host, address string, six bool) error {
 	var err error
 	u, err := url.Parse(c.URL)
 	if err != nil {
 		return err
 	}
 
-	u.Path = "api/dns/manage/delete-ipv4-record.json"
+	if six {
+		u.Path = "api/dns/manage/delete-ipv6-record.json"
+	} else {
+		u.Path = "api/dns/manage/delete-ipv4-record.json"
+	}
 	q := u.Query()
 	q.Set("auth-userid", c.ID)
 	q.Set("api-key", c.Key)

@@ -17,7 +17,14 @@ func (cmd *DNSDeleteCmd) Execute(args []string) error {
 	var err error
 	switch cmd.Args.Type {
 	case "a", "A":
-		err = client.DeleteDNSRecord(cmd.Args.Domain, cmd.Args.Host, cmd.Args.Address)
+		err = client.DeleteDNSRecord(cmd.Args.Domain, cmd.Args.Host, cmd.Args.Address, false)
+	case "aaaa", "AAAA":
+		err = client.DeleteDNSRecord(cmd.Args.Domain, cmd.Args.Host, cmd.Args.Address, true)
+	case "cname", "CNAME":
+	case "mx", "MX":
+	case "ns", "NS":
+	case "txt", "TXT":
+	case "srv", "SRV":
 	default:
 		return errors.New("Unknown record type '" + cmd.Args.Type + "'")
 	}
