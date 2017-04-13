@@ -1,7 +1,10 @@
 package lbapi
 
-import "net/url"
-import "fmt"
+import (
+	"errors"
+	"fmt"
+	"net/url"
+)
 
 // DNSRecordList is what client software gets.
 // It's not guaranteed to hold all records, so check Count against MaxRecords.
@@ -124,4 +127,77 @@ func parseDNS(in interface{}) *DNSRecord {
 		TTL:     atoi(data["timetolive"].(string)),
 		Status:  data["status"].(string),
 	}
+}
+
+func (c *Client) AddDNSA(domain, host, address string, ttl int64) error {
+	var err error
+	u, err := url.Parse(c.URL)
+	if err != nil {
+		return err
+	}
+
+	u.Path = "api/dns/manage/add-ipv4-record.json"
+	q := u.Query()
+	q.Set("auth-userid", c.ID)
+	q.Set("api-key", c.Key)
+	q.Set("domain-name", domain)
+	if host != "" {
+		q.Set("host", host)
+	}
+	q.Set("value", address)
+	if ttl == 0 || ttl < 7200 {
+		ttl = 7200
+	}
+	q.Set("ttl", fmt.Sprintf("%d", ttl))
+	if host != "" {
+		q.Set("host", host)
+	}
+	u.RawQuery = q.Encode()
+
+	res, err := c.postResponse(u.String())
+	if err != nil {
+		return err
+	}
+
+	list := *res
+	if list["status"] == "ERROR" {
+		return errors.New((fmt.Sprintf("%v", list["message"])))
+	}
+
+	return nil
+}
+
+func (c *Client) ChangeDNSRecord(rec *DNSRecord) error {
+	return nil
+}
+
+func (c *Client) DeleteDNSRecord(domain, host, address string) error {
+	var err error
+	u, err := url.Parse(c.URL)
+	if err != nil {
+		return err
+	}
+
+	u.Path = "api/dns/manage/delete-ipv4-record.json"
+	q := u.Query()
+	q.Set("auth-userid", c.ID)
+	q.Set("api-key", c.Key)
+	q.Set("domain-name", domain)
+	q.Set("value", address)
+	if host != "" {
+		q.Set("host", host)
+	}
+	u.RawQuery = q.Encode()
+
+	res, err := c.postResponse(u.String())
+	if err != nil {
+		return err
+	}
+
+	list := *res
+	if list["status"] == "ERROR" {
+		return errors.New((fmt.Sprintf("%v", list["message"])))
+	}
+
+	return nil
 }
