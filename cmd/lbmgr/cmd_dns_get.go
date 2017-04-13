@@ -27,7 +27,7 @@ func (cmd *DNSGetCmd) Execute(args []string) error {
 	page := 1
 	for {
 		var recs *lbapi.DNSRecordList
-		recs, err = client.GetDNSRecords(cmd.Args.Domain, t, cmd.Args.Host, page)
+		recs, err = client.GetDNSRecords(cmd.Args.Domain, cmd.Args.Host, t, page)
 		if err != nil {
 			return err
 		}

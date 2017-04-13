@@ -69,7 +69,7 @@ func (c *Client) DNSActive(id string) bool {
 
 // GetDNSRecords gets the first up to 50 records of one type for a domain.
 // Pass a higher page number to get the next set of up to 50.
-func (c *Client) GetDNSRecords(domain, t, host string, page int) (*DNSRecordList, error) {
+func (c *Client) GetDNSRecords(domain, host, t string, page int) (*DNSRecordList, error) {
 	var err error
 	u, err := url.Parse(c.URL)
 	if err != nil {
