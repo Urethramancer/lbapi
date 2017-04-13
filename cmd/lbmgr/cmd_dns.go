@@ -6,6 +6,11 @@ type DNSCmd struct {
 	Get    DNSGetCmd    `command:"get" description:"Get a DNS record."`
 }
 
+type DNSArgs struct {
+	Domain string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
+	Type   string `required:"true" positional-arg-name:"TYPE" description:"Record type."`
+}
+
 type DNSStatusCmd struct {
 	Verbose bool `short:"v" long:"verbose" description:"Show detailed information."`
 	Args    struct {

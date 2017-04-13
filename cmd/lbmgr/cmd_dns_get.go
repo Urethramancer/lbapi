@@ -10,10 +10,7 @@ import (
 )
 
 type DNSGetCmd struct {
-	Args struct {
-		Domain string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
-		Type   string `required:"true" positional-arg-name:"TYPE" description:"Record type."`
-	} `positional-args:"true"`
+	Args DNSArgs `positional-args:"true"`
 }
 
 func (cmd *DNSGetCmd) Execute(args []string) error {
