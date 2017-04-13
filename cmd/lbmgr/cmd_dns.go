@@ -4,7 +4,7 @@ package main
 type DNSCmd struct {
 	Status DNSStatusCmd `command:"status" description:"Shows DNS management status for a domain by order ID, and activates it if not yet enabled."`
 	Get    DNSGetCmd    `command:"get" description:"Get a DNS record."`
-	Add    DNSAddCmd    `command:"get" description:"Add a DNS record."`
+	Add    DNSAddCmd    `command:"add" description:"Add a DNS record."`
 	Delete DNSDeleteCmd `command:"delete" description:"Delete a DNS record." alias:"del" alias:"rm"`
 	Change DNSChangeCmd `command:"change" description:"Edit a DNS record." alias:"ch" alias:"edit" alias:"modify" alias:"mod"`
 }
@@ -13,6 +13,7 @@ type DNSCmd struct {
 type DNSArgs struct {
 	Domain string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
 	Type   string `required:"true" positional-arg-name:"TYPE" description:"Record type."`
+	Host   string `positional-arg-name:"HOST" description:"Host name."`
 }
 
 // DNSStatusCmd arguments.

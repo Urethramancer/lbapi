@@ -18,7 +18,7 @@ type DNSGetCmd struct {
 func (cmd *DNSGetCmd) Execute(args []string) error {
 	t := getRecordType(cmd.Args.Type)
 	if t == "" {
-		return errors.New("unknown record type '" + cmd.Args.Type + "'")
+		return errors.New("Unknown record type '" + cmd.Args.Type + "'")
 	}
 
 	var err error
@@ -27,9 +27,13 @@ func (cmd *DNSGetCmd) Execute(args []string) error {
 	page := 1
 	for {
 		var recs *lbapi.DNSRecordList
-		recs, err = client.GetDNSRecords(cmd.Args.Domain, t, page)
+		recs, err = client.GetDNSRecords(cmd.Args.Domain, t, cmd.Args.Host, page)
 		if err != nil {
 			return err
+		}
+
+		if recs.Count == 0 {
+			return errors.New("No records matching arguments.")
 		}
 
 		everything = append(everything, recs.Records...)
