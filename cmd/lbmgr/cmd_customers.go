@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-
 	"sort"
 
 	"github.com/Urethramancer/lbapi"
@@ -34,7 +33,7 @@ func (cmd *CustomerListCmd) Execute(args []string) error {
 
 		everybody = append(everybody, cl.Customers...)
 		page++
-		count += cl.Records
+		count += cl.Count
 		if count >= cl.MaxRecords {
 			break
 		}

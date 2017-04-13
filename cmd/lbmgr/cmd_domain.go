@@ -50,7 +50,7 @@ func (cmd *DomainForCmd) Execute(args []string) error {
 			everything = append(everything, dl.Domains...)
 		}
 		page++
-		count += dl.Records
+		count += dl.Count
 		if count >= dl.MaxRecords {
 			break
 		}
