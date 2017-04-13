@@ -1,3 +1,5 @@
+// Utility functions used while parsing the somewhat convoluted
+// JSON returned by LogicBoxes API calls.
 package lbapi
 
 import (

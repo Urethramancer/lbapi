@@ -3,6 +3,8 @@ package lbapi
 import "net/url"
 import "fmt"
 
+// DNSRecordList is what client software gets.
+// It's not guaranteed to hold all records, so check Count against MaxRecords.
 type DNSRecordList struct {
 	// Count of records returned in this structure.
 	Count int64
@@ -12,28 +14,36 @@ type DNSRecordList struct {
 	Records DNSRecords
 }
 
+// DNSRecords is a special sortable structure.
 type DNSRecords []*DNSRecord
 
+// Len reports the number of records.
 func (slice DNSRecords) Len() int {
 	return len(slice)
 }
 
+// Less checks if host name i comes before host name j.
 func (slice DNSRecords) Less(i, j int) bool {
 	return slice[i].Host < slice[j].Host
 }
 
+// Swap does what it says.
 func (slice DNSRecords) Swap(i, j int) {
 	slice[i], slice[j] = slice[j], slice[i]
 }
 
+// DNSRecord is an individual record.
 type DNSRecord struct {
-	TTL     int64
-	Host    string
-	Type    string
-	Address string
-	Status  string
+	TTL     int64  // 7200 is a safe default
+	Host    string // subdomain or @ for the primary domain
+	Type    string // A, AAAA, MX etc.
+	Address string // IPv4 or IPv6 address
+	Status  string // Normally "Active"
 }
 
+// DNSActive reports if an order has activated DNS yet.
+// This is normally on by default, but will be activated when
+// this is called otherwise.
 func (c *Client) DNSActive(id string) bool {
 	var err error
 	u, err := url.Parse(c.URL)
@@ -57,6 +67,8 @@ func (c *Client) DNSActive(id string) bool {
 	return list["status"] == "Success"
 }
 
+// GetDNSRecords gets the first up to 50 records of one type for a domain.
+// Pass a higher page number to get the next set of up to 50.
 func (c *Client) GetDNSRecords(domain, t string, page int) (*DNSRecordList, error) {
 	var err error
 	u, err := url.Parse(c.URL)

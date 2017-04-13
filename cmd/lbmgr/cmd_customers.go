@@ -15,10 +15,12 @@ type CustomerCmd struct {
 	Search CustomerSearchCmd `command:"search" description:"Search for customers."`
 }
 
+// CustomerListCmd arguments.
 type CustomerListCmd struct {
 	Verbose bool `short:"v" long:"verbose" description:"Show detailed information."`
 }
 
+// Execute the list command.
 func (cmd *CustomerListCmd) Execute(args []string) error {
 	var cl *lbapi.CustomerList
 	var err error
@@ -62,18 +64,22 @@ func (cmd *CustomerListCmd) Execute(args []string) error {
 	return nil
 }
 
+// CustomerShowCmd arguments.
 type CustomerShowCmd struct {
 	Verbose bool `short:"v" long:"verbose" description:"Show detailed information."`
 }
 
+// Execute the show command.
 func (cmd *CustomerShowCmd) Execute(args []string) error {
 	return nil
 }
 
+// CustomerSearchCmd arguments.
 type CustomerSearchCmd struct {
 	Verbose bool `short:"v" long:"verbose" description:"Show detailed information."`
 }
 
+// Execute the search command.
 func (cmd *CustomerSearchCmd) Execute(args []string) error {
 	return nil
 }

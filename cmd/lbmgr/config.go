@@ -9,6 +9,8 @@ import (
 	"github.com/Urethramancer/lbapi"
 )
 
+// Config holds the reseller settings, and optionally, the
+// URL of a different API to be used.
 type Config struct {
 	API string `json:"api,omitempty"`
 	ID  string `json:"resellerid"`
@@ -49,7 +51,10 @@ func loadConfig() bool {
 			os.Exit(2)
 		}
 
-		f.WriteString("\n")
+		_, err = f.WriteString("\n")
+		if err != nil {
+			os.Exit(2)
+		}
 	}
 
 	data, err := ioutil.ReadFile(cfgpath)

@@ -14,14 +14,17 @@ type DomainCmd struct {
 	For  DomainForCmd  `command:"for" description:"List all domains belonging to a specified customer ID."`
 }
 
+// DomainListCmd arguments.
 type DomainListCmd struct {
 	Verbose bool `short:"v" long:"verbose" description:"Show detailed information."`
 }
 
+// Execute the list command.
 func (cmd *DomainListCmd) Execute(args []string) error {
 	return nil
 }
 
+// DomainForCmd arguments.
 type DomainForCmd struct {
 	Verbose bool `short:"v" long:"verbose" description:"Show detailed information."`
 	Short   bool `short:"s" long:"short" description:"List only the domain names, one per line. Overrides -v."`
@@ -31,6 +34,7 @@ type DomainForCmd struct {
 	} `positional-args:"true"`
 }
 
+// Execute the "show domains for" command.
 func (cmd *DomainForCmd) Execute(args []string) error {
 	var dl *lbapi.DomainList
 	var err error

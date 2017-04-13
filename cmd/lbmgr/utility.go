@@ -9,13 +9,6 @@ func pr(f string, v ...interface{}) {
 	fmt.Printf(f+"\n", v...)
 }
 
-func qpr(f string, v ...interface{}) {
-	// if opts.Quiet {
-	// return
-	// }
-	fmt.Printf(f+"\n", v...)
-}
-
 func exists(path string) bool {
 	_, err := os.Stat(path)
 	return err == nil

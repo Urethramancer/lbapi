@@ -9,28 +9,15 @@ import (
 	"github.com/ryanuber/columnize"
 )
 
+// DNSGetCmd arguments.
 type DNSGetCmd struct {
 	Args DNSArgs `positional-args:"true"`
 }
 
+// Execute DNS get command.
 func (cmd *DNSGetCmd) Execute(args []string) error {
-	t := ""
-	switch cmd.Args.Type {
-	case "a", "A":
-		t = "A"
-	case "mx", "MX":
-		t = "MX"
-	case "cname", "CNAME":
-		t = "CNAME"
-	case "txt", "TXT":
-		t = "TXT"
-	case "ns", "NS":
-		t = "NS"
-	case "srv", "SRV":
-		t = "SRV"
-	case "aaaa", "AAAA":
-		t = "AAAA"
-	default:
+	t := getRecordType(cmd.Args.Type)
+	if t == "" {
 		return errors.New("unknown record type '" + cmd.Args.Type + "'")
 	}
 

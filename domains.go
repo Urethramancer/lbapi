@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+// DomainList is what client software gets.
+// It's not guaranteed to hold all records, so check Count against MaxRecords.
 type DomainList struct {
 	// Count of records returned in this structure.
 	Count int64
@@ -15,33 +17,43 @@ type DomainList struct {
 	Domains Domains
 }
 
+// Domains is a sortable list of domains by order ID.
 type Domains []*Domain
+
+// DomainsByName uses the name instead.
 type DomainsByName []*Domain
 
+// Len is the number of domains.
 func (slice Domains) Len() int {
 	return len(slice)
 }
 
+// Less compares order IDs for sorting.
 func (slice Domains) Less(i, j int) bool {
 	return slice[i].OrderID < slice[j].OrderID
 }
 
+// Swap does just that.
 func (slice Domains) Swap(i, j int) {
 	slice[i], slice[j] = slice[j], slice[i]
 }
 
+// Len is the number of domains.
 func (slice DomainsByName) Len() int {
 	return len(slice)
 }
 
+// Less compares domain names for sorting.
 func (slice DomainsByName) Less(i, j int) bool {
 	return slice[i].Description < slice[j].Description
 }
 
+// Swap does just that.
 func (slice DomainsByName) Swap(i, j int) {
 	slice[i], slice[j] = slice[j], slice[i]
 }
 
+// Domain is the parsed structure from the messy JSON returned by LogicBoxes.
 type Domain struct {
 	Endtime      time.Time
 	CreationTime time.Time
@@ -64,7 +76,7 @@ type Domain struct {
 }
 
 // DomainsFor customer, starting on a specified page.
-// Up to 500 records are returned. Compare Records and MaxRecords to tell
+// Up to 500 records are returned. Compare Count and MaxRecords to tell
 // if another page exists.
 func (c *Client) DomainsFor(customer string, page int) (*DomainList, error) {
 	var err error

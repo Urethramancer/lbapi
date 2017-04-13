@@ -5,6 +5,8 @@ import (
 	"net/url"
 )
 
+// CustomerList is what client software gets.
+// It's not guaranteed to hold all records, so check Count against MaxRecords.
 type CustomerList struct {
 	// Count of records returned in this structure.
 	Count int64

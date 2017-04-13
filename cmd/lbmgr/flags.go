@@ -10,6 +10,7 @@ const (
 	program = "lbmgr"
 )
 
+// Version is filled in from git tags if using the supplied build script.
 var Version = "undefined"
 
 var opt struct {
