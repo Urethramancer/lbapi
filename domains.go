@@ -7,8 +7,8 @@ import (
 )
 
 type DomainList struct {
-	// Records returned in this structure.
-	Records int64
+	// Count of records returned in this structure.
+	Count int64
 	// MaxRecords can be used to calculate pagination.
 	MaxRecords int64
 	// Domains for the specified search query.
@@ -92,8 +92,8 @@ func (c *Client) DomainsFor(customer string, page int) (*DomainList, error) {
 
 	list := *res
 	dl := DomainList{
-		Records:    atoi(list["recsonpage"].(string)),
-		MaxRecords: atoi(list["recsindb"].(string)),
+		Count:      atoi(fmt.Sprintf("%v", list["recsonpage"])),
+		MaxRecords: atoi(fmt.Sprintf("%v", list["recsindb"])),
 	}
 	delete(list, "recsonpage")
 	delete(list, "recsindb")

@@ -6,8 +6,8 @@ import (
 )
 
 type CustomerList struct {
-	// Records returned in this structure.
-	Records int64
+	// Count of records returned in this structure.
+	Count int64
 	// MaxRecords is the total available for this query.
 	MaxRecords int64
 	// Domains for the specified search query.
@@ -66,8 +66,8 @@ func (c *Client) Customers(page int) (*CustomerList, error) {
 
 	list := *res
 	cl := CustomerList{
-		Records:    atoi(list["recsonpage"].(string)),
-		MaxRecords: atoi(list["recsindb"].(string)),
+		Count:      atoi(fmt.Sprintf("%v", list["recsonpage"])),
+		MaxRecords: atoi(fmt.Sprintf("%v", list["recsindb"])),
 	}
 	delete(list, "recsonpage")
 	delete(list, "recsindb")
