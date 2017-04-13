@@ -1,4 +1,4 @@
-# LogicBoxes API tools
+# LogicBoxes API tools [![Build Status](https://travis-ci.org/Urethramancer/lbapi.svg?branch=master)](https://travis-ci.org/Urethramancer/lbapi)
 SDK and tools for the LogicBoxes API used by ResellerClub and other domain registrars.
 
 ## Who is it for?
