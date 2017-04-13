@@ -14,8 +14,9 @@ var Version = "undefined"
 
 var opt struct {
 	Ver      VersionCmd  `command:"version" description:"Print program version and exit." alias:"ver"`
-	Customer CustomerCmd `command:"customer" description:"Manage and retrieve user data." alias:"cust"`
-	Domain   DomainCmd   `command:"domain" description:"Manage and retrieve domain data." alias:"dom"`
+	Customer CustomerCmd `command:"customer" description:"Manage user data." alias:"cust"`
+	Domain   DomainCmd   `command:"domain" description:"Manage domain order/status data." alias:"dom"`
+	DNS      DNSCmd      `command:"dns" description:"Manage DNS for domains."`
 }
 
 func parseFlags() {
