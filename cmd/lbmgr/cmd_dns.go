@@ -28,7 +28,7 @@ type DNSAddArgsPri struct {
 
 type DNSChangeArgs struct {
 	Domain string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
-	Old    string `required:"true" positional-arg-name:"OLDIP" description:"Current IP address."`
+	Old    string `required:"true" positional-arg-name:"OLDIP" description:"IP address to change from."`
 	New    string `required:"true" positional-arg-name:"NEWIP" description:"New IP address."`
 	Host   string `positional-arg-name:"HOST" description:"Host name."`
 	TTL    int64  `positional-arg-name:"TTL" description:"Time to live (seconds)."`
