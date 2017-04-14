@@ -29,8 +29,8 @@ type DNSAddArgsPri struct {
 // DNSAddArgs are the default arguments for some record-editing sub-commands.
 type DNSChangeArgs struct {
 	Domain string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
-	Old    string `required:"true" positional-arg-name:"OLD VALUE" description:"IP address/name to change from."`
-	New    string `required:"true" positional-arg-name:"NEW VALUE" description:"New IP address/name."`
+	Old    string `required:"true" positional-arg-name:"OLD VALUE" description:"IP address/name/data to change from."`
+	New    string `required:"true" positional-arg-name:"NEW VALUE" description:"New IP address/name/data."`
 	Host   string `positional-arg-name:"HOST" description:"Host name."`
 	TTL    int64  `positional-arg-name:"TTL" description:"Time to live (seconds)."`
 }
