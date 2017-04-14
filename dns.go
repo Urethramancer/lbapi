@@ -1,7 +1,6 @@
 package lbapi
 
 import (
-	"errors"
 	"fmt"
 	"net/url"
 )
@@ -37,11 +36,12 @@ func (slice DNSRecords) Swap(i, j int) {
 
 // DNSRecord is an individual record.
 type DNSRecord struct {
-	TTL     int64  // 7200 is a safe default
-	Host    string // subdomain or @ for the primary domain
-	Type    string // A, AAAA, MX etc.
-	Address string // IPv4 or IPv6 address
-	Status  string // Normally "Active"
+	TTL      int64  // 7200 is a safe default
+	Priority int64  // Only available for some record types
+	Host     string // subdomain or @ for the primary domain
+	Type     string // A, AAAA, MX etc.
+	Address  string // IPv4 or IPv6 address
+	Status   string // Normally "Active"
 }
 
 // DNSActive reports if an order has activated DNS yet.
@@ -72,7 +72,7 @@ func (c *Client) DNSActive(id string) bool {
 
 // GetDNSRecords gets the first up to 50 records of one type for a domain.
 // Pass a higher page number to get the next set of up to 50.
-func (c *Client) GetDNSRecords(domain, host, t string, page int) (*DNSRecordList, error) {
+func (c *Client) GetDNSRecords(domain, value, host, t string, page int) (*DNSRecordList, error) {
 	var err error
 	u, err := url.Parse(c.URL)
 	if err != nil {
@@ -93,6 +93,9 @@ func (c *Client) GetDNSRecords(domain, host, t string, page int) (*DNSRecordList
 	q.Set("page-no", fmt.Sprintf("%d", page))
 	if host != "" {
 		q.Set("host", host)
+	}
+	if value != "" {
+		q.Set("value", value)
 	}
 	u.RawQuery = q.Encode()
 
@@ -121,91 +124,11 @@ func (c *Client) GetDNSRecords(domain, host, t string, page int) (*DNSRecordList
 func parseDNS(in interface{}) *DNSRecord {
 	data := in.(map[string]interface{})
 	return &DNSRecord{
-		Host:    data["host"].(string),
-		Type:    data["type"].(string),
-		Address: data["value"].(string),
-		TTL:     atoi(data["timetolive"].(string)),
-		Status:  data["status"].(string),
+		Host:     data["host"].(string),
+		Type:     data["type"].(string),
+		Address:  data["value"].(string),
+		TTL:      atoi(data["timetolive"].(string)),
+		Priority: atoi(data["priority"].(string)),
+		Status:   data["status"].(string),
 	}
-}
-
-func (c *Client) AddDNSA(domain, host, address string, ttl int64, six bool) error {
-	var err error
-	u, err := url.Parse(c.URL)
-	if err != nil {
-		return err
-	}
-
-	if six {
-		u.Path = "api/dns/manage/add-ipv6-record.json"
-	} else {
-		u.Path = "api/dns/manage/add-ipv4-record.json"
-	}
-	q := u.Query()
-	q.Set("auth-userid", c.ID)
-	q.Set("api-key", c.Key)
-	q.Set("domain-name", domain)
-	if host != "" {
-		q.Set("host", host)
-	}
-	q.Set("value", address)
-	if ttl == 0 || ttl < 7200 {
-		ttl = 7200
-	}
-	q.Set("ttl", fmt.Sprintf("%d", ttl))
-	if host != "" {
-		q.Set("host", host)
-	}
-	u.RawQuery = q.Encode()
-
-	res, err := c.postResponse(u.String())
-	if err != nil {
-		return err
-	}
-
-	list := *res
-	if list["status"] == "ERROR" {
-		return errors.New((fmt.Sprintf("%v", list["message"])))
-	}
-
-	return nil
-}
-
-func (c *Client) ChangeDNSRecord(rec *DNSRecord) error {
-	return nil
-}
-
-func (c *Client) DeleteDNSRecord(domain, host, address string, six bool) error {
-	var err error
-	u, err := url.Parse(c.URL)
-	if err != nil {
-		return err
-	}
-
-	if six {
-		u.Path = "api/dns/manage/delete-ipv6-record.json"
-	} else {
-		u.Path = "api/dns/manage/delete-ipv4-record.json"
-	}
-	q := u.Query()
-	q.Set("auth-userid", c.ID)
-	q.Set("api-key", c.Key)
-	q.Set("domain-name", domain)
-	q.Set("value", address)
-	if host != "" {
-		q.Set("host", host)
-	}
-	u.RawQuery = q.Encode()
-
-	res, err := c.postResponse(u.String())
-	if err != nil {
-		return err
-	}
-
-	list := *res
-	if list["status"] == "ERROR" {
-		return errors.New((fmt.Sprintf("%v", list["message"])))
-	}
-
-	return nil
 }

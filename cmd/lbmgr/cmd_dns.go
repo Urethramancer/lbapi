@@ -9,11 +9,31 @@ type DNSCmd struct {
 	Change DNSChangeCmd `command:"change" description:"Edit a DNS record." alias:"ch" alias:"edit" alias:"modify" alias:"mod"`
 }
 
-// DNSArgs are the default arguments of most DNS sub-commands.
-type DNSArgs struct {
+// DNSAddArgs are the default arguments for record-adding sub-commands.
+type DNSAddArgs struct {
 	Domain string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
-	Type   string `required:"true" positional-arg-name:"TYPE" description:"Record type."`
+	Value  string `required:"true" positional-arg-name:"VALUE" description:"IP address, or FQDN for CNAME."`
 	Host   string `positional-arg-name:"HOST" description:"Host name."`
+	TTL    int64  `positional-arg-name:"TTL" description:"Time to live (seconds)."`
+}
+
+// DNSGetArgs are the default arguments for record-fetching sub-commands.
+type DNSGetArgs struct {
+	Domain string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
+	Value  string `positional-arg-name:"VALUE" description:"IP address, or FQDN for CNAME."`
+	Host   string `positional-arg-name:"HOST" description:"Host name."`
+}
+
+type DNSDeleteArgs struct {
+	Domain string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
+	Value  string `required:"true" positional-arg-name:"VALUE" description:"IP address, or FQDN for CNAME/MX."`
+	Host   string `positional-arg-name:"HOST" description:"Host name."`
+}
+
+type DNSDeleteArgsAll struct {
+	Domain string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
+	Value  string `required:"true" positional-arg-name:"VALUE" description:"IP address, or FQDN for CNAME/MX."`
+	Host   string `required:"true" positional-arg-name:"HOST" description:"Host name."`
 }
 
 // DNSStatusCmd arguments.
@@ -31,25 +51,4 @@ func (cmd *DNSStatusCmd) Execute(args []string) error {
 		pr("Non-existent or not yet activated.")
 	}
 	return nil
-}
-
-func getRecordType(in string) string {
-	switch in {
-	case "a", "A":
-		return "A"
-	case "mx", "MX":
-		return "MX"
-	case "cname", "CNAME":
-		return "CNAME"
-	case "txt", "TXT":
-		return "TXT"
-	case "ns", "NS":
-		return "NS"
-	case "srv", "SRV":
-		return "SRV"
-	case "aaaa", "AAAA":
-		return "AAAA"
-	default:
-		return ""
-	}
 }

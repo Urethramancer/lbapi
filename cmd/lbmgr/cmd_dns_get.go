@@ -11,23 +11,89 @@ import (
 
 // DNSGetCmd arguments.
 type DNSGetCmd struct {
-	Args DNSArgs `positional-args:"true"`
+	A     DNSGetACmd     `command:"a" description:"Add an A record." alias:"A"`
+	AAAA  DNSGetAAAACmd  `command:"aaaa" description:"Get an AAAA record." alias:"AAAA"`
+	CNAME DNSGetCNAMECmd `command:"cname" description:"Get a CNAME record." alias:"CNAME"`
+	MX    DNSGetMXCmd    `command:"mx" description:"Get an MX record." alias:"MX"`
+	NS    DNSGetNSCmd    `command:"ns" description:"Get an NS record." alias:"NS"`
+	TXT   DNSGetTXTCmd   `command:"txt" description:"Get a TXT record." alias:"TXT"`
+	SRV   DNSGetSRVCmd   `command:"srv" description:"Get a SRV record." alias:"SRV"`
+}
+
+// DNSGetACmd arguments.
+type DNSGetACmd struct {
+	Args DNSGetArgs `positional-args:"true"`
+}
+
+// Execute A record fetch.
+func (cmd *DNSGetACmd) Execute(args []string) error {
+	return getRecord(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, "A")
+}
+
+// DNSGetAAAACmd arguments.
+type DNSGetAAAACmd struct {
+	Args DNSGetArgs `positional-args:"true"`
+}
+
+// Execute AAAA record fetch.
+func (cmd *DNSGetAAAACmd) Execute(args []string) error {
+	return getRecord(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, "AAAA")
+}
+
+// DNSGetCNAMECmd arguments.
+type DNSGetCNAMECmd struct {
+	Args DNSGetArgs `positional-args:"true"`
+}
+
+func (cmd *DNSGetCNAMECmd) Execute(args []string) error {
+	return getRecord(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, "CNAME")
+}
+
+// DNSGetMXCmd arguments.
+type DNSGetMXCmd struct {
+	Args DNSGetArgs `positional-args:"true"`
+}
+
+func (cmd *DNSGetMXCmd) Execute(args []string) error {
+	return getRecord(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, "MX")
+}
+
+// DNSGetNSCmd arguments.
+type DNSGetNSCmd struct {
+	Args DNSGetArgs `positional-args:"true"`
+}
+
+func (cmd *DNSGetNSCmd) Execute(args []string) error {
+	return getRecord(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, "NS")
+}
+
+// DNSGetTXTCmd arguments.
+type DNSGetTXTCmd struct {
+	Args DNSGetArgs `positional-args:"true"`
+}
+
+func (cmd *DNSGetTXTCmd) Execute(args []string) error {
+	return getRecord(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, "TXT")
+}
+
+// DNSGetSRVCmd arguments.
+type DNSGetSRVCmd struct {
+	Args DNSGetArgs `positional-args:"true"`
+}
+
+func (cmd *DNSGetSRVCmd) Execute(args []string) error {
+	return getRecord(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, "SRV")
 }
 
 // Execute DNS get command.
-func (cmd *DNSGetCmd) Execute(args []string) error {
-	t := getRecordType(cmd.Args.Type)
-	if t == "" {
-		return errors.New("Unknown record type '" + cmd.Args.Type + "'")
-	}
-
+func getRecord(domain, value, host, t string) error {
 	var err error
 	var count int64
 	var everything lbapi.DNSRecords
 	page := 1
 	for {
 		var recs *lbapi.DNSRecordList
-		recs, err = client.GetDNSRecords(cmd.Args.Domain, cmd.Args.Host, t, page)
+		recs, err = client.GetDNSRecords(domain, host, value, t, page)
 		if err != nil {
 			return err
 		}
@@ -48,9 +114,23 @@ func (cmd *DNSGetCmd) Execute(args []string) error {
 	cc := columnize.DefaultConfig()
 	cc.Delim = "\t"
 	cc.Glue = "  "
-	s := []string{fmt.Sprintln("Host\tAddress\tType\tTTL\tStatus")}
+	var s []string
+	var pri bool
+	switch t {
+	case "mx", "MX", "srv", "SRV":
+		pri = true
+	}
+	if pri {
+		s = []string{fmt.Sprintln("Host\tAddress\tType\tTTL\tPriority\tStatus")}
+	} else {
+		s = []string{fmt.Sprintln("Host\tAddress\tType\tTTL\tStatus")}
+	}
 	for _, r := range everything {
-		s = append(s, fmt.Sprintf("%s\t%s\t%s\t%d\t%s", r.Host, r.Address, r.Type, r.TTL, r.Status))
+		if pri {
+			s = append(s, fmt.Sprintf("%s\t%s\t%s\t%d\t%d\t%s", r.Host, r.Address, r.Type, r.TTL, r.Priority, r.Status))
+		} else {
+			s = append(s, fmt.Sprintf("%s\t%s\t%s\t%d\t%s", r.Host, r.Address, r.Type, r.TTL, r.Status))
+		}
 	}
 	res := columnize.Format(s, cc)
 	pr(res)

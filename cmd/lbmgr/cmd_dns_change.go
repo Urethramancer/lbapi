@@ -2,7 +2,7 @@ package main
 
 // DNSChangeCmd arguments.
 type DNSChangeCmd struct {
-	Args DNSArgs `positional-args:"true"`
+	Args DNSAddArgs `positional-args:"true"`
 }
 
 // Execute the change command.
