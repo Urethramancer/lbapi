@@ -26,6 +26,14 @@ type DNSAddArgsPri struct {
 	Priority uint   `positional-arg-name:"PRIORITY" description:"Priority of record. Default is 0 (most important)."`
 }
 
+type DNSChangeArgs struct {
+	Domain string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
+	Old    string `required:"true" positional-arg-name:"OLDIP" description:"Current IP address."`
+	New    string `required:"true" positional-arg-name:"NEWIP" description:"New IP address."`
+	Host   string `positional-arg-name:"HOST" description:"Host name."`
+	TTL    int64  `positional-arg-name:"TTL" description:"Time to live (seconds)."`
+}
+
 // DNSGetArgs are the default arguments for record-fetching sub-commands.
 type DNSGetArgs struct {
 	Domain string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
