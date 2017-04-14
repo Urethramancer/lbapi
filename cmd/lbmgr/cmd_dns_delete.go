@@ -64,7 +64,7 @@ type DNSDeleteMXCmd struct {
 	Args DNSDeleteArgsAll `positional-args:"true"`
 }
 
-// DNSDeleteMXCmd deletes a MX record.
+// DNSDeleteMXCmd deletes an MX record.
 func (cmd *DNSDeleteMXCmd) Execute(args []string) error {
 	err := client.DeleteMX(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host)
 	if err != nil {
@@ -80,9 +80,31 @@ type DNSDeleteNSCmd struct {
 	Args DNSDeleteArgs `positional-args:"true"`
 }
 
+// DNSDeleteNSCmd deletes an NS record.
+func (cmd *DNSDeleteNSCmd) Execute(args []string) error {
+	err := client.DeleteNS(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host)
+	if err != nil {
+		return err
+	}
+
+	pr("Record deleted.")
+	return nil
+}
+
 // DNSDeleteTXTCmd arguments.
 type DNSDeleteTXTCmd struct {
 	Args DNSDeleteArgs `positional-args:"true"`
+}
+
+// DNSDeleteTXTCmd deletes a TXT record.
+func (cmd *DNSDeleteTXTCmd) Execute(args []string) error {
+	err := client.DeleteTXT(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host)
+	if err != nil {
+		return err
+	}
+
+	pr("Record deleted.")
+	return nil
 }
 
 // DNSDeleteSRVCmd arguments.
@@ -94,4 +116,15 @@ type DNSDeleteSRVCmd struct {
 		Port   int    `positional-arg-name:"PORT" description:"Port number of the service."`
 		Weight int    `positional-arg-name:"WEIGHT" description:"Weight of the service."`
 	} `positional-args:"true"`
+}
+
+// DNSDeleteSRVCmd deletes a SRV record.
+func (cmd *DNSDeleteSRVCmd) Execute(args []string) error {
+	err := client.DeleteSRV(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, cmd.Args.Port, cmd.Args.Weight)
+	if err != nil {
+		return err
+	}
+
+	pr("Record deleted.")
+	return nil
 }
