@@ -6,9 +6,9 @@ type DNSAddCmd struct {
 	AAAA  DNSAddAAAACmd  `command:"aaaa" description:"Add an AAAA record." alias:"AAAA"`
 	CNAME DNSAddCNAMECmd `command:"cname" description:"Add a CNAME record." alias:"CNAME"`
 	MX    DNSAddMXCmd    `command:"mx" description:"Add an MX record." alias:"MX"`
-	NS    DNSAddNSCmd    `command:"ns" description:"Get an NS record." alias:"NS"`
-	TXT   DNSAddTXTCmd   `command:"txt" description:"Get a TXT record." alias:"TXT"`
-	SRV   DNSAddSRVCmd   `command:"srv" description:"Get a SRV record." alias:"SRV"`
+	NS    DNSAddNSCmd    `command:"ns" description:"Add an NS record." alias:"NS"`
+	TXT   DNSAddTXTCmd   `command:"txt" description:"Add a TXT record." alias:"TXT"`
+	SRV   DNSAddSRVCmd   `command:"srv" description:"Add a SRV record." alias:"SRV"`
 }
 
 // DNSAddACmd arguments.
