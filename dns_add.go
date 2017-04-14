@@ -48,9 +48,7 @@ func (c *Client) AddSRV(domain, value, host string, ttl int64, priority, port, w
 	q.Set("api-key", c.Key)
 	q.Set("domain-name", domain)
 	q.Set("value", value)
-	if host != "" {
-		q.Set("host", host)
-	}
+	q.Set("host", host)
 	if ttl == 0 || ttl < 7200 {
 		ttl = 7200
 	}
