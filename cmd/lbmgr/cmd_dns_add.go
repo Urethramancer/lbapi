@@ -112,7 +112,7 @@ type DNSAddSRVCmd struct {
 	Args struct {
 		Domain   string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
 		Value    string `required:"true" positional-arg-name:"VALUE" description:"IP address, or FQDN for CNAME."`
-		Host     string `positional-arg-name:"HOST" description:"Host name."`
+		Host     string `required:"true" positional-arg-name:"HOST" description:"A fully qualified service name in the form '_<service name>._<protocol>.<domain.tld>'."`
 		TTL      int64  `positional-arg-name:"TTL" description:"Time to live (seconds)."`
 		Priority uint   `positional-arg-name:"PRIORITY" description:"Priority of record. Default is 0 (most important)."`
 		Port     uint   `positional-arg-name:"PORT" description:"Port number of the service."`
