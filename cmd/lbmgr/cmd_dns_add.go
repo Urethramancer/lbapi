@@ -61,37 +61,49 @@ func (cmd *DNSAddCNAMECmd) Execute(args []string) error {
 
 // DNSAddMXCmd arguments.
 type DNSAddMXCmd struct {
-	Args struct {
-		Domain   string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
-		Value    string `required:"true" positional-arg-name:"VALUE" description:"IP address, or FQDN for CNAME."`
-		Host     string `positional-arg-name:"HOST" description:"Host name."`
-		TTL      int64  `positional-arg-name:"TTL" description:"Time to live (seconds)."`
-		Priority uint   `positional-arg-name:"PRIORITY" description:"Priority of record - lower is more important. Default is 0."`
-	} `positional-args:"true"`
+	Args DNSAddArgsPri `positional-args:"true"`
 }
 
 // DNSAddMXCmd adds an MX record.
 func (cmd *DNSAddMXCmd) Execute(args []string) error {
-	return client.AddMX(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, cmd.Args.TTL, cmd.Args.Priority)
+	err := client.AddMX(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, cmd.Args.TTL, cmd.Args.Priority)
+	if err != nil {
+		return err
+	}
+
+	pr("Record added.")
+	return nil
 }
 
 // DNSAddNSCmd arguments.
 type DNSAddNSCmd struct {
-	Args DNSAddArgs `positional-args:"true"`
+	Args DNSAddArgsPri `positional-args:"true"`
 }
 
 // DNSAddNSCmd adds an NS record.
 func (cmd *DNSAddNSCmd) Execute(args []string) error {
+	err := client.AddNS(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, cmd.Args.TTL, cmd.Args.Priority)
+	if err != nil {
+		return err
+	}
+
+	pr("Record added.")
 	return nil
 }
 
 // DNSAddTXTCmd arguments.
 type DNSAddTXTCmd struct {
-	Args DNSAddArgs `positional-args:"true"`
+	Args DNSAddArgsPri `positional-args:"true"`
 }
 
 // DNSAddTXTCmd adds a TXT record.
 func (cmd *DNSAddTXTCmd) Execute(args []string) error {
+	err := client.AddTXT(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, cmd.Args.TTL, cmd.Args.Priority)
+	if err != nil {
+		return err
+	}
+
+	pr("Record added.")
 	return nil
 }
 
@@ -99,16 +111,22 @@ func (cmd *DNSAddTXTCmd) Execute(args []string) error {
 type DNSAddSRVCmd struct {
 	Args struct {
 		Domain   string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
-		Value    string `required:"true" positional-arg-name:"VALUE" description:"IP address, or FQDN for CNAME/MX etc."`
-		Host     string `required:"true" positional-arg-name:"HOST" description:"Host name."`
+		Value    string `required:"true" positional-arg-name:"VALUE" description:"IP address, or FQDN for CNAME."`
+		Host     string `positional-arg-name:"HOST" description:"Host name."`
 		TTL      int64  `positional-arg-name:"TTL" description:"Time to live (seconds)."`
-		Priority int    `positional-arg-name:"PRIORITY" description:"Priority of record - lower is more important. Default is 0."`
-		Port     int    `positional-arg-name:"PORT" description:"Port number of the service."`
-		Weight   int    `positional-arg-name:"WEIGHT" description:"Relative weight for records with the same priority."`
+		Priority uint   `positional-arg-name:"PRIORITY" description:"Priority of record. Default is 0 (most important)."`
+		Port     uint   `positional-arg-name:"PORT" description:"Port number of the service."`
+		Weight   uint   `positional-arg-name:"WEIGHT" description:"Relative weight for records with the same priority."`
 	} `positional-args:"true"`
 }
 
 // DNSAddSRVCmd adds a SRV record.
 func (cmd *DNSAddSRVCmd) Execute(args []string) error {
+	err := client.AddSRV(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, cmd.Args.TTL, cmd.Args.Priority, cmd.Args.Port, cmd.Args.Weight)
+	if err != nil {
+		return err
+	}
+
+	pr("Record added.")
 	return nil
 }

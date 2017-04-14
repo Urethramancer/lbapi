@@ -9,12 +9,21 @@ type DNSCmd struct {
 	Change DNSChangeCmd `command:"change" description:"Edit a DNS record." alias:"ch" alias:"edit" alias:"modify" alias:"mod"`
 }
 
-// DNSAddArgs are the default arguments for record-adding sub-commands.
+// DNSAddArgs are the default arguments for some record-adding sub-commands.
 type DNSAddArgs struct {
 	Domain string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
 	Value  string `required:"true" positional-arg-name:"VALUE" description:"IP address, or FQDN for CNAME."`
 	Host   string `positional-arg-name:"HOST" description:"Host name."`
 	TTL    int64  `positional-arg-name:"TTL" description:"Time to live (seconds)."`
+}
+
+// DNSAddArgsPri are the default arguments for record-adding sub-commands with priority.
+type DNSAddArgsPri struct {
+	Domain   string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
+	Value    string `required:"true" positional-arg-name:"VALUE" description:"IP address, or FQDN for CNAME."`
+	Host     string `positional-arg-name:"HOST" description:"Host name."`
+	TTL      int64  `positional-arg-name:"TTL" description:"Time to live (seconds)."`
+	Priority uint   `positional-arg-name:"PRIORITY" description:"Priority of record. Default is 0 (most important)."`
 }
 
 // DNSGetArgs are the default arguments for record-fetching sub-commands.
