@@ -6,7 +6,7 @@ import (
 	"net/url"
 )
 
-// ADDARecord adds A or AAAA records.
+// AddARecord adds A or AAAA records.
 func (c *Client) AddARecord(domain, address, host string, ttl int64, six bool) error {
 	if six {
 		return c.addRecord("api/dns/manage/add-ipv6-record.json", domain, address, host, ttl)
