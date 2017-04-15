@@ -70,8 +70,8 @@ func (c *Client) AddSRV(domain, value, host string, ttl int64, priority, port, w
 	}
 
 	list := *res
-	if list["status"] == "ERROR" {
-		return errors.New((fmt.Sprintf("%v", list["message"])))
+	if list["status"] != "Success" {
+		return errors.New("couldn't add SRV record - check that FQDN is correct")
 	}
 
 	return nil
