@@ -81,16 +81,6 @@ func (cmd *DNSGetTXTCmd) Execute(args []string) error {
 	return printRecord(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, "TXT")
 }
 
-// DNSGetSRVCmd arguments.
-type DNSGetSRVCmd struct {
-	Args DNSGetArgs `positional-args:"true"`
-}
-
-// Execute SRV record fetch.
-func (cmd *DNSGetSRVCmd) Execute(args []string) error {
-	return printRecord(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, "SRV")
-}
-
 // Print the requested records of a type.
 func printRecord(domain, value, host, t string) error {
 	var err error
@@ -117,9 +107,9 @@ func printRecord(domain, value, host, t string) error {
 	}
 	for _, r := range dns {
 		if pri {
-			s = append(s, fmt.Sprintf("%s\t%s\t%s\t%d\t%s\t%d", r.Host, r.Address, r.Type, r.TTL, r.Status, r.Priority))
+			s = append(s, fmt.Sprintf("%s\t%s\t%s\t%d\t%s\t%d", r.Host, r.Value, r.Type, r.TTL, r.Status, r.Priority))
 		} else {
-			s = append(s, fmt.Sprintf("%s\t%s\t%s\t%d\t%s", r.Host, r.Address, r.Type, r.TTL, r.Status))
+			s = append(s, fmt.Sprintf("%s\t%s\t%s\t%d\t%s", r.Host, r.Value, r.Type, r.TTL, r.Status))
 		}
 	}
 	res := columnize.Format(s, cc)
@@ -249,7 +239,7 @@ func (cmd *DNSGetAllCmd) Execute(args []string) error {
 
 		if len(a) > 0 {
 			for _, r := range a {
-				s = append(base1, fmt.Sprintf("%s\t%s\t%s\t%d\t%s", r.Host, r.Address, r.Type, r.TTL, r.Status))
+				s = append(base1, fmt.Sprintf("%s\t%s\t%d\t%s", r.Host, r.Value, r.TTL, r.Status))
 			}
 			res = columnize.Format(s, cc)
 			pr("A records:\n%s\n", res)
@@ -257,7 +247,7 @@ func (cmd *DNSGetAllCmd) Execute(args []string) error {
 
 		if len(aaaa) > 0 {
 			for _, r := range aaaa {
-				s = append(base1, fmt.Sprintf("%s\t%s\t%s\t%d\t%s", r.Host, r.Address, r.Type, r.TTL, r.Status))
+				s = append(base1, fmt.Sprintf("%s\t%s\t%d\t%s", r.Host, r.Value, r.TTL, r.Status))
 			}
 			res = columnize.Format(s, cc)
 			pr("AAAA records:\n%s\n", res)
@@ -265,7 +255,7 @@ func (cmd *DNSGetAllCmd) Execute(args []string) error {
 
 		if len(cname) > 0 {
 			for _, r := range cname {
-				s = append(base1, fmt.Sprintf("%s\t%s\t%s\t%d\t%s", r.Host, r.Address, r.Type, r.TTL, r.Status))
+				s = append(base1, fmt.Sprintf("%s\t%s\t%d\t%s", r.Host, r.Value, r.TTL, r.Status))
 			}
 			res = columnize.Format(s, cc)
 			pr("CNAME records:\n%s\n", res)
@@ -273,7 +263,7 @@ func (cmd *DNSGetAllCmd) Execute(args []string) error {
 
 		if len(mx) > 0 {
 			for _, r := range mx {
-				s = append(base2, fmt.Sprintf("%s\t%s\t%s\t%d\t%s\t%d", r.Host, r.Address, r.Type, r.TTL, r.Status, r.Priority))
+				s = append(base2, fmt.Sprintf("%s\t%s\t%d\t%s\t%d", r.Host, r.Value, r.TTL, r.Status, r.Priority))
 			}
 			res = columnize.Format(s, cc)
 			pr("MX records:\n%s\n", res)
@@ -281,7 +271,7 @@ func (cmd *DNSGetAllCmd) Execute(args []string) error {
 
 		if len(ns) > 0 {
 			for _, r := range ns {
-				s = append(base2, fmt.Sprintf("%s\t%s\t%s\t%d\t%s\t%d", r.Host, r.Address, r.Type, r.TTL, r.Status, r.Priority))
+				s = append(base2, fmt.Sprintf("%s\t%s\t%d\t%s\t%d", r.Host, r.Value, r.TTL, r.Status, r.Priority))
 			}
 			res = columnize.Format(s, cc)
 			pr("NS records:\n%s\n", res)
@@ -289,11 +279,48 @@ func (cmd *DNSGetAllCmd) Execute(args []string) error {
 
 		if len(txt) > 0 {
 			for _, r := range txt {
-				s = append(base1, fmt.Sprintf("%s\t%s\t%s\t%d\t%s", r.Host, r.Address, r.Type, r.TTL, r.Status))
+				s = append(base1, fmt.Sprintf("%s\t%s\t%d\t%s", r.Host, r.Value, r.TTL, r.Status))
+			}
+			res = columnize.Format(s, cc)
+			pr("TXT records:\n%s\n", res)
+		}
+
+		if len(txt) > 0 {
+			for _, r := range txt {
+				s = append(base1, fmt.Sprintf("%s\t%s\t%d\t%s", r.Host, r.Value, r.TTL, r.Status))
 			}
 			res = columnize.Format(s, cc)
 			pr("TXT records:\n%s\n", res)
 		}
 	}
+	return nil
+}
+
+// DNSGetSRVCmd arguments.
+type DNSGetSRVCmd struct {
+	Args DNSGetArgs `positional-args:"true"`
+}
+
+// Execute SRV record fetch.
+func (cmd *DNSGetSRVCmd) Execute(args []string) error {
+	srv, err := getRecords(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, "SRV")
+	if err != nil {
+		return err
+	}
+
+	if len(srv) == 0 {
+		return errors.New("no records found")
+	}
+
+	s := []string{fmt.Sprintln("Service name\tHost name\tPort\tWeight\tStatus")}
+	for _, r := range srv {
+		s = append(s, fmt.Sprintf("%s\t%s\t%d\t%d\t%s", r.Host, r.Value, r.Port, r.Weight, r.Status))
+	}
+
+	cc := columnize.DefaultConfig()
+	cc.Delim = "\t"
+	cc.Glue = "  "
+	res := columnize.Format(s, cc)
+	pr(res)
 	return nil
 }
