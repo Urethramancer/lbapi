@@ -113,8 +113,8 @@ type DNSDeleteSRVCmd struct {
 		Domain string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
 		Value  string `required:"true" positional-arg-name:"VALUE" description:"IP address, or FQDN for CNAME/MX etc."`
 		Host   string `required:"true" positional-arg-name:"HOST" description:"A fully qualified service name in the form '_<service name>._<protocol>.<domain.tld>'."`
-		Port   int    `positional-arg-name:"PORT" description:"Port number of the service."`
-		Weight int    `positional-arg-name:"WEIGHT" description:"Weight of the service."`
+		Port   int    `required:"true" positional-arg-name:"PORT" description:"Port number of the service."`
+		Weight int    `required:"true" positional-arg-name:"WEIGHT" description:"Weight of the service."`
 	} `positional-args:"true"`
 }
 
