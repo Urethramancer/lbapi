@@ -26,7 +26,7 @@ type DNSAddArgsPri struct {
 	Priority uint   `positional-arg-name:"PRIORITY" description:"Priority of record. Default is 0 (most important)."`
 }
 
-// DNSAddArgs are the default arguments for some record-editing sub-commands.
+// DNSChangeArgs are the default arguments for some record-editing sub-commands.
 type DNSChangeArgs struct {
 	Domain string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
 	Old    string `required:"true" positional-arg-name:"OLD VALUE" description:"IP address/name/data to change from."`
@@ -52,12 +52,14 @@ type DNSGetArgs struct {
 	Host   string `positional-arg-name:"HOST" description:"Host name."`
 }
 
+// DNSDeleteArgs are the default args for most record-deletion sub-commands.
 type DNSDeleteArgs struct {
 	Domain string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
 	Value  string `required:"true" positional-arg-name:"VALUE" description:"IP address, or FQDN for CNAME/MX."`
 	Host   string `positional-arg-name:"HOST" description:"Host name."`
 }
 
+// DNSDeleteArgsAll are default args for some special record-deletion sub-commands.
 type DNSDeleteArgsAll struct {
 	Domain string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
 	Value  string `required:"true" positional-arg-name:"VALUE" description:"IP address, or FQDN for CNAME/MX."`

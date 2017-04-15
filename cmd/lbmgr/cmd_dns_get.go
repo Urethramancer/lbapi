@@ -45,6 +45,7 @@ type DNSGetCNAMECmd struct {
 	Args DNSGetArgs `positional-args:"true"`
 }
 
+// Execute CNAME record fetch.
 func (cmd *DNSGetCNAMECmd) Execute(args []string) error {
 	return getRecord(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, "CNAME")
 }
@@ -54,6 +55,7 @@ type DNSGetMXCmd struct {
 	Args DNSGetArgs `positional-args:"true"`
 }
 
+// Execute MX record fetch.
 func (cmd *DNSGetMXCmd) Execute(args []string) error {
 	return getRecord(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, "MX")
 }
@@ -63,6 +65,7 @@ type DNSGetNSCmd struct {
 	Args DNSGetArgs `positional-args:"true"`
 }
 
+// Execute NS record fetch.
 func (cmd *DNSGetNSCmd) Execute(args []string) error {
 	return getRecord(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, "NS")
 }
@@ -72,6 +75,7 @@ type DNSGetTXTCmd struct {
 	Args DNSGetArgs `positional-args:"true"`
 }
 
+// Execute TXT record fetch.
 func (cmd *DNSGetTXTCmd) Execute(args []string) error {
 	return getRecord(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, "TXT")
 }
@@ -81,6 +85,7 @@ type DNSGetSRVCmd struct {
 	Args DNSGetArgs `positional-args:"true"`
 }
 
+// Execute SRV record fetch.
 func (cmd *DNSGetSRVCmd) Execute(args []string) error {
 	return getRecord(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, "SRV")
 }
@@ -99,7 +104,7 @@ func getRecord(domain, value, host, t string) error {
 		}
 
 		if recs.Count == 0 {
-			return errors.New("No records matching arguments.")
+			return errors.New("no records matching arguments")
 		}
 
 		everything = append(everything, recs.Records...)

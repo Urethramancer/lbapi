@@ -9,6 +9,7 @@ type DNSChangeCmd struct {
 	NS    DNSChangeNSCmd    `command:"ns" description:"Modify an NS record." alias:"NS"`
 	TXT   DNSChangeTXTCmd   `command:"txt" description:"Modify a TXT record." alias:"TXT"`
 	SRV   DNSChangeSRVCmd   `command:"srv" description:"Modify a SRV record." alias:"SRV"`
+	SOA   DNSChangeSOACmd   `command:"soa" description:"Modify the SOA record." alias:"SOA"`
 }
 
 // DNSChangeACmd arguments.
@@ -16,7 +17,7 @@ type DNSChangeACmd struct {
 	Args DNSChangeArgs `positional-args:"true"`
 }
 
-// DNSChangeACmd modifies an A record.
+// Execute A record modification.
 func (cmd *DNSChangeACmd) Execute(args []string) error {
 	err := client.ChangeARecord(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL, false)
 	if err != nil {
@@ -32,7 +33,7 @@ type DNSChangeAAAACmd struct {
 	Args DNSChangeArgs `positional-args:"true"`
 }
 
-// DNSChangeAAAACmd modifies an AAAA record.
+// Execute AAAA record modification.
 func (cmd *DNSChangeAAAACmd) Execute(args []string) error {
 	err := client.ChangeARecord(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL, true)
 	if err != nil {
@@ -48,7 +49,7 @@ type DNSChangeCNAMECmd struct {
 	Args DNSChangeArgs `positional-args:"true"`
 }
 
-// DNSChangeCNAMECmd modifies a CNAME record.
+// Execute CNAME record modification.
 func (cmd *DNSChangeCNAMECmd) Execute(args []string) error {
 	err := client.ChangeCNAME(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL)
 	if err != nil {
@@ -64,7 +65,7 @@ type DNSChangeMXCmd struct {
 	Args DNSChangeArgsPri `positional-args:"true"`
 }
 
-// DNSChangeMXCmd modifies an MX record.
+// Execute MX record modification.
 func (cmd *DNSChangeMXCmd) Execute(args []string) error {
 	err := client.ChangeMX(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL, cmd.Args.Priority)
 	if err != nil {
@@ -80,7 +81,7 @@ type DNSChangeNSCmd struct {
 	Args DNSChangeArgs `positional-args:"true"`
 }
 
-// DNSChangeNSCmd modifies an NS record.
+// Execute NS record modification.
 func (cmd *DNSChangeNSCmd) Execute(args []string) error {
 	err := client.ChangeNS(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL)
 	if err != nil {
@@ -96,7 +97,7 @@ type DNSChangeTXTCmd struct {
 	Args DNSChangeArgs `positional-args:"true"`
 }
 
-// DNSChangeTXTCmd modifies a TXT record.
+// Execute TXT record modification.
 func (cmd *DNSChangeTXTCmd) Execute(args []string) error {
 	err := client.ChangeTXT(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL)
 	if err != nil {
@@ -121,7 +122,24 @@ type DNSChangeSRVCmd struct {
 	} `positional-args:"true"`
 }
 
-// DNSChangeSRVCmd modifies a SRV record.
+// Execute SRV record modification.
 func (cmd *DNSChangeSRVCmd) Execute(args []string) error {
 	return client.ChangeSRV(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL, cmd.Args.Priority, cmd.Args.Port, cmd.Args.Weight)
+}
+
+// DNSChangeSOACmd arguments.
+type DNSChangeSOACmd struct {
+	Args struct {
+		Domain  string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
+		Person  string `required:"true" positional-arg-name:"PERSON" description:"Responsible person's e-mail."`
+		Refresh int64  `positional-arg-name:"REFRESH" description:"Seconds after which the secondary DNS server checks the primary DNS server for zone changes. Minimum 7200 (2 hours)."`
+		Retry   int64  `positional-arg-name:"RETRY" description:"Seconds between retries for failed refreshes. Minimum 7200 (2 hours)."`
+		Expire  int64  `positional-arg-name:"EXPIRE" description:"Upper limit in seconds before a zone is no longer authoritative. Minimum 172800 (48 hours)."`
+		TTL     int64  `positional-arg-name:"TTL" description:"Time to live, or the number of seconds the record needs to be cached by DNS servers. Minimum 14400 (4 hours)."`
+	}
+}
+
+// Execute SOA (Start of Authority) record modification.
+func (cmd *DNSChangeSOACmd) Execute(args []string) error {
+	return client.ChangeSOA(cmd.Args.Domain, cmd.Args.Person, cmd.Args.Refresh, cmd.Args.Retry, cmd.Args.Expire, cmd.Args.TTL)
 }

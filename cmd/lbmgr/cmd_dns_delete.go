@@ -16,7 +16,7 @@ type DNSDeleteACmd struct {
 	Args DNSDeleteArgs `positional-args:"true"`
 }
 
-// DNSDeleteACmd deletes an A record.
+// Execute A record deletion.
 func (cmd *DNSDeleteACmd) Execute(args []string) error {
 	err := client.DeleteARecord(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, false)
 	if err != nil {
@@ -32,7 +32,7 @@ type DNSDeleteAAAACmd struct {
 	Args DNSDeleteArgs `positional-args:"true"`
 }
 
-// DNSDeleteAAAACmd deletes an AAAA record.
+// Execute AAAA record deletion.
 func (cmd *DNSDeleteAAAACmd) Execute(args []string) error {
 	err := client.DeleteARecord(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, true)
 	if err != nil {
@@ -48,7 +48,7 @@ type DNSDeleteCNAMECmd struct {
 	Args DNSDeleteArgsAll `positional-args:"true"`
 }
 
-// DNSDeleteCNAMECmd deletes a CNAME record.
+// Execute CNAME record deletion.
 func (cmd *DNSDeleteCNAMECmd) Execute(args []string) error {
 	err := client.DeleteCNAME(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host)
 	if err != nil {
@@ -64,7 +64,7 @@ type DNSDeleteMXCmd struct {
 	Args DNSDeleteArgsAll `positional-args:"true"`
 }
 
-// DNSDeleteMXCmd deletes an MX record.
+// Execute MX record deletion.
 func (cmd *DNSDeleteMXCmd) Execute(args []string) error {
 	err := client.DeleteMX(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host)
 	if err != nil {
@@ -80,7 +80,7 @@ type DNSDeleteNSCmd struct {
 	Args DNSDeleteArgs `positional-args:"true"`
 }
 
-// DNSDeleteNSCmd deletes an NS record.
+// Execute NS record deletion.
 func (cmd *DNSDeleteNSCmd) Execute(args []string) error {
 	err := client.DeleteNS(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host)
 	if err != nil {
@@ -96,7 +96,7 @@ type DNSDeleteTXTCmd struct {
 	Args DNSDeleteArgs `positional-args:"true"`
 }
 
-// DNSDeleteTXTCmd deletes a TXT record.
+// Execute TXT record deletion.
 func (cmd *DNSDeleteTXTCmd) Execute(args []string) error {
 	err := client.DeleteTXT(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host)
 	if err != nil {
@@ -118,7 +118,7 @@ type DNSDeleteSRVCmd struct {
 	} `positional-args:"true"`
 }
 
-// DNSDeleteSRVCmd deletes a SRV record.
+// Execute SRV record deletion.
 func (cmd *DNSDeleteSRVCmd) Execute(args []string) error {
 	err := client.DeleteSRV(cmd.Args.Domain, cmd.Args.Value, cmd.Args.Host, cmd.Args.Port, cmd.Args.Weight)
 	if err != nil {
