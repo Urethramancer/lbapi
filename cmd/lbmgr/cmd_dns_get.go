@@ -101,15 +101,15 @@ func printRecord(domain, value, host, t string) error {
 		pri = true
 	}
 	if pri {
-		s = []string{fmt.Sprintln("Host\tAddress\tType\tTTL\tStatus\tPriority")}
+		s = []string{fmt.Sprintln("Host\tAddress\tTTL\tStatus\tPriority")}
 	} else {
-		s = []string{fmt.Sprintln("Host\tAddress\tType\tTTL\tStatus")}
+		s = []string{fmt.Sprintln("Host\tAddress\tTTL\tStatus")}
 	}
 	for _, r := range dns {
 		if pri {
-			s = append(s, fmt.Sprintf("%s\t%s\t%s\t%d\t%s\t%d", r.Host, r.Value, r.Type, r.TTL, r.Status, r.Priority))
+			s = append(s, fmt.Sprintf("%s\t%s\t%d\t%s\t%d", r.Host, r.Value, r.TTL, r.Status, r.Priority))
 		} else {
-			s = append(s, fmt.Sprintf("%s\t%s\t%s\t%d\t%s", r.Host, r.Value, r.Type, r.TTL, r.Status))
+			s = append(s, fmt.Sprintf("%s\t%s\t%d\t%s", r.Host, r.Value, r.TTL, r.Status))
 		}
 	}
 	res := columnize.Format(s, cc)
