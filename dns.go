@@ -123,12 +123,17 @@ func (c *Client) GetDNSRecords(domain, value, host, t string, page int) (*DNSRec
 
 func parseDNS(in interface{}) *DNSRecord {
 	data := in.(map[string]interface{})
-	return &DNSRecord{
-		Host:     data["host"].(string),
-		Type:     data["type"].(string),
-		Address:  data["value"].(string),
-		TTL:      atoi(data["timetolive"].(string)),
-		Priority: atoi(data["priority"].(string)),
-		Status:   data["status"].(string),
+	dns := DNSRecord{
+		Host:    data["host"].(string),
+		Type:    data["type"].(string),
+		Address: data["value"].(string),
+		TTL:     atoi(data["timetolive"].(string)),
+		Status:  data["status"].(string),
 	}
+
+	pri, ok := data["priority"].(string)
+	if ok {
+		dns.Priority = atoi(pri)
+	}
+	return &dns
 }
