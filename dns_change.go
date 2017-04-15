@@ -119,12 +119,10 @@ func (c *Client) ChangeSRV(domain, oldval, newval, host string, ttl int64, prior
 	q.Set("current-value", oldval)
 	q.Set("new-value", newval)
 	q.Set("host", host)
-	if ttl == 0 || ttl < 7200 {
+	if ttl < 7200 {
 		ttl = 7200
 	}
-	if ttl > 0 {
-		q.Set("ttl", fmt.Sprintf("%d", ttl))
-	}
+	q.Set("ttl", fmt.Sprintf("%d", ttl))
 	if priority > 0 {
 		q.Set("priority", fmt.Sprintf("%d", priority))
 	}
@@ -134,6 +132,51 @@ func (c *Client) ChangeSRV(domain, oldval, newval, host string, ttl int64, prior
 	if weight > 0 {
 		q.Set("weight", fmt.Sprintf("%d", weight))
 	}
+	u.RawQuery = q.Encode()
+
+	res, err := c.postResponse(u.String())
+	if err != nil {
+		return err
+	}
+
+	list := *res
+	if list["status"] == "ERROR" {
+		return errors.New((fmt.Sprintf("%v", list["message"])))
+	}
+
+	return nil
+}
+
+// ChangeSOA modifies a SOA (Start of Authority) record.
+func (c *Client) ChangeSOA(domain, person string, refresh, retry, expire, ttl int64) error {
+	var err error
+	u, err := url.Parse(c.URL)
+	if err != nil {
+		return err
+	}
+
+	u.Path = "api/dns/manage/add-srv-record.json"
+	q := u.Query()
+	q.Set("auth-userid", c.ID)
+	q.Set("api-key", c.Key)
+	q.Set("domain-name", domain)
+	q.Set("responsible-person", person)
+	if refresh < 7200 {
+		refresh = 7200
+	}
+	q.Set("refresh", fmt.Sprintf("%d", refresh))
+	if retry < 7200 {
+		retry = 7200
+	}
+	q.Set("retry", fmt.Sprintf("%d", retry))
+	if expire < 172800 {
+		expire = 172800
+	}
+	q.Set("expire", fmt.Sprintf("%d", expire))
+	if ttl < 14400 {
+		ttl = 14400
+	}
+	q.Set("ttl", fmt.Sprintf("%d", ttl))
 	u.RawQuery = q.Encode()
 
 	res, err := c.postResponse(u.String())

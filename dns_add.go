@@ -49,12 +49,10 @@ func (c *Client) AddSRV(domain, value, host string, ttl int64, priority, port, w
 	q.Set("domain-name", domain)
 	q.Set("value", value)
 	q.Set("host", host)
-	if ttl == 0 || ttl < 7200 {
+	if ttl < 7200 {
 		ttl = 7200
 	}
-	if ttl > 0 {
-		q.Set("ttl", fmt.Sprintf("%d", ttl))
-	}
+	q.Set("ttl", fmt.Sprintf("%d", ttl))
 	if priority > 0 {
 		q.Set("priority", fmt.Sprintf("%d", priority))
 	}
