@@ -145,15 +145,14 @@ func getRecords(domain, value, host, t string) (lbapi.DNSRecords, error) {
 
 // DNSGetAllCmd arguments.
 type DNSGetAllCmd struct {
-	Compact bool `short:"c" long:"compact" description:"Print records all in one table."`
-	Args    struct {
+	Args struct {
 		Domain string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
 	} `positional-args:"true"`
 }
 
 // Execute a complete record fetch for the domain.
 func (cmd *DNSGetAllCmd) Execute(args []string) error {
-	var everything, a, aaaa, cname, mx, ns, txt, srv lbapi.DNSRecords
+	var a, aaaa, cname, mx, ns, txt, srv lbapi.DNSRecords
 	var err error
 	prn("Fetching A records…")
 	a, err = getRecords(cmd.Args.Domain, "", "", "A")
@@ -218,81 +217,70 @@ func (cmd *DNSGetAllCmd) Execute(args []string) error {
 		sort.Sort(srv)
 	}
 
-	pr("Done: %v", everything)
-	if cmd.Compact {
-		everything = append(everything, a...)
-		everything = append(everything, aaaa...)
-		everything = append(everything, cname...)
-		everything = append(everything, mx...)
-		everything = append(everything, ns...)
-		everything = append(everything, txt...)
-		everything = append(everything, srv...)
-		pr("%v", everything)
-	} else {
-		cc := columnize.DefaultConfig()
-		cc.Delim = "\t"
-		cc.Glue = "  "
-		var s []string
-		var res string
-		base1 := []string{fmt.Sprintln("Host\tAddress\tType\tTTL\tStatus")}
-		base2 := []string{fmt.Sprintln("Host\tAddress\tType\tTTL\tStatus\tPriority")}
+	cc := columnize.DefaultConfig()
+	cc.Delim = "\t"
+	cc.Glue = "  "
+	var s []string
+	var res string
+	base1 := []string{fmt.Sprintln("Host\tAddress\tTTL\tStatus")}
+	base2 := []string{fmt.Sprintln("Host\tAddress\tTTL\tStatus\tPriority")}
 
-		if len(a) > 0 {
-			for _, r := range a {
-				s = append(base1, fmt.Sprintf("%s\t%s\t%d\t%s", r.Host, r.Value, r.TTL, r.Status))
-			}
-			res = columnize.Format(s, cc)
-			pr("A records:\n%s\n", res)
+	if len(a) > 0 {
+		for _, r := range a {
+			s = append(base1, fmt.Sprintf("%s\t%s\t%d\t%s", r.Host, r.Value, r.TTL, r.Status))
 		}
-
-		if len(aaaa) > 0 {
-			for _, r := range aaaa {
-				s = append(base1, fmt.Sprintf("%s\t%s\t%d\t%s", r.Host, r.Value, r.TTL, r.Status))
-			}
-			res = columnize.Format(s, cc)
-			pr("AAAA records:\n%s\n", res)
-		}
-
-		if len(cname) > 0 {
-			for _, r := range cname {
-				s = append(base1, fmt.Sprintf("%s\t%s\t%d\t%s", r.Host, r.Value, r.TTL, r.Status))
-			}
-			res = columnize.Format(s, cc)
-			pr("CNAME records:\n%s\n", res)
-		}
-
-		if len(mx) > 0 {
-			for _, r := range mx {
-				s = append(base2, fmt.Sprintf("%s\t%s\t%d\t%s\t%d", r.Host, r.Value, r.TTL, r.Status, r.Priority))
-			}
-			res = columnize.Format(s, cc)
-			pr("MX records:\n%s\n", res)
-		}
-
-		if len(ns) > 0 {
-			for _, r := range ns {
-				s = append(base2, fmt.Sprintf("%s\t%s\t%d\t%s\t%d", r.Host, r.Value, r.TTL, r.Status, r.Priority))
-			}
-			res = columnize.Format(s, cc)
-			pr("NS records:\n%s\n", res)
-		}
-
-		if len(txt) > 0 {
-			for _, r := range txt {
-				s = append(base1, fmt.Sprintf("%s\t%s\t%d\t%s", r.Host, r.Value, r.TTL, r.Status))
-			}
-			res = columnize.Format(s, cc)
-			pr("TXT records:\n%s\n", res)
-		}
-
-		if len(txt) > 0 {
-			for _, r := range txt {
-				s = append(base1, fmt.Sprintf("%s\t%s\t%d\t%s", r.Host, r.Value, r.TTL, r.Status))
-			}
-			res = columnize.Format(s, cc)
-			pr("TXT records:\n%s\n", res)
-		}
+		res = columnize.Format(s, cc)
+		pr("A records:\n%s\n", res)
 	}
+
+	if len(aaaa) > 0 {
+		for _, r := range aaaa {
+			s = append(base1, fmt.Sprintf("%s\t%s\t%d\t%s", r.Host, r.Value, r.TTL, r.Status))
+		}
+		res = columnize.Format(s, cc)
+		pr("AAAA records:\n%s\n", res)
+	}
+
+	if len(cname) > 0 {
+		for _, r := range cname {
+			s = append(base1, fmt.Sprintf("%s\t%s\t%d\t%s", r.Host, r.Value, r.TTL, r.Status))
+		}
+		res = columnize.Format(s, cc)
+		pr("CNAME records:\n%s\n", res)
+	}
+
+	if len(mx) > 0 {
+		for _, r := range mx {
+			s = append(base2, fmt.Sprintf("%s\t%s\t%d\t%s\t%d", r.Host, r.Value, r.TTL, r.Status, r.Priority))
+		}
+		res = columnize.Format(s, cc)
+		pr("MX records:\n%s\n", res)
+	}
+
+	if len(ns) > 0 {
+		for _, r := range ns {
+			s = append(base2, fmt.Sprintf("%s\t%s\t%d\t%s\t%d", r.Host, r.Value, r.TTL, r.Status, r.Priority))
+		}
+		res = columnize.Format(s, cc)
+		pr("NS records:\n%s\n", res)
+	}
+
+	if len(txt) > 0 {
+		for _, r := range txt {
+			s = append(base1, fmt.Sprintf("%s\t%s\t%d\t%s", r.Host, r.Value, r.TTL, r.Status))
+		}
+		res = columnize.Format(s, cc)
+		pr("TXT records:\n%s\n", res)
+	}
+
+	if len(txt) > 0 {
+		for _, r := range txt {
+			s = append(base1, fmt.Sprintf("%s\t%s\t%d\t%s", r.Host, r.Value, r.TTL, r.Status))
+		}
+		res = columnize.Format(s, cc)
+		pr("TXT records:\n%s\n", res)
+	}
+
 	return nil
 }
 
