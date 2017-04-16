@@ -23,7 +23,7 @@ type DNSAddArgsPri struct {
 	Value    string `required:"true" positional-arg-name:"VALUE" description:"IP address, or FQDN for CNAME."`
 	Host     string `positional-arg-name:"HOST" description:"Host name."`
 	TTL      int64  `positional-arg-name:"TTL" description:"Time to live (seconds)."`
-	Priority uint   `positional-arg-name:"PRIORITY" description:"Priority of record. Default is 0 (most important)."`
+	Priority uint16 `positional-arg-name:"PRIORITY" description:"Priority of record. Default is 0 (most important)."`
 }
 
 // DNSChangeArgs are the default arguments for some record-editing sub-commands.
@@ -42,7 +42,7 @@ type DNSChangeArgsPri struct {
 	New      string `required:"true" positional-arg-name:"NEWIP" description:"New IP address."`
 	Host     string `positional-arg-name:"HOST" description:"Host name."`
 	TTL      int64  `positional-arg-name:"TTL" description:"Time to live (seconds)."`
-	Priority uint   `positional-arg-name:"PRIORITY" description:"Priority of record. Default is 0 (most important)."`
+	Priority uint16 `positional-arg-name:"PRIORITY" description:"Priority of record. Default is 0 (most important)."`
 }
 
 // DNSGetArgs are the default arguments for record-fetching sub-commands.

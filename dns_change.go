@@ -18,7 +18,7 @@ func (c *Client) ChangeCNAME(domain, oldip, newip, host string, ttl int64) error
 	return c.changeRecord("api/dns/manage/update-cname-record.json", domain, oldip, newip, host, ttl)
 }
 
-func (c *Client) ChangeMX(domain, oldip, newip, host string, ttl int64, priority uint) error {
+func (c *Client) ChangeMX(domain, oldip, newip, host string, ttl int64, priority uint16) error {
 	return c.changeRecordPri("api/dns/manage/update-mx-record.json", domain, oldip, newip, host, ttl, priority)
 }
 
@@ -66,7 +66,7 @@ func (c *Client) changeRecord(call, domain, oldip, newip, host string, ttl int64
 	return nil
 }
 
-func (c *Client) changeRecordPri(call, domain, oldip, newip, host string, ttl int64, priority uint) error {
+func (c *Client) changeRecordPri(call, domain, oldip, newip, host string, ttl int64, priority uint16) error {
 	var err error
 	u, err := url.Parse(c.URL)
 	if err != nil {

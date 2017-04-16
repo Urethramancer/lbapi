@@ -114,9 +114,9 @@ type DNSAddSRVCmd struct {
 		Value    string `required:"true" positional-arg-name:"VALUE" description:"IP address, or FQDN for CNAME."`
 		Host     string `required:"true" positional-arg-name:"HOST" description:"A fully qualified service name in the form '_<service name>._<protocol>.<domain.tld>'."`
 		TTL      int64  `positional-arg-name:"TTL" description:"Time to live (seconds)."`
-		Priority uint   `positional-arg-name:"PRIORITY" description:"Priority of record. Default is 0 (most important)."`
-		Port     uint   `positional-arg-name:"PORT" description:"Port number of the service."`
-		Weight   uint   `positional-arg-name:"WEIGHT" description:"Relative weight for records with the same priority."`
+		Priority uint16 `positional-arg-name:"PRIORITY" description:"Priority of record. Default is 0 (most important)."`
+		Port     uint16 `positional-arg-name:"PORT" description:"Port number of the service."`
+		Weight   uint16 `positional-arg-name:"WEIGHT" description:"Relative weight for records with the same priority."`
 	} `positional-args:"true"`
 }
 

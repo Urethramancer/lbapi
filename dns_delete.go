@@ -35,7 +35,7 @@ func (c *Client) DeleteTXT(domain, value, host string) error {
 }
 
 // DeleteSRV deletes SRV records.
-func (c *Client) DeleteSRV(domain, value, host string, port, weight int) error {
+func (c *Client) DeleteSRV(domain, value, host string, port, weight uint16) error {
 	var err error
 	u, err := url.Parse(c.URL)
 	if err != nil {

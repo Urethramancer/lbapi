@@ -37,9 +37,9 @@ func (slice DNSRecords) Swap(i, j int) {
 // DNSRecord is an individual record.
 type DNSRecord struct {
 	TTL      int64  // 7200 is a safe default
-	Priority int64  // Only available for some record types
-	Port     uint   // Only available for some record types
-	Weight   uint   // Only available for some record types
+	Priority uint16 // Only available for some record types
+	Port     uint16 // Only available for some record types
+	Weight   uint16 // Only available for some record types
 	Host     string // subdomain or @ for the primary domain
 	Type     string // A, AAAA, MX etc.
 	Value    string // IPv4 or IPv6 address
@@ -135,17 +135,17 @@ func parseDNS(in interface{}) *DNSRecord {
 
 	pri, ok := data["priority"].(string)
 	if ok {
-		dns.Priority = atoi(pri)
+		dns.Priority = uint16(atoi(pri))
 	}
 
 	port, ok := data["port"].(string)
 	if ok {
-		dns.Port = uint(atoi(port))
+		dns.Port = uint16(atoi(port))
 	}
 
 	w, ok := data["weight"].(string)
 	if ok {
-		dns.Weight = uint(atoi(w))
+		dns.Weight = uint16(atoi(w))
 	}
 
 	return &dns

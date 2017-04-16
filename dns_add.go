@@ -20,22 +20,22 @@ func (c *Client) AddCNAME(domain, value, host string, ttl int64) error {
 }
 
 // AddMX adds MX records for mail servers.
-func (c *Client) AddMX(domain, value, host string, ttl int64, priority uint) error {
+func (c *Client) AddMX(domain, value, host string, ttl int64, priority uint16) error {
 	return c.addRecordPri("api/dns/manage/add-mx-record.json", domain, value, host, ttl, priority)
 }
 
 // AddNS adds name server records.
-func (c *Client) AddNS(domain, value, host string, ttl int64, priority uint) error {
+func (c *Client) AddNS(domain, value, host string, ttl int64, priority uint16) error {
 	return c.addRecord("api/dns/manage/add-ns-record.json", domain, value, host, ttl)
 }
 
 // AddTXT adds TXT records.
-func (c *Client) AddTXT(domain, value, host string, ttl int64, priority uint) error {
+func (c *Client) AddTXT(domain, value, host string, ttl int64, priority uint16) error {
 	return c.addRecord("api/dns/manage/add-txt-record.json", domain, value, host, ttl)
 }
 
 // AddSRV adds SRV records.
-func (c *Client) AddSRV(domain, value, host string, ttl int64, priority, port, weight uint) error {
+func (c *Client) AddSRV(domain, value, host string, ttl int64, priority, port, weight uint16) error {
 	var err error
 	u, err := url.Parse(c.URL)
 	if err != nil {
@@ -112,7 +112,7 @@ func (c *Client) addRecord(call, domain, address, host string, ttl int64) error 
 	return nil
 }
 
-func (c *Client) addRecordPri(call, domain, address, host string, ttl int64, priority uint) error {
+func (c *Client) addRecordPri(call, domain, address, host string, ttl int64, priority uint16) error {
 	var err error
 	u, err := url.Parse(c.URL)
 	if err != nil {
