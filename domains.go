@@ -1,6 +1,7 @@
 package lbapi
 
 import (
+	"errors"
 	"fmt"
 	"net/url"
 	"time"
@@ -75,6 +76,36 @@ type Domain struct {
 	TransferLock bool
 }
 
+func (c *Client) Domain(name string) (*Domain, error) {
+	var err error
+	u, err := url.Parse(c.URL)
+	if err != nil {
+		return nil, err
+	}
+
+	u.Path = API_DOMAINS_SEARCH
+	q := u.Query()
+	q.Set("auth-userid", c.ID)
+	q.Set("api-key", c.Key)
+	q.Set("no-of-records", "10")
+	q.Set("page-no", "1")
+	q.Set("domain-name", name)
+	u.RawQuery = q.Encode()
+
+	res, err := c.getResponse(u.String())
+	if err != nil {
+		return nil, err
+	}
+
+	list := *res
+	in, ok := list["1"]
+	if !ok {
+		return nil, errors.New("no domain matching that name.")
+	}
+	domain := parseDomain(in)
+	return domain, nil
+}
+
 // DomainsFor customer, starting on a specified page.
 // Up to 500 records are returned. Compare Count and MaxRecords to tell
 // if another page exists.
@@ -85,7 +116,7 @@ func (c *Client) DomainsFor(customer string, page int) (*DomainList, error) {
 		return nil, err
 	}
 
-	u.Path = "api/domains/search.json"
+	u.Path = API_DOMAINS_SEARCH
 	q := u.Query()
 	q.Set("auth-userid", c.ID)
 	q.Set("api-key", c.Key)
