@@ -95,7 +95,7 @@ func (c *Client) CustomerByID(cid int64) (*CustomerDetails, error) {
 
 func parseCustomerDetails(in interface{}) *CustomerDetails {
 	data := in.(maplist)
-	phone := "+ " + data["telnocc"].(string) + " " + data["telno"].(string)
+	phone := "+" + data["telnocc"].(string) + " " + data["telno"].(string)
 
 	return &CustomerDetails{
 		Created:        time.Unix(atoi(data["creationdt"].(string)), 0),
