@@ -11,12 +11,12 @@ import (
 // DomainCmd holds the domain sub-commands.
 type DomainCmd struct {
 	List DomainListCmd `command:"list" description:"List all domains."`
+	Show DomainShowCmd `command:"show" description:"Show details for one domain."`
 	For  DomainForCmd  `command:"for" description:"List all domains belonging to a specified customer ID."`
 }
 
 // DomainListCmd arguments.
 type DomainListCmd struct {
-	Verbose bool `short:"v" long:"verbose" description:"Show detailed information."`
 }
 
 // Execute the list command.
