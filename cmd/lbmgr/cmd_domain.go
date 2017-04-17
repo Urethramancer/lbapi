@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"sort"
+	"time"
 
 	"github.com/Urethramancer/lbapi"
 	"github.com/ryanuber/columnize"
@@ -78,16 +79,33 @@ func (cmd *DomainForCmd) Execute(args []string) error {
 	cc.Glue = "  "
 	var s []string
 	if cmd.Verbose {
+		if cmd.Name {
+			s = []string{fmt.Sprintln("Domain\tOrder ID\tExpires")}
+			for _, d := range everyname {
+				col := okColour(!time.Now().After(d.Endtime))
+				s = append(s, fmt.Sprintf("%s\t%d\t"+col+"%v"+ANSI_NORMAL, d.Description, d.OrderID, d.Endtime))
+			}
+		} else {
+			s = []string{fmt.Sprintln("Order ID\tDomain\tCreated\tExpires\tLast modified")}
+			for _, d := range everything {
+				col := okColour(!time.Now().After(d.Endtime))
+				s = append(s, fmt.Sprintf("%d\t%s\t%v\t"+col+"%v"+ANSI_NORMAL+"\t%v", d.OrderID, d.Description, d.CreationDT, d.Endtime, d.Timestamp))
+			}
+		}
+		res := columnize.Format(s, cc)
+		pr(res)
 	} else {
 		if cmd.Name {
 			s = []string{fmt.Sprintln("Domain\tOrder ID\tExpires")}
 			for _, d := range everyname {
-				s = append(s, fmt.Sprintf("%s\t%d\t%v", d.Description, d.OrderID, d.Endtime))
+				col := okColour(!time.Now().After(d.Endtime))
+				s = append(s, fmt.Sprintf("%s\t%d\t"+col+"%v"+ANSI_NORMAL, d.Description, d.OrderID, d.Endtime))
 			}
 		} else {
 			s = []string{fmt.Sprintln("Order ID\tDomain\tExpires")}
 			for _, d := range everything {
-				s = append(s, fmt.Sprintf("%d\t%s\t%v", d.OrderID, d.Description, d.Endtime))
+				col := okColour(!time.Now().After(d.Endtime))
+				s = append(s, fmt.Sprintf("%d\t%s\t"+col+"%v"+ANSI_NORMAL, d.OrderID, d.Description, d.Endtime))
 			}
 		}
 		res := columnize.Format(s, cc)
