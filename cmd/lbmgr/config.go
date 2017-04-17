@@ -13,7 +13,7 @@ import (
 // URL of a different API to be used.
 type Config struct {
 	API string `json:"api,omitempty"`
-	ID  string `json:"resellerid"`
+	ID  int64  `json:"resellerid"`
 	Key string `json:"apikey"`
 }
 
@@ -32,7 +32,6 @@ func loadConfig() bool {
 	if !exists(cfgpath) {
 		pr("%s does not exist, creating.", cfgpath)
 		cfg.API = lbapi.APIURL
-		cfg.ID = "your reseller ID"
 		cfg.Key = "your reseller API key"
 		res, err := json.MarshalIndent(cfg, "", "\t")
 		if err != nil {

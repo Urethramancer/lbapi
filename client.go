@@ -2,6 +2,7 @@ package lbapi
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 )
@@ -14,7 +15,7 @@ type Client struct {
 }
 
 // NewClient creates a client structure with a HTTP client for the specified API.
-func NewClient(api, resellerid, apikey string) *Client {
+func NewClient(api string, resellerid int64, apikey string) *Client {
 	if api == "" {
 		api = APIURL
 	}
@@ -22,7 +23,7 @@ func NewClient(api, resellerid, apikey string) *Client {
 	return &Client{
 		Client: http.Client{Timeout: time.Second * 30},
 		URL:    api,
-		ID:     resellerid,
+		ID:     fmt.Sprintf("%d", resellerid),
 		Key:    apikey,
 	}
 }

@@ -67,13 +67,26 @@ func (cmd *CustomerListCmd) Execute(args []string) error {
 // CustomerShowCmd arguments.
 type CustomerShowCmd struct {
 	Args struct {
-		ID string `required:"true" positional-arg-name:"ID" description:"Customer ID."`
+		ID int64 `required:"true" positional-arg-name:"ID" description:"Customer ID."`
 	} `positional-args:"true"`
 }
 
 // Execute the show command.
 func (cmd *CustomerShowCmd) Execute(args []string) error {
-	cust := client.CustomerByID
+	cust, err := client.CustomerByID(cmd.Args.ID)
+	if err != nil {
+		return err
+	}
+
+	var reseller string
+	if cust.ParentReseller == cfg.ID {
+		reseller = "you"
+	}
+
+	pr("%s (%d) - "+okColour(cust.Status == "Active")+"%s"+ANSI_NORMAL+"\nSigned up: %v\nTotal receipts: $%s", cust.Name, cust.ID, cust.Status, cust.Created, cust.TotalReceipts)
+	pr("E-mail: %s  Phone: %s", cust.Email, cust.Phone)
+	pr("Two-factor enabled: "+okColour(cust.Twofactor)+"%v"+ANSI_NORMAL, cust.Twofactor)
+	pr("Parent reseller: %d (%s)", cust.ParentReseller, reseller)
 	return nil
 }
 
