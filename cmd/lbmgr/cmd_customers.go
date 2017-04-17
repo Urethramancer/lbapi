@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sort"
 
+	"github.com/Urethramancer/countries"
 	"github.com/Urethramancer/lbapi"
 	"github.com/ryanuber/columnize"
 )
@@ -87,6 +88,8 @@ func (cmd *CustomerShowCmd) Execute(args []string) error {
 	pr("E-mail: %s  Phone: %s", cust.Email, cust.Phone)
 	pr("Two-factor enabled: "+okColour(cust.Twofactor)+"%v"+ANSI_NORMAL, cust.Twofactor)
 	pr("Parent reseller: %d (%s)", cust.ParentReseller, reseller)
+	pr(ANSI_YELLOW + "Address:" + ANSI_NORMAL)
+	pr(countries.FormatAddress(cust.Address, "", cust.Zip, cust.City, cust.State, cust.Country))
 	return nil
 }
 
