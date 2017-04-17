@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/Urethramancer/lbapi"
+	"github.com/Urethramancer/lbapi/common"
 )
 
 // Config holds the reseller settings, and optionally, the
@@ -24,11 +25,15 @@ const (
 )
 
 func init() {
-	cfgpath = getConfigName()
+	var err error
+	cfgpath, err = common.GetConfigName(program, configname)
+	if err != nil {
+		pr("Error getting configuration path: %s", err.Error())
+	}
 }
 
 func loadConfig() bool {
-	if !exists(cfgpath) {
+	if !common.Exists(cfgpath) {
 		pr("%s does not exist, creating.", cfgpath)
 		cfg.API = lbapi.APIURL
 		cfg.Key = "your reseller API key"
