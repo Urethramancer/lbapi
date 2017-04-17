@@ -3,10 +3,11 @@ package main
 // DNSCmd arguments and sub-commands.
 type DNSCmd struct {
 	Status DNSStatusCmd `command:"status" description:"Shows DNS management status for a domain by order ID, and activates it if not yet enabled."`
-	Get    DNSGetCmd    `command:"get" description:"Get a DNS record."`
-	Add    DNSAddCmd    `command:"add" description:"Add a DNS record."`
-	Delete DNSDeleteCmd `command:"delete" description:"Delete a DNS record." alias:"del" alias:"rm"`
+	Get    DNSGetCmd    `command:"get" description:"Get one type of DNS record for a domain."`
+	Add    DNSAddCmd    `command:"add" description:"Add a DNS record for a domain."`
+	Delete DNSDeleteCmd `command:"delete" description:"Delete a DNS record from a domain." alias:"del" alias:"rm"`
 	Change DNSChangeCmd `command:"change" description:"Edit a DNS record." alias:"ch" alias:"edit" alias:"modify" alias:"mod"`
+	Nuke   DNSNukeCmd   `command:"nuke" description:"Clear out all DNS records except the primary A/AAAA for a domain." alias:"wipeout"`
 }
 
 // DNSAddArgs are the default arguments for some record-adding sub-commands.

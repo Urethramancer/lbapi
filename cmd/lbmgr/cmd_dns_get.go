@@ -211,9 +211,9 @@ func (cmd *DNSGetAllCmd) Execute(args []string) error {
 	prn("Fetching SRV records…")
 	srv, err = getRecords(cmd.Args.Domain, "", "", "SRV")
 	if err != nil {
-		pr("done.")
 		pr("none found.")
 	} else {
+		pr("done.")
 		sort.Sort(srv)
 	}
 
@@ -230,7 +230,7 @@ func (cmd *DNSGetAllCmd) Execute(args []string) error {
 			s = append(base1, fmt.Sprintf("%s\t%s\t%d\t%s", r.Host, r.Value, r.TTL, r.Status))
 		}
 		res = columnize.Format(s, cc)
-		pr("A records:\n%s\n", res)
+		pr(ANSI_YELLOW+"A records:"+ANSI_NORMAL+"\n%s\n", res)
 	}
 
 	if len(aaaa) > 0 {
@@ -238,7 +238,7 @@ func (cmd *DNSGetAllCmd) Execute(args []string) error {
 			s = append(base1, fmt.Sprintf("%s\t%s\t%d\t%s", r.Host, r.Value, r.TTL, r.Status))
 		}
 		res = columnize.Format(s, cc)
-		pr("AAAA records:\n%s\n", res)
+		pr(ANSI_YELLOW+"AAAA records:"+ANSI_NORMAL+"\n%s\n", res)
 	}
 
 	if len(cname) > 0 {
@@ -246,7 +246,7 @@ func (cmd *DNSGetAllCmd) Execute(args []string) error {
 			s = append(base1, fmt.Sprintf("%s\t%s\t%d\t%s", r.Host, r.Value, r.TTL, r.Status))
 		}
 		res = columnize.Format(s, cc)
-		pr("CNAME records:\n%s\n", res)
+		pr(ANSI_YELLOW+"CNAME records:"+ANSI_NORMAL+"\n%s\n", res)
 	}
 
 	if len(mx) > 0 {
@@ -254,7 +254,7 @@ func (cmd *DNSGetAllCmd) Execute(args []string) error {
 			s = append(base2, fmt.Sprintf("%s\t%s\t%d\t%s\t%d", r.Host, r.Value, r.TTL, r.Status, r.Priority))
 		}
 		res = columnize.Format(s, cc)
-		pr("MX records:\n%s\n", res)
+		pr(ANSI_YELLOW+"MX records:"+ANSI_NORMAL+"\n%s\n", res)
 	}
 
 	if len(ns) > 0 {
@@ -262,7 +262,7 @@ func (cmd *DNSGetAllCmd) Execute(args []string) error {
 			s = append(base2, fmt.Sprintf("%s\t%s\t%d\t%s\t%d", r.Host, r.Value, r.TTL, r.Status, r.Priority))
 		}
 		res = columnize.Format(s, cc)
-		pr("NS records:\n%s\n", res)
+		pr(ANSI_YELLOW+"NS records:"+ANSI_NORMAL+"\n%s\n", res)
 	}
 
 	if len(txt) > 0 {
@@ -270,7 +270,7 @@ func (cmd *DNSGetAllCmd) Execute(args []string) error {
 			s = append(base1, fmt.Sprintf("%s\t%s\t%d\t%s", r.Host, r.Value, r.TTL, r.Status))
 		}
 		res = columnize.Format(s, cc)
-		pr("TXT records:\n%s\n", res)
+		pr(ANSI_YELLOW+"TXT records:"+ANSI_NORMAL+"\n%s\n", res)
 	}
 
 	if len(txt) > 0 {
@@ -278,7 +278,7 @@ func (cmd *DNSGetAllCmd) Execute(args []string) error {
 			s = append(base1, fmt.Sprintf("%s\t%s\t%d\t%s", r.Host, r.Value, r.TTL, r.Status))
 		}
 		res = columnize.Format(s, cc)
-		pr("TXT records:\n%s\n", res)
+		pr(ANSI_YELLOW+"TXT records:"+ANSI_NORMAL+"\n%s\n", res)
 	}
 
 	return nil
