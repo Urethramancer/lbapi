@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"net/url"
 	"time"
-
-	"github.com/Urethramancer/countries"
 )
 
 // CustomerList is what client software gets.
@@ -108,7 +106,7 @@ func parseCustomerDetails(in interface{}) *CustomerDetails {
 		Zip:            data["zip"].(string),
 		City:           data["city"].(string),
 		State:          data["state"].(string),
-		Country:        countries.Country(data["country"].(string)),
+		Country:        data["country"].(string),
 		Language:       data["langpref"].(string),
 		PIN:            data["pin"].(string),
 		Status:         data["customerstatus"].(string),
