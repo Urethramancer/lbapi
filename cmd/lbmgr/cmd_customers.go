@@ -66,17 +66,19 @@ func (cmd *CustomerListCmd) Execute(args []string) error {
 
 // CustomerShowCmd arguments.
 type CustomerShowCmd struct {
-	Verbose bool `short:"v" long:"verbose" description:"Show detailed information."`
+	Args struct {
+		ID string `required:"true" positional-arg-name:"ID" description:"Customer ID."`
+	} `positional-args:"true"`
 }
 
 // Execute the show command.
 func (cmd *CustomerShowCmd) Execute(args []string) error {
+	cust := client.CustomerByID
 	return nil
 }
 
 // CustomerSearchCmd arguments.
 type CustomerSearchCmd struct {
-	Verbose bool `short:"v" long:"verbose" description:"Show detailed information."`
 }
 
 // Execute the search command.
