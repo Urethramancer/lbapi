@@ -5,7 +5,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/Urethramancer/lbapi/countries"
+	"github.com/Urethramancer/countries"
 )
 
 // CustomerList is what client software gets.
