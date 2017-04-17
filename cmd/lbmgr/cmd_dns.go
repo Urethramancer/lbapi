@@ -6,7 +6,7 @@ type DNSCmd struct {
 	Get    DNSGetCmd    `command:"get" description:"Get one type of DNS record for a domain."`
 	Add    DNSAddCmd    `command:"add" description:"Add a DNS record for a domain."`
 	Delete DNSDeleteCmd `command:"delete" description:"Delete a DNS record from a domain." alias:"del" alias:"rm"`
-	Change DNSChangeCmd `command:"change" description:"Edit a DNS record." alias:"ch" alias:"edit" alias:"modify" alias:"mod"`
+	Edit   DNSEditCmd   `command:"edit" description:"Edit a DNS record." alias:"ch" alias:"change" alias:"ed" alias:"mod"`
 	Nuke   DNSNukeCmd   `command:"nuke" description:"Clear out all DNS records except the primary A/AAAA for a domain." alias:"wipeout"`
 }
 
@@ -27,8 +27,8 @@ type DNSAddArgsPri struct {
 	Priority uint16 `positional-arg-name:"PRIORITY" description:"Priority of record. Default is 0 (most important)."`
 }
 
-// DNSChangeArgs are the default arguments for some record-editing sub-commands.
-type DNSChangeArgs struct {
+// DNSEditArgs are the default arguments for some record-editing sub-commands.
+type DNSEditArgs struct {
 	Domain string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
 	Old    string `required:"true" positional-arg-name:"OLD VALUE" description:"IP address/name/data to change from."`
 	New    string `required:"true" positional-arg-name:"NEW VALUE" description:"New IP address/name/data."`
@@ -36,8 +36,8 @@ type DNSChangeArgs struct {
 	TTL    int64  `positional-arg-name:"TTL" description:"Time to live (seconds)."`
 }
 
-// DNSChangeArgsPri are the default arguments for record-editing sub-commands with priority.
-type DNSChangeArgsPri struct {
+// DNSEditArgsPri are the default arguments for record-editing sub-commands with priority.
+type DNSEditArgsPri struct {
 	Domain   string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
 	Old      string `required:"true" positional-arg-name:"OLDIP" description:"IP address to change from."`
 	New      string `required:"true" positional-arg-name:"NEWIP" description:"New IP address."`

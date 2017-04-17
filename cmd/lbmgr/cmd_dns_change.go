@@ -1,24 +1,24 @@
 package main
 
 // DNSChangeCmd arguments.
-type DNSChangeCmd struct {
-	A     DNSChangeACmd     `command:"a" description:"Modify an A record." alias:"A"`
-	AAAA  DNSChangeAAAACmd  `command:"aaaa" description:"Modify an AAAA record." alias:"AAAA"`
-	CNAME DNSChangeCNAMECmd `command:"cname" description:"Modify a CNAME record." alias:"CNAME"`
-	MX    DNSChangeMXCmd    `command:"mx" description:"Modify an MX record." alias:"MX"`
-	NS    DNSChangeNSCmd    `command:"ns" description:"Modify an NS record." alias:"NS"`
-	TXT   DNSChangeTXTCmd   `command:"txt" description:"Modify a TXT record." alias:"TXT"`
-	SRV   DNSChangeSRVCmd   `command:"srv" description:"Modify a SRV record." alias:"SRV"`
-	SOA   DNSChangeSOACmd   `command:"soa" description:"Modify the SOA record." alias:"SOA"`
+type DNSEditCmd struct {
+	A     DNSEditACmd     `command:"a" description:"Edit an A record." alias:"A"`
+	AAAA  DNSEditAAAACmd  `command:"aaaa" description:"Edit an AAAA record." alias:"AAAA"`
+	CNAME DNSEditCNAMECmd `command:"cname" description:"Edit a CNAME record." alias:"CNAME"`
+	MX    DNSEditMXCmd    `command:"mx" description:"Edit an MX record." alias:"MX"`
+	NS    DNSEditNSCmd    `command:"ns" description:"Edit an NS record." alias:"NS"`
+	TXT   DNSEditTXTCmd   `command:"txt" description:"Edit a TXT record." alias:"TXT"`
+	SRV   DNSEditSRVCmd   `command:"srv" description:"Edit a SRV record." alias:"SRV"`
+	SOA   DNSEditSOACmd   `command:"soa" description:"Edit the SOA record." alias:"SOA"`
 }
 
-// DNSChangeACmd arguments.
-type DNSChangeACmd struct {
-	Args DNSChangeArgs `positional-args:"true"`
+// DNSEditACmd arguments.
+type DNSEditACmd struct {
+	Args DNSEditArgs `positional-args:"true"`
 }
 
 // Execute A record modification.
-func (cmd *DNSChangeACmd) Execute(args []string) error {
+func (cmd *DNSEditACmd) Execute(args []string) error {
 	err := client.ChangeARecord(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL, false)
 	if err != nil {
 		return err
@@ -28,13 +28,13 @@ func (cmd *DNSChangeACmd) Execute(args []string) error {
 	return nil
 }
 
-// DNSChangeAAAACmd arguments.
-type DNSChangeAAAACmd struct {
-	Args DNSChangeArgs `positional-args:"true"`
+// DNSEditAAAACmd arguments.
+type DNSEditAAAACmd struct {
+	Args DNSEditArgs `positional-args:"true"`
 }
 
 // Execute AAAA record modification.
-func (cmd *DNSChangeAAAACmd) Execute(args []string) error {
+func (cmd *DNSEditAAAACmd) Execute(args []string) error {
 	err := client.ChangeARecord(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL, true)
 	if err != nil {
 		return err
@@ -44,13 +44,13 @@ func (cmd *DNSChangeAAAACmd) Execute(args []string) error {
 	return nil
 }
 
-// DNSChangeCNAMECmd arguments.
-type DNSChangeCNAMECmd struct {
-	Args DNSChangeArgs `positional-args:"true"`
+// DNSEditCNAMECmd arguments.
+type DNSEditCNAMECmd struct {
+	Args DNSEditArgs `positional-args:"true"`
 }
 
 // Execute CNAME record modification.
-func (cmd *DNSChangeCNAMECmd) Execute(args []string) error {
+func (cmd *DNSEditCNAMECmd) Execute(args []string) error {
 	err := client.ChangeCNAME(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL)
 	if err != nil {
 		return err
@@ -60,13 +60,13 @@ func (cmd *DNSChangeCNAMECmd) Execute(args []string) error {
 	return nil
 }
 
-// DNSChangeMXCmd arguments.
-type DNSChangeMXCmd struct {
-	Args DNSChangeArgsPri `positional-args:"true"`
+// DNSEditMXCmd arguments.
+type DNSEditMXCmd struct {
+	Args DNSEditArgsPri `positional-args:"true"`
 }
 
 // Execute MX record modification.
-func (cmd *DNSChangeMXCmd) Execute(args []string) error {
+func (cmd *DNSEditMXCmd) Execute(args []string) error {
 	err := client.ChangeMX(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL, cmd.Args.Priority)
 	if err != nil {
 		return err
@@ -76,13 +76,13 @@ func (cmd *DNSChangeMXCmd) Execute(args []string) error {
 	return nil
 }
 
-// DNSChangeNSCmd arguments.
-type DNSChangeNSCmd struct {
-	Args DNSChangeArgs `positional-args:"true"`
+// DNSEditNSCmd arguments.
+type DNSEditNSCmd struct {
+	Args DNSEditArgs `positional-args:"true"`
 }
 
 // Execute NS record modification.
-func (cmd *DNSChangeNSCmd) Execute(args []string) error {
+func (cmd *DNSEditNSCmd) Execute(args []string) error {
 	err := client.ChangeNS(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL)
 	if err != nil {
 		return err
@@ -92,13 +92,13 @@ func (cmd *DNSChangeNSCmd) Execute(args []string) error {
 	return nil
 }
 
-// DNSChangeTXTCmd arguments.
-type DNSChangeTXTCmd struct {
-	Args DNSChangeArgs `positional-args:"true"`
+// DNSEditTXTCmd arguments.
+type DNSEditTXTCmd struct {
+	Args DNSEditArgs `positional-args:"true"`
 }
 
 // Execute TXT record modification.
-func (cmd *DNSChangeTXTCmd) Execute(args []string) error {
+func (cmd *DNSEditTXTCmd) Execute(args []string) error {
 	err := client.ChangeTXT(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL)
 	if err != nil {
 		return err
@@ -108,8 +108,8 @@ func (cmd *DNSChangeTXTCmd) Execute(args []string) error {
 	return nil
 }
 
-// DNSChangeSRVCmd arguments.
-type DNSChangeSRVCmd struct {
+// DNSEditSRVCmd arguments.
+type DNSEditSRVCmd struct {
 	Args struct {
 		Domain   string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
 		Old      string `required:"true" positional-arg-name:"OLDIP" description:"IP address to change from."`
@@ -123,12 +123,12 @@ type DNSChangeSRVCmd struct {
 }
 
 // Execute SRV record modification.
-func (cmd *DNSChangeSRVCmd) Execute(args []string) error {
+func (cmd *DNSEditSRVCmd) Execute(args []string) error {
 	return client.ChangeSRV(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL, cmd.Args.Priority, cmd.Args.Port, cmd.Args.Weight)
 }
 
-// DNSChangeSOACmd arguments.
-type DNSChangeSOACmd struct {
+// DNSEditSOACmd arguments.
+type DNSEditSOACmd struct {
 	Args struct {
 		Domain  string `required:"true" positional-arg-name:"DOMAIN" description:"Domain name."`
 		Person  string `required:"true" positional-arg-name:"PERSON" description:"Responsible person's e-mail."`
@@ -140,6 +140,6 @@ type DNSChangeSOACmd struct {
 }
 
 // Execute SOA (Start of Authority) record modification.
-func (cmd *DNSChangeSOACmd) Execute(args []string) error {
+func (cmd *DNSEditSOACmd) Execute(args []string) error {
 	return client.ChangeSOA(cmd.Args.Domain, cmd.Args.Person, cmd.Args.Refresh, cmd.Args.Retry, cmd.Args.Expire, cmd.Args.TTL)
 }
