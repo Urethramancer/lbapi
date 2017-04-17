@@ -29,3 +29,11 @@ func createdir(dir string) string {
 	}
 	return dir
 }
+
+func okColour(b bool) string {
+	if b {
+		return ANSI_GREEN
+	}
+
+	return ANSI_RED
+}
