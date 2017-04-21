@@ -67,6 +67,31 @@ type CustomerDetails struct {
 	Twofactor bool
 }
 
+func (c *Client) Authenticate(username, password string) (*CustomerDetails, error) {
+	var err error
+	u, err := url.Parse(c.URL)
+	if err != nil {
+		return nil, err
+	}
+
+	u.Path = API_CUSTOMERS_AUTHENTICATE
+	q := u.Query()
+	q.Set("auth-userid", c.ID)
+	q.Set("api-key", c.Key)
+	q.Set("username", username)
+	q.Set("passwd", password)
+	u.RawQuery = q.Encode()
+
+	res, err := c.getResponse(u.String())
+	if err != nil {
+		return nil, err
+	}
+
+	in := *res
+	cust := parseCustomerDetails(in)
+	return cust, nil
+}
+
 func (c *Client) CustomerByID(cid int64) (*CustomerDetails, error) {
 	var err error
 	u, err := url.Parse(c.URL)
