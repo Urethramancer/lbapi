@@ -28,6 +28,10 @@ These planned features are things I will be dogfooding. Likely to be implemented
 1. Go, currently tested with v1.8.x+.
 2. [go-flags](https://github.com/jessevdk/go-flags)
 3. [columnize](https://github.com/ryanuber/columnize)
+4. [gorilla/mux](https://github.com/gorilla/mux)
+5. [countries](https://github.com/Urethramancer/countries)
+6. [slog](https://github.com/Urethramancer/slog)
+7. [x/crypto/sha3](https://golang.org/x/crypto/sha3)
 
 ## Platforms
 Should work anywhere Go compiles to. The server tools are mainly tested on Linux but work on macOS. The command line tools and SDK should be universal, but currently needs a few lines of code for Windows support.
