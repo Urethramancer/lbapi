@@ -34,9 +34,6 @@ type Result struct {
 	Status     string `json:"status,omitempty"`
 	StatusCode int    `json:"statuscode"`
 	Token      string `json:"token,omitempty"`
-	ID         uint64 `json:"id,omitempty"`
-	Data       string `json:"data,omitempty"`
-	User       string `json:"user,omitempty"`
 }
 
 // SetStatus fills in the status text from a code.
@@ -51,7 +48,7 @@ func (r *Result) SetStatus(code int) {
 	r.Status = s
 }
 
-func respond(w io.Writer, r *Result) error {
+func respond(w io.Writer, r interface{}) error {
 	res, err := json.Marshal(r)
 	if err != nil {
 		return err
