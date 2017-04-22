@@ -5,7 +5,7 @@ import (
 	"io"
 )
 
-// Result is returned from any JSON request.
+// Result is returned from many JSON requests.
 type Result struct {
 	Status     string `json:"status,omitempty"`
 	StatusCode int    `json:"statuscode"`
