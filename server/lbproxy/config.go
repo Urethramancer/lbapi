@@ -31,6 +31,8 @@ type Config struct {
 	Web `json:"web"`
 	// LogicBoxes credentials.
 	LogicBoxes `json:"logicboxes"`
+	// InfoDump for site information.
+	InfoDump `json:"infodump"`
 }
 
 // LogicBoxes API configuration.
@@ -74,6 +76,15 @@ type Web struct {
 	// Domain is the FQDN for the server, and is mostly used for display purposes.
 	Domain string `json:"domain"`
 	url    string
+}
+
+// InfoDump is just that - a collection of information relating to the service.
+// The /info command returns this to interested clients.
+type InfoDump struct {
+	// Website for more information about the service.
+	Website string `json:"website"`
+	// Other information of interest. Or just a big, fat ad.
+	Other []string `json:"other"`
 }
 
 var cfg Config
