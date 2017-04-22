@@ -12,6 +12,7 @@ import (
 
 const (
 	pathAuth = "/auth"
+	pathInfo = "/info"
 )
 
 // Servers hold the two possible web servers which can be started.
@@ -109,14 +110,6 @@ func stopServers() {
 	}
 }
 
-func initHandlers(r *mux.Router) {
-	r.Handle(pathAuth, Handle(addJSONHeaders, apiAuth))
-}
-
-func initSSLHandlers(r *mux.Router) {
-	r.Handle(pathAuth, Handle(addSSLHeaders, addJSONHeaders, apiAuth))
-}
-
 type (
 	// Handler is the signature for web route handlers.
 	Handler func(w http.ResponseWriter, r *http.Request) error
@@ -147,4 +140,14 @@ func addSSLHeaders(w http.ResponseWriter, r *http.Request) error {
 	w.Header().Set("Strict-Transport-Security", "max-age=15768000; includeSubDomains")
 	w.Header().Set("Content-Type", "charset=UTF-8")
 	return nil
+}
+
+func initHandlers(r *mux.Router) {
+	r.Handle(pathAuth, Handle(addJSONHeaders, apiAuth))
+	r.Handle(pathInfo, Handle(addJSONHeaders, apiInfo))
+}
+
+func initSSLHandlers(r *mux.Router) {
+	r.Handle(pathAuth, Handle(addSSLHeaders, addJSONHeaders, apiAuth))
+	r.Handle(pathInfo, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
 }
