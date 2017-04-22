@@ -12,7 +12,7 @@ import (
 func GetConfigName(program, filename string) (string, error) {
 	u, err := user.Current()
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	dir := filepath.Join(u.HomeDir, "."+program)
@@ -23,7 +23,7 @@ func GetConfigName(program, filename string) (string, error) {
 		}
 	}
 
-	return filepath.Join(dir, filename)
+	return filepath.Join(dir, filename), nil
 }
 
 // GetServerConfigName gets the correct full path of the configuration file for servers.
@@ -36,5 +36,5 @@ func GetServerConfigName(program, filename string) (string, error) {
 		}
 	}
 
-	return filepath.Join(dir, filename)
+	return filepath.Join(dir, filename), nil
 }
