@@ -19,12 +19,18 @@ var Version = "undefined"
 
 // Config is used to parse the main configuration file.
 type Config struct {
-	APIBase         string `json:"api"`
+	// APIPath is the path before each endpoint.
+	APIPath string `json:"apipath"`
+	// CleanupInterval is how often to clear out stale authentication data.
 	CleanupInterval string `json:"cleanupinterval"`
-	Logs            `json:"logs"`
-	Security        `json:"security"`
-	Web             `json:"web"`
-	LogicBoxes      `json:"logicboxes"`
+	// Logs settings.
+	Logs `json:"logs"`
+	// Security settings.
+	Security `json:"security"`
+	// Web settings.
+	Web `json:"web"`
+	// LogicBoxes credentials.
+	LogicBoxes `json:"logicboxes"`
 }
 
 // LogicBoxes API configuration.

@@ -35,9 +35,9 @@ func initWeb() {
 	}
 
 	router := mux.NewRouter().StrictSlash(true)
-	api := "/api/"
-	if cfg.APIBase != "" {
-		api = "/" + cfg.APIBase + "/"
+	api := "/"
+	if cfg.APIPath != "" {
+		api += cfg.APIPath + "/"
 	}
 	sub := router.Host(cfg.Web.Domain).Methods("POST").PathPrefix(api).Subrouter()
 
