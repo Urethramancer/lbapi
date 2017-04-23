@@ -2,7 +2,7 @@ package main
 
 import "net/http"
 
+// apiInfo simply passes the InfoDump configuration data to the client.
 func apiInfo(w http.ResponseWriter, r *http.Request) error {
-	var info InfoDump
-	return respond(w, &info)
+	return respond(w, &cfg.InfoDump)
 }

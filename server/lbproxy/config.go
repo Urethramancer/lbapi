@@ -80,11 +80,29 @@ type Web struct {
 
 // InfoDump is just that - a collection of information relating to the service.
 // The /info command returns this to interested clients.
+// Note: May be entirely empty if no data is defined.
 type InfoDump struct {
 	// Website for more information about the service.
-	Website string `json:"website"`
+	Website string `json:"website,omitempty"`
 	// Other information of interest. Or just a big, fat ad.
-	Other []string `json:"other"`
+	Other []string `json:"other,omitempty"`
+	// Defaults for DNS records, if any. The counterpart for lbdns may be more useful.
+	Defaults DomainDefaults `json:"defaults,omitempty"`
+}
+
+// DomainDefaults is a collection of DNS records to create for a domain if the
+// client asks for a setup from scratch.
+type DomainDefaults struct {
+	// MS defaults are handy if all domains share a mail host.
+	// TODO: Figure out something for SPF records.
+	//MX ??? `json:"mx"`
+	// NS records are set up by default initially, but disappear after the user nukes them.
+	// NS ??? `json:"ns"`
+	// TXT records may be useful for something.
+	// TXT ??? `json:"txt"`
+	// SRV records can be handy when setting up a cluster of chat services
+	// announcing their capabilities in SRV records (like some Microsoft services do).
+	// SRV ??? `json:"srv"`
 }
 
 var cfg Config
