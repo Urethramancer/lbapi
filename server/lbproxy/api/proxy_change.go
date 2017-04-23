@@ -4,6 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
+
+	"github.com/Urethramancer/lbapi"
 )
 
 // ChangeARecord modifies A or AAAA records.
@@ -53,7 +55,7 @@ func (c *Client) changeRecord(call, domain, oldip, newip, host string, ttl int64
 	q.Set("ttl", fmt.Sprintf("%d", ttl))
 	u.RawQuery = q.Encode()
 
-	res, err := c.postResponse(u.String())
+	res, err := lbapi.PostResponse(c.Client, u.String())
 	if err != nil {
 		return err
 	}
@@ -90,7 +92,7 @@ func (c *Client) changeRecordPri(call, domain, oldip, newip, host string, ttl in
 	q.Set("priority", fmt.Sprintf("%d", priority))
 	u.RawQuery = q.Encode()
 
-	res, err := c.postResponse(u.String())
+	res, err := lbapi.PostResponse(c.Client, u.String())
 	if err != nil {
 		return err
 	}
@@ -134,7 +136,7 @@ func (c *Client) ChangeSRV(domain, oldval, newval, host string, ttl int64, prior
 	}
 	u.RawQuery = q.Encode()
 
-	res, err := c.postResponse(u.String())
+	res, err := lbapi.PostResponse(c.Client, u.String())
 	if err != nil {
 		return err
 	}
@@ -179,7 +181,7 @@ func (c *Client) ChangeSOA(domain, person string, refresh, retry, expire, ttl in
 	q.Set("ttl", fmt.Sprintf("%d", ttl))
 	u.RawQuery = q.Encode()
 
-	res, err := c.postResponse(u.String())
+	res, err := lbapi.PostResponse(c.Client, u.String())
 	if err != nil {
 		return err
 	}
