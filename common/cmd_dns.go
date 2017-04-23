@@ -1,4 +1,51 @@
-package main
+package common
+
+import "github.com/Urethramancer/lbapi"
+
+type DNSClient interface {
+	DNSActive(string) bool
+	//
+	// Add section
+	//
+	AddARecord(domain, address, host string, ttl int64, six bool) error
+	AddCNAME(domain, value, host string, ttl int64) error
+	AddMX(domain, value, host string, ttl int64, priority uint16) error
+	AddNS(domain, value, host string, ttl int64, priority uint16) error
+	AddTXT(domain, value, host string, ttl int64, priority uint16) error
+	AddSRV(domain, value, host string, ttl int64, priority, port, weight uint16) error
+
+	//
+	// Get section
+	//
+	GetDNSRecords(domain, value, host, t string, page int) (*lbapi.DNSRecordList, error)
+
+	//
+	// Change section
+	//
+	ChangeARecord(domain, oldip, newip, host string, ttl int64, six bool) error
+	ChangeCNAME(domain, oldip, newip, host string, ttl int64) error
+	ChangeMX(domain, oldip, newip, host string, ttl int64, priority uint16) error
+	ChangeNS(domain, oldip, newip, host string, ttl int64) error
+	ChangeTXT(domain, oldip, newip, host string, ttl int64) error
+	ChangeSRV(domain, oldval, newval, host string, ttl int64, priority, port, weight uint) error
+	ChangeSOA(domain, person string, refresh, retry, expire, ttl int64) error
+
+	//
+	// Delete section
+	//
+	DeleteARecord(domain, value, host string, six bool) error
+	DeleteCNAME(domain, value, host string) error
+	DeleteMX(domain, value, host string) error
+	DeleteNS(domain, value, host string) error
+	DeleteTXT(domain, value, host string) error
+	DeleteSRV(domain, value, host string, port, weight uint16) error
+}
+
+var client DNSClient
+
+func SetClient(c DNSClient) {
+	client = c
+}
 
 // DNSCmd arguments and sub-commands.
 type DNSCmd struct {

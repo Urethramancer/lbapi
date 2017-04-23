@@ -16,8 +16,8 @@ func apiAuth(w http.ResponseWriter, r *http.Request) error {
 		return respond(w, &res)
 	}
 
-	t := createToken( 0, r)
-	syslog("User %s (%d) logged in.", cd.Email,cd.ID)
+	t := createToken(0, r)
+	syslog("User %s (%d) logged in.", cd.Email, cd.ID)
 	res.SetStatus(StatusOK)
 	res.Token = t.Hash
 	return respond(w, &res)

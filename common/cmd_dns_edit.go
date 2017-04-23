@@ -1,4 +1,4 @@
-package main
+package common
 
 // DNSChangeCmd arguments.
 type DNSEditCmd struct {

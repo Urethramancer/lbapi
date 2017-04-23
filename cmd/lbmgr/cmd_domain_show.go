@@ -1,6 +1,10 @@
 package main
 
-import "time"
+import (
+	"time"
+
+	"github.com/Urethramancer/lbapi/common"
+)
 
 // DomainShowCmd arguments.
 type DomainShowCmd struct {
@@ -16,7 +20,7 @@ func (cmd *DomainShowCmd) Execute(args []string) error {
 		return err
 	}
 
-	pr(ANSI_YELLOW+"%s (%s) - "+okColour(d.Status == "Active")+"%s"+ANSI_NORMAL, d.Description, d.TypeName, d.Status)
+	pr(common.ANSI_YELLOW+"%s (%s) - "+okColour(d.Status == "Active")+"%s"+common.ANSI_NORMAL, d.Description, d.TypeName, d.Status)
 	cid := d.CustomerID
 	cust, err := client.CustomerByID(cid)
 	prn("Owner: ")
@@ -27,10 +31,10 @@ func (cmd *DomainShowCmd) Execute(args []string) error {
 	}
 
 	prn("Created: %v\nLast modified: %v\nExpires: ", d.CreationDT, d.Timestamp)
-	pr(okColour(!time.Now().After(d.Endtime))+"%v"+ANSI_NORMAL, d.Endtime)
+	pr(okColour(!time.Now().After(d.Endtime))+"%v"+common.ANSI_NORMAL, d.Endtime)
 
 	pr("Autorenew: %v", d.Autorenew)
-	pr("Reseller lock: "+okColour(d.ResellerLock)+"%v"+ANSI_NORMAL, d.ResellerLock)
-	pr("Transfer lock: "+okColour(d.TransferLock)+"%v"+ANSI_NORMAL, d.TransferLock)
+	pr("Reseller lock: "+okColour(d.ResellerLock)+"%v"+common.ANSI_NORMAL, d.ResellerLock)
+	pr("Transfer lock: "+okColour(d.TransferLock)+"%v"+common.ANSI_NORMAL, d.TransferLock)
 	return nil
 }

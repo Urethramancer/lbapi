@@ -6,6 +6,7 @@ import (
 
 	"github.com/Urethramancer/countries"
 	"github.com/Urethramancer/lbapi"
+	"github.com/Urethramancer/lbapi/common"
 	"github.com/ryanuber/columnize"
 )
 
@@ -84,12 +85,12 @@ func (cmd *CustomerShowCmd) Execute(args []string) error {
 		reseller = "you"
 	}
 
-	pr("%s (%d) - "+okColour(cust.Status == "Active")+"%s"+ANSI_NORMAL+"\nSigned up: %v", cust.Name, cust.ID, cust.Status, cust.Created)
+	pr("%s (%d) - "+okColour(cust.Status == "Active")+"%s"+common.ANSI_NORMAL+"\nSigned up: %v", cust.Name, cust.ID, cust.Status, cust.Created)
 	pr("E-mail: %s  Phone: %s", cust.Email, cust.Phone)
 
-	pr(ANSI_YELLOW + "Address:" + ANSI_NORMAL)
+	pr(common.ANSI_YELLOW + "Address:" + common.ANSI_NORMAL)
 	pr("%s\n", countries.FormatAddress(cust.Address, "", cust.Zip, cust.City, cust.State, cust.Country))
-	pr("Two-factor enabled: "+okColour(cust.Twofactor)+"%v"+ANSI_NORMAL, cust.Twofactor)
+	pr("Two-factor enabled: "+okColour(cust.Twofactor)+"%v"+common.ANSI_NORMAL, cust.Twofactor)
 	pr("Parent reseller: %d (%s)", cust.ParentReseller, reseller)
 	pr("Total receipts: $%s", cust.TotalReceipts)
 	return nil

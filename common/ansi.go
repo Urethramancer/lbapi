@@ -1,5 +1,5 @@
 // Repeated strings and shorthand.
-package main
+package common
 
 // ANSI foreground colours for convenience.
 const (

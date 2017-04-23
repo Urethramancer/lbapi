@@ -8,7 +8,7 @@ import (
 	"github.com/Urethramancer/lbapi/common"
 )
 
-var client *lbapi.Client
+var client *lbapi.ProxyClient
 
 func main() {
 	if !loadConfig() {
@@ -16,12 +16,12 @@ func main() {
 		os.Exit(2)
 	}
 
-	client = lbapi.NewClient(cfg.API, cfg.ID, cfg.Key)
+	client = lbapi.NewProxyClient(cfg.API, cfg.Username, cfg.Password)
 	if client == nil {
 		pr("Error creating client structure for '%s'.", cfg.API)
 		os.Exit(2)
 	}
-	common.SetClient(client)
 
+	common.SetClient(client)
 	parseFlags()
 }

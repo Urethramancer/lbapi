@@ -1,4 +1,4 @@
-package main
+package common
 
 // DNSDeleteCmd arguments.
 type DNSDeleteCmd struct {

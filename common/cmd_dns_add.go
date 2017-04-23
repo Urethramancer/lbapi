@@ -1,4 +1,4 @@
-package main
+package common
 
 // DNSAddCmd arguments.
 type DNSAddCmd struct {

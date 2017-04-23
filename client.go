@@ -7,10 +7,14 @@ import (
 	"time"
 )
 
+// Client is the structure for reseller API access to LogicBoxes systems.
 type Client struct {
 	http.Client
+	// URL of the API, usually https://httpapi.com.
 	URL string
-	ID  string
+	// ID of the reseller.
+	ID string
+	// Key to authenticate with.
 	Key string
 }
 
