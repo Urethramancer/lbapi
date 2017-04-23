@@ -7,12 +7,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Urethramancer/lbapi/server/lbproxy/api"
 	"github.com/gorilla/mux"
-)
-
-const (
-	pathAuth = "/auth"
-	pathInfo = "/info"
 )
 
 // Servers hold the two possible web servers which can be started.
@@ -143,11 +139,11 @@ func addSSLHeaders(w http.ResponseWriter, r *http.Request) error {
 }
 
 func initHandlers(r *mux.Router) {
-	r.Handle(pathAuth, Handle(addJSONHeaders, apiAuth))
-	r.Handle(pathInfo, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathAuth, Handle(addJSONHeaders, apiAuth))
+	r.Handle(api.PathInfo, Handle(addJSONHeaders, apiInfo))
 }
 
 func initSSLHandlers(r *mux.Router) {
-	r.Handle(pathAuth, Handle(addSSLHeaders, addJSONHeaders, apiAuth))
-	r.Handle(pathInfo, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+	r.Handle(api.PathAuth, Handle(addSSLHeaders, addJSONHeaders, apiAuth))
+	r.Handle(api.PathInfo, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
 }
