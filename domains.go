@@ -135,8 +135,8 @@ func (c *Client) DomainsFor(customer string, page int) (*DomainList, error) {
 
 	list := *res
 	dl := DomainList{
-		Count:      atoi(fmt.Sprintf("%v", list["recsonpage"])),
-		MaxRecords: atoi(fmt.Sprintf("%v", list["recsindb"])),
+		Count:      Atoi(fmt.Sprintf("%v", list["recsonpage"])),
+		MaxRecords: Atoi(fmt.Sprintf("%v", list["recsindb"])),
 	}
 	delete(list, "recsonpage")
 	delete(list, "recsindb")
@@ -153,21 +153,21 @@ func (c *Client) DomainsFor(customer string, page int) (*DomainList, error) {
 func parseDomain(in interface{}) *Domain {
 	data := in.(map[string]interface{})
 	return &Domain{
-		Endtime:      time.Unix(atoi(data["orders.endtime"].(string)), 0),
-		CreationTime: time.Unix(atoi(data["orders.creationtime"].(string)), 0),
-		CreationDT:   time.Unix(atoi(data["orders.creationdt"].(string)), 0),
-		Timestamp:    parseDate(data["orders.timestamp"].(string)),
-		OrderID:      atoi(data["orders.orderid"].(string)),
-		CustomerID:   atoi(data["entity.customerid"].(string)),
-		EntityID:     atoi(data["entity.entityid"].(string)),
-		TypeID:       atoi(data["entity.entitytypeid"].(string)),
+		Endtime:      time.Unix(Atoi(data["orders.endtime"].(string)), 0),
+		CreationTime: time.Unix(Atoi(data["orders.creationtime"].(string)), 0),
+		CreationDT:   time.Unix(Atoi(data["orders.creationdt"].(string)), 0),
+		Timestamp:    ParseDate(data["orders.timestamp"].(string)),
+		OrderID:      Atoi(data["orders.orderid"].(string)),
+		CustomerID:   Atoi(data["entity.customerid"].(string)),
+		EntityID:     Atoi(data["entity.entityid"].(string)),
+		TypeID:       Atoi(data["entity.entitytypeid"].(string)),
 		Description:  data["entity.description"].(string),
 		Status:       data["entity.currentstatus"].(string),
 		TypeKey:      data["entitytype.entitytypekey"].(string),
 		TypeName:     data["entitytype.entitytypename"].(string),
-		Autorenew:    parseBool(data["orders.autorenew"].(string)),
-		ResellerLock: parseBool(data["orders.resellerlock"].(string)),
-		CustomerLock: parseBool(data["orders.customerlock"].(string)),
-		TransferLock: parseBool(data["orders.transferlock"].(string)),
+		Autorenew:    ParseBool(data["orders.autorenew"].(string)),
+		ResellerLock: ParseBool(data["orders.resellerlock"].(string)),
+		CustomerLock: ParseBool(data["orders.customerlock"].(string)),
+		TransferLock: ParseBool(data["orders.transferlock"].(string)),
 	}
 }

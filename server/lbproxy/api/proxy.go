@@ -1,4 +1,4 @@
-package lbapi
+package api
 
 import (
 	"encoding/json"
@@ -6,10 +6,14 @@ import (
 	"net/http"
 	"net/url"
 	"time"
+
+	"github.com/Urethramancer/lbapi"
 )
 
-// ProxyClient is the structure used by end-user software to access lbproxy middleman servers.
-type ProxyClient struct {
+type maplist map[string]interface{}
+
+// Client is the structure used by end-user software to access lbproxy middleman servers.
+type Client struct {
 	http.Client
 	URL      string
 	Token    string
@@ -17,13 +21,13 @@ type ProxyClient struct {
 	Password string
 }
 
-// NewProxyClient creates a client structure with a HTTP client for the specified proxy, and logs in.
-func NewProxyClient(api, username, password string) *ProxyClient {
+// NewClient creates a client structure with a HTTP client for the specified proxy, and logs in.
+func NewClient(api, username, password string) *Client {
 	if api == "" {
 		api = "http://localhost:11000"
 	}
 
-	return &ProxyClient{
+	return &Client{
 		Client:   http.Client{Timeout: time.Second * 30},
 		URL:      api,
 		Token:    "",
@@ -35,7 +39,7 @@ func NewProxyClient(api, username, password string) *ProxyClient {
 // getReponse is the internal call to fetch a URL's JSON,
 // decode it into a maplist and hand it over to massage into
 // a proper structure.
-func (c *ProxyClient) getResponse(url string) (*maplist, error) {
+func (c *Client) getResponse(url string) (*maplist, error) {
 	res, err := c.Client.Get(url)
 	if err != nil {
 		return nil, err
@@ -56,7 +60,7 @@ func (c *ProxyClient) getResponse(url string) (*maplist, error) {
 // Some LogicBoxes API calls use POST instead, but there doesn't
 // seem to be any actual logic to why, as they aren't actually
 // posting any body content.
-func (c *ProxyClient) postResponse(url string) (*maplist, error) {
+func (c *Client) postResponse(url string) (*maplist, error) {
 	res, err := c.Client.Post(url, "", nil)
 	if err != nil {
 		return nil, err
@@ -76,7 +80,7 @@ func (c *ProxyClient) postResponse(url string) (*maplist, error) {
 // DNSActive reports if an order has activated DNS yet.
 // This is normally on by default, but will be activated when
 // this is called otherwise.
-func (c *ProxyClient) DNSActive(id string) bool {
+func (c *Client) DNSActive(id string) bool {
 	var err error
 	u, err := url.Parse(c.URL)
 	if err != nil {
@@ -101,7 +105,7 @@ func (c *ProxyClient) DNSActive(id string) bool {
 
 // GetDNSRecords gets the first up to 50 records of one type for a domain.
 // Pass a higher page number to get the next set of up to 50.
-func (c *ProxyClient) GetDNSRecords(domain, value, host, t string, page int) (*DNSRecordList, error) {
+func (c *Client) GetDNSRecords(domain, value, host, t string, page int) (*lbapi.DNSRecordList, error) {
 	var err error
 	u, err := url.Parse(c.URL)
 	if err != nil {
@@ -134,15 +138,15 @@ func (c *ProxyClient) GetDNSRecords(domain, value, host, t string, page int) (*D
 	}
 
 	list := *res
-	rl := DNSRecordList{
-		Count:      atoi(fmt.Sprintf("%v", list["recsonpage"])),
-		MaxRecords: atoi(fmt.Sprintf("%v", list["recsindb"])),
+	rl := lbapi.DNSRecordList{
+		Count:      lbapi.Atoi(fmt.Sprintf("%v", list["recsonpage"])),
+		MaxRecords: lbapi.Atoi(fmt.Sprintf("%v", list["recsindb"])),
 	}
 	delete(list, "recsonpage")
 	delete(list, "recsindb")
 
 	for _, rec := range list {
-		r := parseDNS(rec)
+		r := lbapi.ParseDNS(rec)
 		if r != nil {
 			rl.Records = append(rl.Records, r)
 		}

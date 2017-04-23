@@ -1,4 +1,4 @@
-package lbapi
+package api
 
 import (
 	"errors"
@@ -7,30 +7,30 @@ import (
 )
 
 // ChangeARecord modifies A or AAAA records.
-func (c *ProxyClient) ChangeARecord(domain, oldip, newip, host string, ttl int64, six bool) error {
+func (c *Client) ChangeARecord(domain, oldip, newip, host string, ttl int64, six bool) error {
 	if six {
 		return c.changeRecord("api/dns/manage/update-ipv6-record.json", domain, oldip, newip, host, ttl)
 	}
 	return c.changeRecord("api/dns/manage/update-ipv4-record.json", domain, oldip, newip, host, ttl)
 }
 
-func (c *ProxyClient) ChangeCNAME(domain, oldip, newip, host string, ttl int64) error {
+func (c *Client) ChangeCNAME(domain, oldip, newip, host string, ttl int64) error {
 	return c.changeRecord("api/dns/manage/update-cname-record.json", domain, oldip, newip, host, ttl)
 }
 
-func (c *ProxyClient) ChangeMX(domain, oldip, newip, host string, ttl int64, priority uint16) error {
+func (c *Client) ChangeMX(domain, oldip, newip, host string, ttl int64, priority uint16) error {
 	return c.changeRecordPri("api/dns/manage/update-mx-record.json", domain, oldip, newip, host, ttl, priority)
 }
 
-func (c *ProxyClient) ChangeNS(domain, oldip, newip, host string, ttl int64) error {
+func (c *Client) ChangeNS(domain, oldip, newip, host string, ttl int64) error {
 	return c.changeRecord("api/dns/manage/update-ns-record.json", domain, oldip, newip, host, ttl)
 }
 
-func (c *ProxyClient) ChangeTXT(domain, oldip, newip, host string, ttl int64) error {
+func (c *Client) ChangeTXT(domain, oldip, newip, host string, ttl int64) error {
 	return c.changeRecord("api/dns/manage/update-txt-record.json", domain, oldip, newip, host, ttl)
 }
 
-func (c *ProxyClient) changeRecord(call, domain, oldip, newip, host string, ttl int64) error {
+func (c *Client) changeRecord(call, domain, oldip, newip, host string, ttl int64) error {
 	var err error
 	u, err := url.Parse(c.URL)
 	if err != nil {
@@ -66,7 +66,7 @@ func (c *ProxyClient) changeRecord(call, domain, oldip, newip, host string, ttl 
 	return nil
 }
 
-func (c *ProxyClient) changeRecordPri(call, domain, oldip, newip, host string, ttl int64, priority uint16) error {
+func (c *Client) changeRecordPri(call, domain, oldip, newip, host string, ttl int64, priority uint16) error {
 	var err error
 	u, err := url.Parse(c.URL)
 	if err != nil {
@@ -104,7 +104,7 @@ func (c *ProxyClient) changeRecordPri(call, domain, oldip, newip, host string, t
 }
 
 // ChangeSRV modifies a SRV record.
-func (c *ProxyClient) ChangeSRV(domain, oldval, newval, host string, ttl int64, priority, port, weight uint) error {
+func (c *Client) ChangeSRV(domain, oldval, newval, host string, ttl int64, priority, port, weight uint) error {
 	var err error
 	u, err := url.Parse(c.URL)
 	if err != nil {
@@ -148,7 +148,7 @@ func (c *ProxyClient) ChangeSRV(domain, oldval, newval, host string, ttl int64, 
 }
 
 // ChangeSOA modifies a SOA (Start of Authority) record.
-func (c *ProxyClient) ChangeSOA(domain, person string, refresh, retry, expire, ttl int64) error {
+func (c *Client) ChangeSOA(domain, person string, refresh, retry, expire, ttl int64) error {
 	var err error
 	u, err := url.Parse(c.URL)
 	if err != nil {

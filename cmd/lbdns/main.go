@@ -4,11 +4,11 @@ package main
 import (
 	"os"
 
-	"github.com/Urethramancer/lbapi"
 	"github.com/Urethramancer/lbapi/common"
+	"github.com/Urethramancer/lbapi/server/lbproxy/api"
 )
 
-var client *lbapi.ProxyClient
+var client *api.Client
 
 func main() {
 	if !loadConfig() {
@@ -16,7 +16,7 @@ func main() {
 		os.Exit(2)
 	}
 
-	client = lbapi.NewProxyClient(cfg.API, cfg.Username, cfg.Password)
+	client = api.NewClient(cfg.API, cfg.Username, cfg.Password)
 	if client == nil {
 		pr("Error creating client structure for '%s'.", cfg.API)
 		os.Exit(2)

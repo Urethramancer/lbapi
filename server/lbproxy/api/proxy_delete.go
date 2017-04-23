@@ -1,4 +1,4 @@
-package lbapi
+package api
 
 import (
 	"errors"
@@ -7,7 +7,7 @@ import (
 )
 
 // DeleteARecord deletes A or AAAA records.
-func (c *ProxyClient) DeleteARecord(domain, value, host string, six bool) error {
+func (c *Client) DeleteARecord(domain, value, host string, six bool) error {
 	if six {
 		return c.deleteRecord("api/dns/manage/delete-ipv6-record.json", domain, value, host)
 	}
@@ -15,27 +15,27 @@ func (c *ProxyClient) DeleteARecord(domain, value, host string, six bool) error 
 }
 
 // DeleteCNAME does exactly that.
-func (c *ProxyClient) DeleteCNAME(domain, value, host string) error {
+func (c *Client) DeleteCNAME(domain, value, host string) error {
 	return c.deleteRecord("api/dns/manage/delete-cname-record.json", domain, value, host)
 }
 
 // DeleteMX holds no surprises.
-func (c *ProxyClient) DeleteMX(domain, value, host string) error {
+func (c *Client) DeleteMX(domain, value, host string) error {
 	return c.deleteRecord("api/dns/manage/delete-mx-record.json", domain, value, host)
 }
 
 // DeleteNS is as boring as the above.
-func (c *ProxyClient) DeleteNS(domain, value, host string) error {
+func (c *Client) DeleteNS(domain, value, host string) error {
 	return c.deleteRecord("api/dns/manage/delete-ns-record.json", domain, value, host)
 }
 
 // DeleteTXT deletes TXT records.
-func (c *ProxyClient) DeleteTXT(domain, value, host string) error {
+func (c *Client) DeleteTXT(domain, value, host string) error {
 	return c.deleteRecord("api/dns/manage/delete-txt-record.json", domain, value, host)
 }
 
 // DeleteSRV deletes SRV records.
-func (c *ProxyClient) DeleteSRV(domain, value, host string, port, weight uint16) error {
+func (c *Client) DeleteSRV(domain, value, host string, port, weight uint16) error {
 	var err error
 	u, err := url.Parse(c.URL)
 	if err != nil {
@@ -66,7 +66,7 @@ func (c *ProxyClient) DeleteSRV(domain, value, host string, port, weight uint16)
 	return nil
 }
 
-func (c *ProxyClient) deleteRecord(call, domain, value, host string) error {
+func (c *Client) deleteRecord(call, domain, value, host string) error {
 	var err error
 	u, err := url.Parse(c.URL)
 	if err != nil {

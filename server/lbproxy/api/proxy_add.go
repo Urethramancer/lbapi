@@ -1,4 +1,4 @@
-package lbapi
+package api
 
 import (
 	"errors"
@@ -7,7 +7,7 @@ import (
 )
 
 // AddARecord adds A or AAAA records.
-func (c *ProxyClient) AddARecord(domain, address, host string, ttl int64, six bool) error {
+func (c *Client) AddARecord(domain, address, host string, ttl int64, six bool) error {
 	if six {
 		return c.addRecord("api/dns/manage/add-ipv6-record.json", domain, address, host, ttl)
 	}
@@ -15,27 +15,27 @@ func (c *ProxyClient) AddARecord(domain, address, host string, ttl int64, six bo
 }
 
 // AddCNAME does exactly that.
-func (c *ProxyClient) AddCNAME(domain, value, host string, ttl int64) error {
+func (c *Client) AddCNAME(domain, value, host string, ttl int64) error {
 	return c.addRecord("api/dns/manage/add-cname-record.json", domain, value, host, ttl)
 }
 
 // AddMX adds MX records for mail servers.
-func (c *ProxyClient) AddMX(domain, value, host string, ttl int64, priority uint16) error {
+func (c *Client) AddMX(domain, value, host string, ttl int64, priority uint16) error {
 	return c.addRecordPri("api/dns/manage/add-mx-record.json", domain, value, host, ttl, priority)
 }
 
 // AddNS adds name server records.
-func (c *ProxyClient) AddNS(domain, value, host string, ttl int64, priority uint16) error {
+func (c *Client) AddNS(domain, value, host string, ttl int64, priority uint16) error {
 	return c.addRecord("api/dns/manage/add-ns-record.json", domain, value, host, ttl)
 }
 
 // AddTXT adds TXT records.
-func (c *ProxyClient) AddTXT(domain, value, host string, ttl int64, priority uint16) error {
+func (c *Client) AddTXT(domain, value, host string, ttl int64, priority uint16) error {
 	return c.addRecord("api/dns/manage/add-txt-record.json", domain, value, host, ttl)
 }
 
 // AddSRV adds SRV records.
-func (c *ProxyClient) AddSRV(domain, value, host string, ttl int64, priority, port, weight uint16) error {
+func (c *Client) AddSRV(domain, value, host string, ttl int64, priority, port, weight uint16) error {
 	var err error
 	u, err := url.Parse(c.URL)
 	if err != nil {
@@ -77,7 +77,7 @@ func (c *ProxyClient) AddSRV(domain, value, host string, ttl int64, priority, po
 	return nil
 }
 
-func (c *ProxyClient) addRecord(call, domain, address, host string, ttl int64) error {
+func (c *Client) addRecord(call, domain, address, host string, ttl int64) error {
 	var err error
 	u, err := url.Parse(c.URL)
 	if err != nil {
@@ -112,7 +112,7 @@ func (c *ProxyClient) addRecord(call, domain, address, host string, ttl int64) e
 	return nil
 }
 
-func (c *ProxyClient) addRecordPri(call, domain, address, host string, ttl int64, priority uint16) error {
+func (c *Client) addRecordPri(call, domain, address, host string, ttl int64, priority uint16) error {
 	var err error
 	u, err := url.Parse(c.URL)
 	if err != nil {

@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func parseBool(b string) bool {
+func ParseBool(b string) bool {
 	x, err := strconv.ParseBool(b)
 	if err != nil {
 		return false
@@ -16,7 +16,7 @@ func parseBool(b string) bool {
 	return x
 }
 
-func atoi(s string) int64 {
+func Atoi(s string) int64 {
 	i, err := strconv.ParseInt(s, 10, 64)
 	if err != nil {
 		return 0
@@ -24,7 +24,7 @@ func atoi(s string) int64 {
 	return i
 }
 
-func parseDate(s string) time.Time {
+func ParseDate(s string) time.Time {
 	var year, mon, day int
 	var hour, min, sec, ns int
 	var z int

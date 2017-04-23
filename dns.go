@@ -108,14 +108,14 @@ func (c *Client) GetDNSRecords(domain, value, host, t string, page int) (*DNSRec
 
 	list := *res
 	rl := DNSRecordList{
-		Count:      atoi(fmt.Sprintf("%v", list["recsonpage"])),
-		MaxRecords: atoi(fmt.Sprintf("%v", list["recsindb"])),
+		Count:      Atoi(fmt.Sprintf("%v", list["recsonpage"])),
+		MaxRecords: Atoi(fmt.Sprintf("%v", list["recsindb"])),
 	}
 	delete(list, "recsonpage")
 	delete(list, "recsindb")
 
 	for _, rec := range list {
-		r := parseDNS(rec)
+		r := ParseDNS(rec)
 		if r != nil {
 			rl.Records = append(rl.Records, r)
 		}
@@ -123,29 +123,30 @@ func (c *Client) GetDNSRecords(domain, value, host, t string, page int) (*DNSRec
 	return &rl, nil
 }
 
-func parseDNS(in interface{}) *DNSRecord {
+// ParseDNS converts a k-v table to a DNSRecord.
+func ParseDNS(in interface{}) *DNSRecord {
 	data := in.(map[string]interface{})
 	dns := DNSRecord{
 		Host:   data["host"].(string),
 		Type:   data["type"].(string),
 		Value:  data["value"].(string),
-		TTL:    atoi(data["timetolive"].(string)),
+		TTL:    Atoi(data["timetolive"].(string)),
 		Status: data["status"].(string),
 	}
 
 	pri, ok := data["priority"].(string)
 	if ok {
-		dns.Priority = uint16(atoi(pri))
+		dns.Priority = uint16(Atoi(pri))
 	}
 
 	port, ok := data["port"].(string)
 	if ok {
-		dns.Port = uint16(atoi(port))
+		dns.Port = uint16(Atoi(port))
 	}
 
 	w, ok := data["weight"].(string)
 	if ok {
-		dns.Weight = uint16(atoi(w))
+		dns.Weight = uint16(Atoi(w))
 	}
 
 	return &dns

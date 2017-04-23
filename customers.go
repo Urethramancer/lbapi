@@ -121,9 +121,9 @@ func parseCustomerDetails(in interface{}) *CustomerDetails {
 	phone := "+" + data["telnocc"].(string) + " " + data["telno"].(string)
 
 	return &CustomerDetails{
-		Created:        time.Unix(atoi(data["creationdt"].(string)), 0),
-		ID:             atoi(data["customerid"].(string)),
-		ParentReseller: atoi(data["resellerid"].(string)),
+		Created:        time.Unix(Atoi(data["creationdt"].(string)), 0),
+		ID:             Atoi(data["customerid"].(string)),
+		ParentReseller: Atoi(data["resellerid"].(string)),
 		Name:           data["name"].(string),
 		Email:          data["useremail"].(string),
 		Phone:          phone,
@@ -136,7 +136,7 @@ func parseCustomerDetails(in interface{}) *CustomerDetails {
 		PIN:            data["pin"].(string),
 		Status:         data["customerstatus"].(string),
 		TotalReceipts:  data["totalreceipts"].(string),
-		Twofactor:      parseBool(data["twofactorauth_enabled"].(string)),
+		Twofactor:      ParseBool(data["twofactorauth_enabled"].(string)),
 	}
 }
 
@@ -165,8 +165,8 @@ func (c *Client) Customers(page int) (*CustomerList, error) {
 
 	list := *res
 	cl := CustomerList{
-		Count:      atoi(fmt.Sprintf("%v", list["recsonpage"])),
-		MaxRecords: atoi(fmt.Sprintf("%v", list["recsindb"])),
+		Count:      Atoi(fmt.Sprintf("%v", list["recsonpage"])),
+		MaxRecords: Atoi(fmt.Sprintf("%v", list["recsindb"])),
 	}
 	delete(list, "recsonpage")
 	delete(list, "recsindb")
@@ -183,7 +183,7 @@ func (c *Client) Customers(page int) (*CustomerList, error) {
 func parseCustomer(in interface{}) *Customer {
 	data := in.(map[string]interface{})
 	return &Customer{
-		ID:            atoi(data["customer.customerid"].(string)),
+		ID:            Atoi(data["customer.customerid"].(string)),
 		Email:         data["customer.username"].(string),
 		Name:          data["customer.name"].(string),
 		Company:       data["customer.company"].(string),
@@ -191,6 +191,6 @@ func parseCustomer(in interface{}) *Customer {
 		Country:       data["customer.country"].(string),
 		Status:        data["customer.customerstatus"].(string),
 		TotalReceipts: data["customer.totalreceipts"].(string),
-		Websites:      atoi(data["customer.websitecount"].(string)),
+		Websites:      Atoi(data["customer.websitecount"].(string)),
 	}
 }
