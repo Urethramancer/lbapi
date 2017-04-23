@@ -64,7 +64,7 @@ func (c *Client) AddSRV(domain, value, host string, ttl int64, priority, port, w
 	}
 	u.RawQuery = q.Encode()
 
-	res, err := c.postResponse(u.String())
+	res, err := PostResponse(c.Client, u.String())
 	if err != nil {
 		return err
 	}
@@ -99,7 +99,7 @@ func (c *Client) addRecord(call, domain, address, host string, ttl int64) error 
 	q.Set("ttl", fmt.Sprintf("%d", ttl))
 	u.RawQuery = q.Encode()
 
-	res, err := c.postResponse(u.String())
+	res, err := PostResponse(c.Client, u.String())
 	if err != nil {
 		return err
 	}
@@ -135,7 +135,7 @@ func (c *Client) addRecordPri(call, domain, address, host string, ttl int64, pri
 	q.Set("priority", fmt.Sprintf("%d", priority))
 	u.RawQuery = q.Encode()
 
-	res, err := c.postResponse(u.String())
+	res, err := PostResponse(c.Client, u.String())
 	if err != nil {
 		return err
 	}

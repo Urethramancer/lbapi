@@ -53,7 +53,7 @@ func (c *Client) DeleteSRV(domain, value, host string, port, weight uint16) erro
 	q.Set("weight", fmt.Sprintf("%d", weight))
 	u.RawQuery = q.Encode()
 
-	res, err := c.postResponse(u.String())
+	res, err := PostResponse(c.Client, u.String())
 	if err != nil {
 		return err
 	}
@@ -82,7 +82,7 @@ func (c *Client) deleteRecord(call, domain, value, host string) error {
 	q.Set("host", host)
 	u.RawQuery = q.Encode()
 
-	res, err := c.postResponse(u.String())
+	res, err := PostResponse(c.Client, u.String())
 	if err != nil {
 		return err
 	}

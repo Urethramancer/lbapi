@@ -32,11 +32,10 @@ func NewClient(api string, resellerid int64, apikey string) *Client {
 	}
 }
 
-// getReponse is the internal call to fetch a URL's JSON,
-// decode it into a maplist and hand it over to massage into
-// a proper structure.
-func (c *Client) getResponse(url string) (*maplist, error) {
-	res, err := c.Client.Get(url)
+// GetReponse fetches a URL's JSON, decode it into a maplist
+// and returns it as a map of strings.
+func GetResponse(c http.Client, url string) (*maplist, error) {
+	res, err := c.Get(url)
 	if err != nil {
 		return nil, err
 	}
@@ -52,12 +51,10 @@ func (c *Client) getResponse(url string) (*maplist, error) {
 	return &list, nil
 }
 
-// postResponse does pretty much the same as getResponse().
-// Some LogicBoxes API calls use POST instead, but there doesn't
-// seem to be any actual logic to why, as they aren't actually
-// posting any body content.
-func (c *Client) postResponse(url string) (*maplist, error) {
-	res, err := c.Client.Post(url, "", nil)
+// PostResponse does pretty much the same as getResponse(),
+// but with the POST method.
+func PostResponse(c http.Client, url string) (*maplist, error) {
+	res, err := c.Post(url, "", nil)
 	if err != nil {
 		return nil, err
 	}

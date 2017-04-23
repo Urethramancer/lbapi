@@ -63,7 +63,7 @@ func (c *Client) DNSActive(id string) bool {
 	q.Set("order-id", id)
 	u.RawQuery = q.Encode()
 
-	res, err := c.postResponse(u.String())
+	res, err := PostResponse(c.Client, u.String())
 	if err != nil {
 		return false
 	}
@@ -101,7 +101,7 @@ func (c *Client) GetDNSRecords(domain, value, host, t string, page int) (*DNSRec
 	}
 	u.RawQuery = q.Encode()
 
-	res, err := c.getResponse(u.String())
+	res, err := GetResponse(c.Client, u.String())
 	if err != nil {
 		return nil, err
 	}

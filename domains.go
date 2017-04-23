@@ -92,7 +92,7 @@ func (c *Client) Domain(name string) (*Domain, error) {
 	q.Set("domain-name", name)
 	u.RawQuery = q.Encode()
 
-	res, err := c.getResponse(u.String())
+	res, err := GetResponse(c.Client, u.String())
 	if err != nil {
 		return nil, err
 	}
@@ -128,7 +128,7 @@ func (c *Client) DomainsFor(customer string, page int) (*DomainList, error) {
 	q.Set("page-no", fmt.Sprintf("%d", page))
 	u.RawQuery = q.Encode()
 
-	res, err := c.getResponse(u.String())
+	res, err := GetResponse(c.Client, u.String())
 	if err != nil {
 		return nil, err
 	}

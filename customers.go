@@ -82,7 +82,7 @@ func (c *Client) Authenticate(username, password string) (*CustomerDetails, erro
 	q.Set("passwd", password)
 	u.RawQuery = q.Encode()
 
-	res, err := c.getResponse(u.String())
+	res, err := GetResponse(c.Client, u.String())
 	if err != nil {
 		return nil, err
 	}
@@ -106,7 +106,7 @@ func (c *Client) CustomerByID(cid int64) (*CustomerDetails, error) {
 	q.Set("customer-id", fmt.Sprintf("%d", cid))
 	u.RawQuery = q.Encode()
 
-	res, err := c.getResponse(u.String())
+	res, err := GetResponse(c.Client, u.String())
 	if err != nil {
 		return nil, err
 	}
@@ -158,7 +158,7 @@ func (c *Client) Customers(page int) (*CustomerList, error) {
 	q.Set("page-no", fmt.Sprintf("%d", page))
 	u.RawQuery = q.Encode()
 
-	res, err := c.getResponse(u.String())
+	res, err := GetResponse(c.Client, u.String())
 	if err != nil {
 		return nil, err
 	}

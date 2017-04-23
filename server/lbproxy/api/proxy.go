@@ -1,7 +1,6 @@
 package api
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -34,47 +33,6 @@ func NewClient(api, username, password string) *Client {
 		Username: username,
 		Password: password,
 	}
-}
-
-// getReponse is the internal call to fetch a URL's JSON,
-// decode it into a maplist and hand it over to massage into
-// a proper structure.
-func (c *Client) getResponse(url string) (*maplist, error) {
-	res, err := c.Client.Get(url)
-	if err != nil {
-		return nil, err
-	}
-
-	defer res.Body.Close()
-	decoder := json.NewDecoder(res.Body)
-	var list maplist
-	err = decoder.Decode(&list)
-	if err != nil {
-		return nil, err
-	}
-
-	return &list, nil
-}
-
-// postResponse does pretty much the same as getResponse().
-// Some LogicBoxes API calls use POST instead, but there doesn't
-// seem to be any actual logic to why, as they aren't actually
-// posting any body content.
-func (c *Client) postResponse(url string) (*maplist, error) {
-	res, err := c.Client.Post(url, "", nil)
-	if err != nil {
-		return nil, err
-	}
-
-	defer res.Body.Close()
-	decoder := json.NewDecoder(res.Body)
-	var list maplist
-	err = decoder.Decode(&list)
-	if err != nil {
-		return nil, err
-	}
-
-	return &list, nil
 }
 
 // DNSActive reports if an order has activated DNS yet.
