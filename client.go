@@ -2,6 +2,7 @@ package lbapi
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"time"
@@ -48,6 +49,12 @@ func GetResponse(c http.Client, url string) (*maplist, error) {
 		return nil, err
 	}
 
+	s, ok := list["status"]
+	if ok {
+		if s == "ERROR" {
+			return nil, errors.New(string(list["message"].(string)))
+		}
+	}
 	return &list, nil
 }
 
