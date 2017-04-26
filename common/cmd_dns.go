@@ -20,15 +20,15 @@ type DNSClient interface {
 	GetDNSRecords(domain, value, host, t string, page int) (*lbapi.DNSRecordList, error)
 
 	//
-	// Change section
+	// Edit section
 	//
-	ChangeARecord(domain, oldip, newip, host string, ttl int64, six bool) error
-	ChangeCNAME(domain, oldip, newip, host string, ttl int64) error
-	ChangeMX(domain, oldip, newip, host string, ttl int64, priority uint16) error
-	ChangeNS(domain, oldip, newip, host string, ttl int64) error
-	ChangeTXT(domain, oldip, newip, host string, ttl int64) error
-	ChangeSRV(domain, oldval, newval, host string, ttl int64, priority, port, weight uint) error
-	ChangeSOA(domain, person string, refresh, retry, expire, ttl int64) error
+	EditARecord(domain, oldip, newip, host string, ttl int64, six bool) error
+	EditCNAME(domain, oldip, newip, host string, ttl int64) error
+	EditMX(domain, oldip, newip, host string, ttl int64, priority uint16) error
+	EditNS(domain, oldip, newip, host string, ttl int64) error
+	EditTXT(domain, oldip, newip, host string, ttl int64) error
+	EditSRV(domain, oldval, newval, host string, ttl int64, priority, port, weight uint) error
+	EditSOA(domain, person string, refresh, retry, expire, ttl int64) error
 
 	//
 	// Delete section

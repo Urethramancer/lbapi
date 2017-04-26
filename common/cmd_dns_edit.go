@@ -1,6 +1,6 @@
 package common
 
-// DNSChangeCmd arguments.
+// DNSEditCmd arguments.
 type DNSEditCmd struct {
 	A     DNSEditACmd     `command:"a" description:"Edit an A record." alias:"A"`
 	AAAA  DNSEditAAAACmd  `command:"aaaa" description:"Edit an AAAA record." alias:"AAAA"`
@@ -19,7 +19,7 @@ type DNSEditACmd struct {
 
 // Execute A record modification.
 func (cmd *DNSEditACmd) Execute(args []string) error {
-	err := client.ChangeARecord(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL, false)
+	err := client.EditARecord(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL, false)
 	if err != nil {
 		return err
 	}
@@ -35,7 +35,7 @@ type DNSEditAAAACmd struct {
 
 // Execute AAAA record modification.
 func (cmd *DNSEditAAAACmd) Execute(args []string) error {
-	err := client.ChangeARecord(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL, true)
+	err := client.EditARecord(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL, true)
 	if err != nil {
 		return err
 	}
@@ -51,7 +51,7 @@ type DNSEditCNAMECmd struct {
 
 // Execute CNAME record modification.
 func (cmd *DNSEditCNAMECmd) Execute(args []string) error {
-	err := client.ChangeCNAME(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL)
+	err := client.EditCNAME(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL)
 	if err != nil {
 		return err
 	}
@@ -67,7 +67,7 @@ type DNSEditMXCmd struct {
 
 // Execute MX record modification.
 func (cmd *DNSEditMXCmd) Execute(args []string) error {
-	err := client.ChangeMX(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL, cmd.Args.Priority)
+	err := client.EditMX(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL, cmd.Args.Priority)
 	if err != nil {
 		return err
 	}
@@ -83,7 +83,7 @@ type DNSEditNSCmd struct {
 
 // Execute NS record modification.
 func (cmd *DNSEditNSCmd) Execute(args []string) error {
-	err := client.ChangeNS(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL)
+	err := client.EditNS(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL)
 	if err != nil {
 		return err
 	}
@@ -99,7 +99,7 @@ type DNSEditTXTCmd struct {
 
 // Execute TXT record modification.
 func (cmd *DNSEditTXTCmd) Execute(args []string) error {
-	err := client.ChangeTXT(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL)
+	err := client.EditTXT(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL)
 	if err != nil {
 		return err
 	}
@@ -124,7 +124,7 @@ type DNSEditSRVCmd struct {
 
 // Execute SRV record modification.
 func (cmd *DNSEditSRVCmd) Execute(args []string) error {
-	return client.ChangeSRV(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL, cmd.Args.Priority, cmd.Args.Port, cmd.Args.Weight)
+	return client.EditSRV(cmd.Args.Domain, cmd.Args.Old, cmd.Args.New, cmd.Args.Host, cmd.Args.TTL, cmd.Args.Priority, cmd.Args.Port, cmd.Args.Weight)
 }
 
 // DNSEditSOACmd arguments.
@@ -141,5 +141,5 @@ type DNSEditSOACmd struct {
 
 // Execute SOA (Start of Authority) record modification.
 func (cmd *DNSEditSOACmd) Execute(args []string) error {
-	return client.ChangeSOA(cmd.Args.Domain, cmd.Args.Person, cmd.Args.Refresh, cmd.Args.Retry, cmd.Args.Expire, cmd.Args.TTL)
+	return client.EditSOA(cmd.Args.Domain, cmd.Args.Person, cmd.Args.Refresh, cmd.Args.Retry, cmd.Args.Expire, cmd.Args.TTL)
 }

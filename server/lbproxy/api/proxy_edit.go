@@ -8,31 +8,31 @@ import (
 	"github.com/Urethramancer/lbapi"
 )
 
-// ChangeARecord modifies A or AAAA records.
-func (c *Client) ChangeARecord(domain, oldip, newip, host string, ttl int64, six bool) error {
+// EditARecord modifies A or AAAA records.
+func (c *Client) EditARecord(domain, oldip, newip, host string, ttl int64, six bool) error {
 	if six {
-		return c.changeRecord("api/dns/manage/update-ipv6-record.json", domain, oldip, newip, host, ttl)
+		return c.editRecord("api/dns/manage/update-ipv6-record.json", domain, oldip, newip, host, ttl)
 	}
-	return c.changeRecord("api/dns/manage/update-ipv4-record.json", domain, oldip, newip, host, ttl)
+	return c.editRecord("api/dns/manage/update-ipv4-record.json", domain, oldip, newip, host, ttl)
 }
 
-func (c *Client) ChangeCNAME(domain, oldip, newip, host string, ttl int64) error {
-	return c.changeRecord("api/dns/manage/update-cname-record.json", domain, oldip, newip, host, ttl)
+func (c *Client) EditCNAME(domain, oldip, newip, host string, ttl int64) error {
+	return c.editRecord("api/dns/manage/update-cname-record.json", domain, oldip, newip, host, ttl)
 }
 
-func (c *Client) ChangeMX(domain, oldip, newip, host string, ttl int64, priority uint16) error {
-	return c.changeRecordPri("api/dns/manage/update-mx-record.json", domain, oldip, newip, host, ttl, priority)
+func (c *Client) EditMX(domain, oldip, newip, host string, ttl int64, priority uint16) error {
+	return c.editRecordPri("api/dns/manage/update-mx-record.json", domain, oldip, newip, host, ttl, priority)
 }
 
-func (c *Client) ChangeNS(domain, oldip, newip, host string, ttl int64) error {
-	return c.changeRecord("api/dns/manage/update-ns-record.json", domain, oldip, newip, host, ttl)
+func (c *Client) EditNS(domain, oldip, newip, host string, ttl int64) error {
+	return c.editRecord("api/dns/manage/update-ns-record.json", domain, oldip, newip, host, ttl)
 }
 
-func (c *Client) ChangeTXT(domain, oldip, newip, host string, ttl int64) error {
-	return c.changeRecord("api/dns/manage/update-txt-record.json", domain, oldip, newip, host, ttl)
+func (c *Client) EditTXT(domain, oldip, newip, host string, ttl int64) error {
+	return c.editRecord("api/dns/manage/update-txt-record.json", domain, oldip, newip, host, ttl)
 }
 
-func (c *Client) changeRecord(call, domain, oldip, newip, host string, ttl int64) error {
+func (c *Client) editRecord(call, domain, oldip, newip, host string, ttl int64) error {
 	var err error
 	u, err := url.Parse(c.URL)
 	if err != nil {
@@ -68,7 +68,7 @@ func (c *Client) changeRecord(call, domain, oldip, newip, host string, ttl int64
 	return nil
 }
 
-func (c *Client) changeRecordPri(call, domain, oldip, newip, host string, ttl int64, priority uint16) error {
+func (c *Client) editRecordPri(call, domain, oldip, newip, host string, ttl int64, priority uint16) error {
 	var err error
 	u, err := url.Parse(c.URL)
 	if err != nil {
@@ -105,8 +105,8 @@ func (c *Client) changeRecordPri(call, domain, oldip, newip, host string, ttl in
 	return nil
 }
 
-// ChangeSRV modifies a SRV record.
-func (c *Client) ChangeSRV(domain, oldval, newval, host string, ttl int64, priority, port, weight uint) error {
+// EditSRV modifies a SRV record.
+func (c *Client) EditSRV(domain, oldval, newval, host string, ttl int64, priority, port, weight uint) error {
 	var err error
 	u, err := url.Parse(c.URL)
 	if err != nil {
@@ -149,8 +149,8 @@ func (c *Client) ChangeSRV(domain, oldval, newval, host string, ttl int64, prior
 	return nil
 }
 
-// ChangeSOA modifies a SOA (Start of Authority) record.
-func (c *Client) ChangeSOA(domain, person string, refresh, retry, expire, ttl int64) error {
+// EditSOA modifies a SOA (Start of Authority) record.
+func (c *Client) EditSOA(domain, person string, refresh, retry, expire, ttl int64) error {
 	var err error
 	u, err := url.Parse(c.URL)
 	if err != nil {
