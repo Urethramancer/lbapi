@@ -1,9 +1,11 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"strings"
 
 	"github.com/Urethramancer/lbapi/common"
 )
@@ -12,7 +14,7 @@ import (
 type Config struct {
 	API      string `json:"api"`
 	Username string `json:"username"`
-	Password string `json:"apikey"`
+	Password string `json:"password"`
 }
 
 var cfg Config
@@ -30,12 +32,25 @@ func init() {
 	}
 }
 
+func GetCredentials(uq, pq string) (string, string) {
+	prn("%s: ", uq)
+	in := bufio.NewReader(os.Stdin)
+	username, _ := in.ReadString('\n')
+	username = strings.TrimSpace(username)
+	prn("%s: ", pq)
+	password, _ := in.ReadString('\n')
+	password = strings.TrimSpace(password)
+	return username, password
+}
+
 func loadConfig() bool {
 	if !common.Exists(cfgpath) {
 		pr("%s does not exist, creating.", cfgpath)
 		cfg.API = "http://localhost:11000"
-		cfg.Username = "user@example.com"
-		cfg.Password = "secret"
+		// cfg.Username = "user@example.com"
+		// cfg.Password = "secret"
+		cfg.Username, cfg.Password = GetCredentials("Username", "Password")
+
 		res, err := json.MarshalIndent(cfg, "", "\t")
 		if err != nil {
 			pr("Couldn't save default configuration: %s", err.Error())

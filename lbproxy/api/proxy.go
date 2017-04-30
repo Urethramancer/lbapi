@@ -20,45 +20,29 @@ type Client struct {
 	Password string
 }
 
-// NewClient creates a client structure with a HTTP client for the specified proxy, and logs in.
+// NewClient creates a client structure with a HTTP client for the specified proxy.
 func NewClient(api, username, password string) *Client {
 	if api == "" {
 		api = "http://localhost:11000"
 	}
 
-	return &Client{
+	c := Client{
 		Client:   http.Client{Timeout: time.Second * 30},
 		URL:      api,
 		Token:    "",
 		Username: username,
 		Password: password,
 	}
+
+	if !c.Authenticate() {
+		return nil
+	}
+
+	return &c
 }
 
-// DNSActive reports if an order has activated DNS yet.
-// This is normally on by default, but will be activated when
-// this is called otherwise.
-func (c *Client) DNSActive(id string) bool {
-	var err error
-	u, err := url.Parse(c.URL)
-	if err != nil {
-		return false
-	}
-
-	u.Path = "api/dns/activate.json"
-	q := u.Query()
-	// q.Set("auth-userid", c.ID)
-	// q.Set("api-key", c.Key)
-	q.Set("order-id", id)
-	u.RawQuery = q.Encode()
-
-	res, err := lbapi.PostResponse(c.Client, u.String())
-	if err != nil {
-		return false
-	}
-
-	list := *res
-	return list["status"] == "Success"
+func (c *Client) DNSActive(string) bool {
+	return true
 }
 
 // GetDNSRecords gets the first up to 50 records of one type for a domain.
@@ -74,14 +58,13 @@ func (c *Client) GetDNSRecords(domain, value, host, t string, page int) (*lbapi.
 		page = 1
 	}
 
-	u.Path = "api/dns/manage/search-records.json"
+	u.Path = PathDNSGet
 	q := u.Query()
-	// q.Set("auth-userid", c.ID)
-	// q.Set("api-key", c.Key)
-	q.Set("domain-name", domain)
+	q.Set("token", c.Token)
+	q.Set("domain", domain)
 	q.Set("type", t)
-	q.Set("no-of-records", "50")
-	q.Set("page-no", fmt.Sprintf("%d", page))
+	q.Set("count", "50")
+	q.Set("page", fmt.Sprintf("%d", page))
 	if host != "" {
 		q.Set("host", host)
 	}

@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Urethramancer/lbapi/server/lbproxy/api"
+	"github.com/Urethramancer/lbapi/lbproxy/api"
 	"github.com/gorilla/mux"
 )
 
@@ -141,9 +141,19 @@ func addSSLHeaders(w http.ResponseWriter, r *http.Request) error {
 func initHandlers(r *mux.Router) {
 	r.Handle(api.PathAuth, Handle(addJSONHeaders, apiAuth))
 	r.Handle(api.PathInfo, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSGet, Handle(addJSONHeaders, apiDNSGet))
+	r.Handle(api.PathDNSAdd, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSEdit, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSDelete, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSNuke, Handle(addJSONHeaders, apiInfo))
 }
 
 func initSSLHandlers(r *mux.Router) {
 	r.Handle(api.PathAuth, Handle(addSSLHeaders, addJSONHeaders, apiAuth))
 	r.Handle(api.PathInfo, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSGet, Handle(addSSLHeaders, addJSONHeaders, apiDNSGet))
+	r.Handle(api.PathDNSAdd, Handle(addSSLHeaders, addJSONHeaders, apiDNSAdd))
+	r.Handle(api.PathDNSEdit, Handle(addSSLHeaders, addJSONHeaders, apiDNSEdit))
+	r.Handle(api.PathDNSDelete, Handle(addSSLHeaders, addJSONHeaders, apiDNSDelete))
+	r.Handle(api.PathDNSNuke, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
 }
