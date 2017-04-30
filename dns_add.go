@@ -9,29 +9,29 @@ import (
 // AddARecord adds A or AAAA records.
 func (c *Client) AddARecord(domain, address, host string, ttl int64, six bool) error {
 	if six {
-		return c.addRecord(apiDNSAddIPv6, domain, address, host, ttl)
+		return c.addRecord(APIDNSAddIPv6, domain, address, host, ttl)
 	}
-	return c.addRecord(apiDNSAddIPv4, domain, address, host, ttl)
+	return c.addRecord(APIDNSAddIPv4, domain, address, host, ttl)
 }
 
 // AddCNAME does exactly that.
 func (c *Client) AddCNAME(domain, value, host string, ttl int64) error {
-	return c.addRecord(apiDNSAddCNAME, domain, value, host, ttl)
+	return c.addRecord(APIDNSAddCNAME, domain, value, host, ttl)
 }
 
 // AddMX adds MX records for mail servers.
 func (c *Client) AddMX(domain, value, host string, ttl int64, priority uint16) error {
-	return c.addRecordPri(apiDNSAddMX, domain, value, host, ttl, priority)
+	return c.addRecordPri(APIDNSAddMX, domain, value, host, ttl, priority)
 }
 
 // AddNS adds name server records.
 func (c *Client) AddNS(domain, value, host string, ttl int64, priority uint16) error {
-	return c.addRecord(apiDNSAddNS, domain, value, host, ttl)
+	return c.addRecord(APIDNSAddNS, domain, value, host, ttl)
 }
 
 // AddTXT adds TXT records.
 func (c *Client) AddTXT(domain, value, host string, ttl int64, priority uint16) error {
-	return c.addRecord(apiDNSAddTXT, domain, value, host, ttl)
+	return c.addRecord(APIDNSAddTXT, domain, value, host, ttl)
 }
 
 // AddSRV adds SRV records.
@@ -42,7 +42,7 @@ func (c *Client) AddSRV(domain, value, host string, ttl int64, priority, port, w
 		return err
 	}
 
-	u.Path = apiDNSAddSRV
+	u.Path = APIDNSAddSRV
 	q := u.Query()
 	q.Set("auth-userid", c.ID)
 	q.Set("api-key", c.Key)

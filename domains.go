@@ -83,7 +83,7 @@ func (c *Client) Domain(name string) (*Domain, error) {
 		return nil, err
 	}
 
-	u.Path = apiDomainsSearch
+	u.Path = APIDomainsSearch
 	q := u.Query()
 	q.Set("auth-userid", c.ID)
 	q.Set("api-key", c.Key)
@@ -116,7 +116,7 @@ func (c *Client) DomainsFor(customer string, page int) (*DomainList, error) {
 		return nil, err
 	}
 
-	u.Path = apiDomainsSearch
+	u.Path = APIDomainsSearch
 	q := u.Query()
 	q.Set("auth-userid", c.ID)
 	q.Set("api-key", c.Key)

@@ -9,29 +9,29 @@ import (
 // DeleteARecord deletes A or AAAA records.
 func (c *Client) DeleteARecord(domain, value, host string, six bool) error {
 	if six {
-		return c.deleteRecord(apiDNSDeleteIPv6, domain, value, host)
+		return c.deleteRecord(APIDNSDeleteIPv6, domain, value, host)
 	}
-	return c.deleteRecord(apiDNSDeleteIPv4, domain, value, host)
+	return c.deleteRecord(APIDNSDeleteIPv4, domain, value, host)
 }
 
 // DeleteCNAME does exactly that.
 func (c *Client) DeleteCNAME(domain, value, host string) error {
-	return c.deleteRecord(apiDNSDeleteCNAME, domain, value, host)
+	return c.deleteRecord(APIDNSDeleteCNAME, domain, value, host)
 }
 
 // DeleteMX holds no surprises.
 func (c *Client) DeleteMX(domain, value, host string) error {
-	return c.deleteRecord(apiDNSDeleteMX, domain, value, host)
+	return c.deleteRecord(APIDNSDeleteMX, domain, value, host)
 }
 
 // DeleteNS is as boring as the above.
 func (c *Client) DeleteNS(domain, value, host string) error {
-	return c.deleteRecord(apiDNSDeleteNS, domain, value, host)
+	return c.deleteRecord(APIDNSDeleteNS, domain, value, host)
 }
 
 // DeleteTXT deletes TXT records.
 func (c *Client) DeleteTXT(domain, value, host string) error {
-	return c.deleteRecord(apiDNSDeleteTXT, domain, value, host)
+	return c.deleteRecord(APIDNSDeleteTXT, domain, value, host)
 }
 
 // DeleteSRV deletes SRV records.
@@ -42,7 +42,7 @@ func (c *Client) DeleteSRV(domain, value, host string, port, weight uint16) erro
 		return err
 	}
 
-	u.Path = apiDNSDeleteSRV
+	u.Path = APIDNSDeleteSRV
 	q := u.Query()
 	q.Set("auth-userid", c.ID)
 	q.Set("api-key", c.Key)
