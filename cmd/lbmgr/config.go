@@ -28,7 +28,8 @@ func init() {
 	var err error
 	cfgpath, err = common.GetConfigName(program, configname)
 	if err != nil {
-		pr("Error getting configuration path: %s", err.Error())
+		pr("Error getting configuration path '%s': %s", err.Error())
+		os.Exit(2)
 	}
 }
 
