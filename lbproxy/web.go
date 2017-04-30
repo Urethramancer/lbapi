@@ -142,9 +142,31 @@ func initHandlers(r *mux.Router) {
 	r.Handle(api.PathAuth, Handle(addJSONHeaders, apiAuth))
 	r.Handle(api.PathInfo, Handle(addJSONHeaders, apiInfo))
 	r.Handle(api.PathDNSGet, Handle(addJSONHeaders, apiDNSGet))
-	r.Handle(api.PathDNSAdd, Handle(addJSONHeaders, apiInfo))
-	r.Handle(api.PathDNSEdit, Handle(addJSONHeaders, apiInfo))
-	r.Handle(api.PathDNSDelete, Handle(addJSONHeaders, apiInfo))
+
+	r.Handle(api.PathDNSAddIPv4, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSAddIPv6, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSAddCNAME, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSAddMX, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSAddNS, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSAddTXT, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSAddSRV, Handle(addJSONHeaders, apiInfo))
+
+	r.Handle(api.PathDNSEditIPv4, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSEditIPv6, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSEditCNAME, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSEditMX, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSEditNS, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSEditTXT, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSEditSRV, Handle(addJSONHeaders, apiInfo))
+
+	r.Handle(api.PathDNSDeleteIPv4, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSDeleteIPv6, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSDeleteCNAME, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSDeleteMX, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSDeleteNS, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSDeleteTXT, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSDeleteSRV, Handle(addJSONHeaders, apiInfo))
+
 	r.Handle(api.PathDNSNuke, Handle(addJSONHeaders, apiInfo))
 }
 
@@ -152,8 +174,30 @@ func initSSLHandlers(r *mux.Router) {
 	r.Handle(api.PathAuth, Handle(addSSLHeaders, addJSONHeaders, apiAuth))
 	r.Handle(api.PathInfo, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
 	r.Handle(api.PathDNSGet, Handle(addSSLHeaders, addJSONHeaders, apiDNSGet))
-	r.Handle(api.PathDNSAdd, Handle(addSSLHeaders, addJSONHeaders, apiDNSAdd))
-	r.Handle(api.PathDNSEdit, Handle(addSSLHeaders, addJSONHeaders, apiDNSEdit))
-	r.Handle(api.PathDNSDelete, Handle(addSSLHeaders, addJSONHeaders, apiDNSDelete))
+
+	r.Handle(api.PathDNSAddIPv4, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSAddIPv6, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSAddCNAME, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSAddMX, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSAddNS, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSAddTXT, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSAddSRV, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+
+	r.Handle(api.PathDNSEditIPv4, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSEditIPv6, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSEditCNAME, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSEditMX, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSEditNS, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSEditTXT, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSEditSRV, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+
+	r.Handle(api.PathDNSDeleteIPv4, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSDeleteIPv6, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSDeleteCNAME, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSDeleteMX, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSDeleteNS, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSDeleteTXT, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSDeleteSRV, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+
 	r.Handle(api.PathDNSNuke, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
 }
