@@ -9,29 +9,29 @@ import (
 // EditARecord modifies A or AAAA records.
 func (c *Client) EditARecord(domain, oldip, newip, host string, ttl int64, six bool) error {
 	if six {
-		return c.editRecord("api/dns/manage/update-ipv6-record.json", domain, oldip, newip, host, ttl)
+		return c.editRecord(apiDNSUpdateIPv6, domain, oldip, newip, host, ttl)
 	}
-	return c.editRecord("api/dns/manage/update-ipv4-record.json", domain, oldip, newip, host, ttl)
+	return c.editRecord(apiDNSUpdateIPv4, domain, oldip, newip, host, ttl)
 }
 
 // EditCNAME modifies CNAME (canonical name) records.
 func (c *Client) EditCNAME(domain, oldip, newip, host string, ttl int64) error {
-	return c.editRecord("api/dns/manage/update-cname-record.json", domain, oldip, newip, host, ttl)
+	return c.editRecord(apiDNSUpdateCNAME, domain, oldip, newip, host, ttl)
 }
 
 // EditMX modifies MX (mail server) records.
 func (c *Client) EditMX(domain, oldip, newip, host string, ttl int64, priority uint16) error {
-	return c.editRecordPri("api/dns/manage/update-mx-record.json", domain, oldip, newip, host, ttl, priority)
+	return c.editRecordPri(apiDNSUpdateMX, domain, oldip, newip, host, ttl, priority)
 }
 
 // EditNS modifies NS (nameserver) records.
 func (c *Client) EditNS(domain, oldip, newip, host string, ttl int64) error {
-	return c.editRecord("api/dns/manage/update-ns-record.json", domain, oldip, newip, host, ttl)
+	return c.editRecord(apiDNSUpdateNS, domain, oldip, newip, host, ttl)
 }
 
 // EditTXT modfies TXT records.
 func (c *Client) EditTXT(domain, oldip, newip, host string, ttl int64) error {
-	return c.editRecord("api/dns/manage/update-txt-record.json", domain, oldip, newip, host, ttl)
+	return c.editRecord(apiDNSUpdateTXT, domain, oldip, newip, host, ttl)
 }
 
 func (c *Client) editRecord(call, domain, oldip, newip, host string, ttl int64) error {
@@ -115,7 +115,7 @@ func (c *Client) EditSRV(domain, oldval, newval, host string, ttl int64, priorit
 		return err
 	}
 
-	u.Path = "api/dns/manage/add-srv-record.json"
+	u.Path = apiDNSUpdateSRV
 	q := u.Query()
 	q.Set("auth-userid", c.ID)
 	q.Set("api-key", c.Key)
@@ -159,7 +159,7 @@ func (c *Client) EditSOA(domain, person string, refresh, retry, expire, ttl int6
 		return err
 	}
 
-	u.Path = "api/dns/manage/add-srv-record.json"
+	u.Path = apiDNSUpdateSOA
 	q := u.Query()
 	q.Set("auth-userid", c.ID)
 	q.Set("api-key", c.Key)

@@ -74,7 +74,7 @@ func (c *Client) Authenticate(username, password string) (*CustomerDetails, erro
 		return nil, err
 	}
 
-	u.Path = API_CUSTOMERS_AUTHENTICATE
+	u.Path = apiCustomersAuthenticate
 	q := u.Query()
 	q.Set("auth-userid", c.ID)
 	q.Set("api-key", c.Key)
@@ -99,7 +99,7 @@ func (c *Client) CustomerByID(cid int64) (*CustomerDetails, error) {
 		return nil, err
 	}
 
-	u.Path = API_CUSTOMERS_DETAILS_BY_ID
+	u.Path = apiCustomersDetailsByID
 	q := u.Query()
 	q.Set("auth-userid", c.ID)
 	q.Set("api-key", c.Key)

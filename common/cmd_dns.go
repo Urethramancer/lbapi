@@ -4,6 +4,7 @@ import "github.com/Urethramancer/lbapi"
 
 type DNSClient interface {
 	DNSActive(string) bool
+
 	//
 	// Add section
 	//

@@ -9,29 +9,29 @@ import (
 // DeleteARecord deletes A or AAAA records.
 func (c *Client) DeleteARecord(domain, value, host string, six bool) error {
 	if six {
-		return c.deleteRecord("api/dns/manage/delete-ipv6-record.json", domain, value, host)
+		return c.deleteRecord(apiDNSDeleteIPv6, domain, value, host)
 	}
-	return c.deleteRecord("api/dns/manage/delete-ipv4-record.json", domain, value, host)
+	return c.deleteRecord(apiDNSDeleteIPv4, domain, value, host)
 }
 
 // DeleteCNAME does exactly that.
 func (c *Client) DeleteCNAME(domain, value, host string) error {
-	return c.deleteRecord("api/dns/manage/delete-cname-record.json", domain, value, host)
+	return c.deleteRecord(apiDNSDeleteCNAME, domain, value, host)
 }
 
 // DeleteMX holds no surprises.
 func (c *Client) DeleteMX(domain, value, host string) error {
-	return c.deleteRecord("api/dns/manage/delete-mx-record.json", domain, value, host)
+	return c.deleteRecord(apiDNSDeleteMX, domain, value, host)
 }
 
 // DeleteNS is as boring as the above.
 func (c *Client) DeleteNS(domain, value, host string) error {
-	return c.deleteRecord("api/dns/manage/delete-ns-record.json", domain, value, host)
+	return c.deleteRecord(apiDNSDeleteNS, domain, value, host)
 }
 
 // DeleteTXT deletes TXT records.
 func (c *Client) DeleteTXT(domain, value, host string) error {
-	return c.deleteRecord("api/dns/manage/delete-txt-record.json", domain, value, host)
+	return c.deleteRecord(apiDNSDeleteTXT, domain, value, host)
 }
 
 // DeleteSRV deletes SRV records.
@@ -42,7 +42,7 @@ func (c *Client) DeleteSRV(domain, value, host string, port, weight uint16) erro
 		return err
 	}
 
-	u.Path = "api/dns/manage/delete-srv-record.json"
+	u.Path = apiDNSDeleteSRV
 	q := u.Query()
 	q.Set("auth-userid", c.ID)
 	q.Set("api-key", c.Key)
