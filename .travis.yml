@@ -3,10 +3,15 @@ language: go
 go:
   - 1.8.x
 
+cache:
+  directories:
+    - $GOPATH/src
+    - $GOPATH/pkg
+
 install:
-  - go get github.com/jessevdk/go-flags
-  - go get github.com/ryanuber/columnize
-  - go get github.com/gorilla/mux
-  - go get github.com/Urethramancer/countries
-  - go get github.com/Urethramancer/slog
-  - go get golang.org/x/crypto/sha3
+  - go get -u github.com/jessevdk/go-flags
+  - go get -u github.com/ryanuber/columnize
+  - go get -u github.com/gorilla/mux
+  - go get -u github.com/Urethramancer/countries
+  - go get -u github.com/Urethramancer/slog
+  - go get -u golang.org/x/crypto/sha3
