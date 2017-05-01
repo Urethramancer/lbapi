@@ -7,7 +7,7 @@ const (
 	// PathInfo has no parameters and returns an InfoDump.
 	PathInfo = "/info"
 
-	// PathDNSGet fetches records of one or more types for a domain.
+	// PathDNSGet fetches records for a domain.
 	PathDNSGet = "/dnsget"
 
 	// PathDNSAddIPv4 adds an IPv4 (A) record to a domain.

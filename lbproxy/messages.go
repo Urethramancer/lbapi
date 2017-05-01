@@ -11,6 +11,8 @@ const (
 	StatusAuthFailed = iota
 	// StatusNoAccess means the token given does not have access to the requested data.
 	StatusNoAccess = iota
+	// StatusError is for generic error messages.
+	StatusError = iota
 )
 
 var messages = map[int]string{

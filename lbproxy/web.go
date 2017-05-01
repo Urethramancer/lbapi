@@ -141,15 +141,16 @@ func addSSLHeaders(w http.ResponseWriter, r *http.Request) error {
 func initHandlers(r *mux.Router) {
 	r.Handle(api.PathAuth, Handle(addJSONHeaders, apiAuth))
 	r.Handle(api.PathInfo, Handle(addJSONHeaders, apiInfo))
+
 	r.Handle(api.PathDNSGet, Handle(addJSONHeaders, apiDNSGet))
 
-	r.Handle(api.PathDNSAddIPv4, Handle(addJSONHeaders, apiInfo))
-	r.Handle(api.PathDNSAddIPv6, Handle(addJSONHeaders, apiInfo))
-	r.Handle(api.PathDNSAddCNAME, Handle(addJSONHeaders, apiInfo))
-	r.Handle(api.PathDNSAddMX, Handle(addJSONHeaders, apiInfo))
-	r.Handle(api.PathDNSAddNS, Handle(addJSONHeaders, apiInfo))
-	r.Handle(api.PathDNSAddTXT, Handle(addJSONHeaders, apiInfo))
-	r.Handle(api.PathDNSAddSRV, Handle(addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSAddIPv4, Handle(addJSONHeaders, apiDNSAddIPv4))
+	r.Handle(api.PathDNSAddIPv6, Handle(addJSONHeaders, apiDNSAddIPv6))
+	r.Handle(api.PathDNSAddCNAME, Handle(addJSONHeaders, apiDNSAddCNAME))
+	r.Handle(api.PathDNSAddMX, Handle(addJSONHeaders, apiDNSAddMX))
+	r.Handle(api.PathDNSAddNS, Handle(addJSONHeaders, apiDNSAddNS))
+	r.Handle(api.PathDNSAddTXT, Handle(addJSONHeaders, apiDNSAddTXT))
+	r.Handle(api.PathDNSAddSRV, Handle(addJSONHeaders, apiDNSAddSRV))
 
 	r.Handle(api.PathDNSEditIPv4, Handle(addJSONHeaders, apiInfo))
 	r.Handle(api.PathDNSEditIPv6, Handle(addJSONHeaders, apiInfo))
@@ -173,15 +174,16 @@ func initHandlers(r *mux.Router) {
 func initSSLHandlers(r *mux.Router) {
 	r.Handle(api.PathAuth, Handle(addSSLHeaders, addJSONHeaders, apiAuth))
 	r.Handle(api.PathInfo, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+
 	r.Handle(api.PathDNSGet, Handle(addSSLHeaders, addJSONHeaders, apiDNSGet))
 
-	r.Handle(api.PathDNSAddIPv4, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
-	r.Handle(api.PathDNSAddIPv6, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
-	r.Handle(api.PathDNSAddCNAME, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
-	r.Handle(api.PathDNSAddMX, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
-	r.Handle(api.PathDNSAddNS, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
-	r.Handle(api.PathDNSAddTXT, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
-	r.Handle(api.PathDNSAddSRV, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
+	r.Handle(api.PathDNSAddIPv4, Handle(addSSLHeaders, addJSONHeaders, apiDNSAddIPv4))
+	r.Handle(api.PathDNSAddIPv6, Handle(addSSLHeaders, addJSONHeaders, apiDNSAddIPv6))
+	r.Handle(api.PathDNSAddCNAME, Handle(addSSLHeaders, addJSONHeaders, apiDNSAddCNAME))
+	r.Handle(api.PathDNSAddMX, Handle(addSSLHeaders, addJSONHeaders, apiDNSAddMX))
+	r.Handle(api.PathDNSAddNS, Handle(addSSLHeaders, addJSONHeaders, apiDNSAddNS))
+	r.Handle(api.PathDNSAddTXT, Handle(addSSLHeaders, addJSONHeaders, apiDNSAddTXT))
+	r.Handle(api.PathDNSAddSRV, Handle(addSSLHeaders, addJSONHeaders, apiDNSAddSRV))
 
 	r.Handle(api.PathDNSEditIPv4, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
 	r.Handle(api.PathDNSEditIPv6, Handle(addSSLHeaders, addJSONHeaders, apiInfo))
