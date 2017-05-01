@@ -17,7 +17,7 @@ var apitokens = make(map[string]*Token)
 
 func getToken(hash string) *Token {
 	t := apitokens[hash]
-	if t == nil {
+	if t == nil || t.HasExpired() {
 		return nil
 	}
 
@@ -36,13 +36,21 @@ func createToken(id int64, r *http.Request) *Token {
 	return t
 }
 
+func (t *Token) HasExpired() bool {
+	if t.Expires.Unix() < time.Now().Unix() {
+		return true
+	}
+	return false
+}
+
 // IsValid checks for valid IP address and expiry time, then refreshes the token.
 func (t *Token) IsValid(r *http.Request) bool {
 	if getVisitorIP(r) != t.IP {
 		return false
 	}
 
-	if t.Expires.Unix() < time.Now().Unix() {
+	if t.HasExpired() {
+		t.Delete()
 		return false
 	}
 
@@ -64,7 +72,7 @@ func (t *Token) Delete() {
 // clearTokens is run by the janitor every now and then to clear out expired tokens.
 func clearTokens() {
 	for _, t := range apitokens {
-		if t.Expires.After(time.Now()) {
+		if t.HasExpired() {
 			t.Delete()
 		}
 	}
