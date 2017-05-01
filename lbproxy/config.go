@@ -93,6 +93,7 @@ type InfoDump struct {
 // DomainDefaults is a collection of DNS records to create for a domain if the
 // client asks for a setup from scratch.
 type DomainDefaults struct {
+	TTL int64
 	// MS defaults are handy if all domains share a mail host.
 	// TODO: Figure out something for SPF records.
 	//MX ??? `json:"mx"`
