@@ -16,7 +16,7 @@ const (
 var messages = map[int]string{
 	StatusOK:            "OK",
 	StatusNoCredentials: "Missing username or password.",
-	StatusNoAuth:        "No authorisation token provided.",
+	StatusNoAuth:        "No valid authorisation token provided.",
 	StatusAuthFailed:    "Login failed.",
 	StatusNoAccess:      "Not accessible with provided credentials.",
 }
