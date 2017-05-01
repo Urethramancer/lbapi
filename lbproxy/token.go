@@ -15,6 +15,15 @@ type Token struct {
 
 var apitokens = make(map[string]*Token)
 
+func getToken(hash string) *Token {
+	t := apitokens[hash]
+	if t == nil {
+		return nil
+	}
+
+	return t
+}
+
 // createToken creates a token with an expiry and the user's IP address, then adds it to the token map.
 func createToken(id int64, r *http.Request) *Token {
 	hash := hashString(genString(32))
