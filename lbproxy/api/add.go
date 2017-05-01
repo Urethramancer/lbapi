@@ -36,6 +36,75 @@ func (c *Client) AddTXT(domain, value, host string, ttl int64, priority uint16) 
 	return c.addRecord(PathDNSAddTXT, domain, value, host, ttl)
 }
 
+func (c *Client) addRecord(call, domain, value, host string, ttl int64) error {
+	var err error
+	u, err := url.Parse(c.URL)
+	if err != nil {
+		return err
+	}
+
+	u.Path = call
+	q := u.Query()
+	q.Set("token", c.Token)
+	q.Set("domain", domain)
+	q.Set("value", value)
+	if host != "" {
+		q.Set("host", host)
+	}
+	if ttl == 0 || ttl < 7200 {
+		ttl = 7200
+	}
+	q.Set("ttl", fmt.Sprintf("%d", ttl))
+	u.RawQuery = q.Encode()
+
+	res, err := lbapi.PostResponse(c.Client, u.String())
+	if err != nil {
+		return err
+	}
+
+	list := *res
+	if list["status"] == "ERROR" {
+		return errors.New((fmt.Sprintf("%v", list["message"])))
+	}
+
+	return nil
+}
+
+func (c *Client) addRecordPri(call, domain, value, host string, ttl int64, priority uint16) error {
+	var err error
+	u, err := url.Parse(c.URL)
+	if err != nil {
+		return err
+	}
+
+	u.Path = call
+	q := u.Query()
+	q.Set("token", c.Token)
+	q.Set("domain", domain)
+	q.Set("value", value)
+	if host != "" {
+		q.Set("host", host)
+	}
+	if ttl == 0 || ttl < 7200 {
+		ttl = 7200
+	}
+	q.Set("ttl", fmt.Sprintf("%d", ttl))
+	q.Set("priority", fmt.Sprintf("%d", priority))
+	u.RawQuery = q.Encode()
+
+	res, err := lbapi.PostResponse(c.Client, u.String())
+	if err != nil {
+		return err
+	}
+
+	list := *res
+	if list["status"] == "ERROR" {
+		return errors.New((fmt.Sprintf("%v", list["message"])))
+	}
+
+	return nil
+}
+
 // AddSRV adds SRV records.
 func (c *Client) AddSRV(domain, value, host string, ttl int64, priority, port, weight uint16) error {
 	var err error
@@ -46,9 +115,8 @@ func (c *Client) AddSRV(domain, value, host string, ttl int64, priority, port, w
 
 	u.Path = lbapi.APIDNSAddSRV
 	q := u.Query()
-	// q.Set("auth-userid", c.ID)
-	// q.Set("api-key", c.Key)
-	q.Set("domain-name", domain)
+	q.Set("token", c.Token)
+	q.Set("domain", domain)
 	q.Set("value", value)
 	q.Set("host", host)
 	if ttl < 7200 {
@@ -74,76 +142,6 @@ func (c *Client) AddSRV(domain, value, host string, ttl int64, priority, port, w
 	list := *res
 	if list["status"] != "Success" {
 		return errors.New("couldn't add SRV record - check that FQDN is correct")
-	}
-
-	return nil
-}
-
-func (c *Client) addRecord(call, domain, address, host string, ttl int64) error {
-	var err error
-	u, err := url.Parse(c.URL)
-	if err != nil {
-		return err
-	}
-
-	u.Path = call
-	q := u.Query()
-	q.Set("token", c.Token)
-	q.Set("domain-name", domain)
-	q.Set("value", address)
-	if host != "" {
-		q.Set("host", host)
-	}
-	if ttl == 0 || ttl < 7200 {
-		ttl = 7200
-	}
-	q.Set("ttl", fmt.Sprintf("%d", ttl))
-	u.RawQuery = q.Encode()
-
-	res, err := lbapi.PostResponse(c.Client, u.String())
-	if err != nil {
-		return err
-	}
-
-	list := *res
-	if list["status"] == "ERROR" {
-		return errors.New((fmt.Sprintf("%v", list["message"])))
-	}
-
-	return nil
-}
-
-func (c *Client) addRecordPri(call, domain, address, host string, ttl int64, priority uint16) error {
-	var err error
-	u, err := url.Parse(c.URL)
-	if err != nil {
-		return err
-	}
-
-	u.Path = call
-	q := u.Query()
-	// q.Set("auth-userid", c.ID)
-	// q.Set("api-key", c.Key)
-	q.Set("domain-name", domain)
-	q.Set("value", address)
-	if host != "" {
-		q.Set("host", host)
-	}
-	if ttl == 0 || ttl < 7200 {
-		ttl = 7200
-	}
-	q.Set("ttl", fmt.Sprintf("%d", ttl))
-	q.Set("priority", fmt.Sprintf("%d", priority))
-	u.RawQuery = q.Encode()
-
-	res, err := lbapi.PostResponse(c.Client, u.String())
-	if err != nil {
-		return err
-	}
-
-	list := *res
-	if list["status"] == "ERROR" {
-		return errors.New((fmt.Sprintf("%v", list["message"])))
 	}
 
 	return nil
