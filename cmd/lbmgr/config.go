@@ -5,8 +5,8 @@ import (
 	"io/ioutil"
 	"os"
 
+	"github.com/Urethramancer/cross"
 	"github.com/Urethramancer/lbapi"
-	"github.com/Urethramancer/lbapi/common"
 )
 
 // Config holds the reseller settings, and optionally, the
@@ -26,7 +26,7 @@ const (
 
 func init() {
 	var err error
-	cfgpath, err = common.GetConfigName(program, configname)
+	cfgpath, err = cross.GetConfigName(program, configname)
 	if err != nil {
 		pr("Error getting configuration path '%s': %s", err.Error())
 		os.Exit(2)
@@ -34,7 +34,7 @@ func init() {
 }
 
 func loadConfig() bool {
-	if !common.Exists(cfgpath) {
+	if !cross.Exists(cfgpath) {
 		pr("%s does not exist, creating.", cfgpath)
 		cfg.API = lbapi.APIURL
 		cfg.Key = "your reseller API key"

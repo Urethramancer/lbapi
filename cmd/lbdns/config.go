@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Urethramancer/lbapi/common"
+	"github.com/Urethramancer/cross"
 )
 
 // Config holds the login credentials and access URL.
@@ -26,7 +26,7 @@ const (
 
 func init() {
 	var err error
-	cfgpath, err = common.GetConfigName(program, configname)
+	cfgpath, err = cross.GetConfigName(program, configname)
 	if err != nil {
 		pr("Error getting configuration path: %s", err.Error())
 	}
@@ -44,7 +44,7 @@ func GetCredentials(uq, pq string) (string, string) {
 }
 
 func loadConfig() bool {
-	if !common.Exists(cfgpath) {
+	if !cross.Exists(cfgpath) {
 		pr("%s does not exist, creating.", cfgpath)
 		cfg.API = "http://localhost:11000"
 		// cfg.Username = "user@example.com"

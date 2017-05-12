@@ -7,7 +7,7 @@ import (
 
 	"os"
 
-	"github.com/Urethramancer/lbapi/common"
+	"github.com/Urethramancer/cross"
 )
 
 const (
@@ -144,14 +144,14 @@ func loadConfig() {
 
 	name := opt.Config
 	if name == "" {
-		name, err = common.GetConfigName(program, "lbproxy.json")
+		name, err = cross.GetConfigName(program, "lbproxy.json")
 		if err != nil {
 			crit("Error getting configuration: %s", err.Error())
 			os.Exit(2)
 		}
 	}
 
-	if !common.Exists(name) {
+	if !cross.Exists(name) {
 		cfg = defaultConfig()
 		var data []byte
 		data, err = json.Marshal(cfg)

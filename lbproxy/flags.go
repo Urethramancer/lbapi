@@ -8,7 +8,8 @@ import (
 
 var opt struct {
 	Version bool   `short:"V" long:"version" description:"Print version and exit."`
-	Config  string `short:"C" long:"config" description:"Path to configuration file." value-name:"CONFIG"  default:"ream.json"`
+	Config  string `short:"C" long:"config" description:"Path to configuration file." value-name:"CONFIG"  
+default:"config.json"`
 }
 
 func parseFlags() {
